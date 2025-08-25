@@ -1,0 +1,58 @@
+{
+  "name": "portfolio-website",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Personal portfolio website showcasing projects and skills",
+  "author": {
+    "name": "Tihomir",
+    "email": "your.email@example.com",
+    "url": "https://your-website.com"
+  },
+  "keywords": [
+    "portfolio",
+    "react",
+    "typescript",
+    "vite"
+  ],
+  "homepage": "https://your-portfolio-url.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/portfolio-website.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "scripts": {
+    "start": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "reset": "rimraf node_modules dist .vite package-lock.json && npm cache clean --force && npm install"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.62.7",
+    "@tanstack/react-query-devtools": "^5.62.7",
+    "framer-motion": "^12.23.12",
+    "lucide-react": "^0.541.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.8.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.18.1",
+    "@types/react": "^19.1.11",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react": "^5.0.1",
+    "eslint": "^9.18.1",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.16",
+    "globals": "^16.3.0",
+    "rimraf": "^6.0.1",
+    "typescript": "~5.9.2",
+    "typescript-eslint": "^8.23.1",
+    "vite": "^7.1.3"
+  }
+}
