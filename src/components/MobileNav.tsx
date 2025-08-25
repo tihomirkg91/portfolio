@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { useSoundVibrationContext } from '../contexts/SoundVibrationContext';
 import { RandomizingText } from './RandomizingText';
@@ -17,8 +17,25 @@ export const MobileNav = ({
   onToggle,
 }: MobileNavProps) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
-  const { playHoverSound, playOpenSound, playCloseSound, triggerVibration } =
-    useSoundVibrationContext();
+  const {
+    playHoverSound,
+    playOpenSound,
+    playCloseSound,
+    triggerVibration,
+    triggerMobileNavVibration,
+  } = useSoundVibrationContext();
+
+  // Trigger vibration when mobile nav opens
+  useEffect(() => {
+    if (isOpen) {
+      // Small delay to let the animation start, then trigger vibration
+      const vibrationTimeout = setTimeout(() => {
+        triggerMobileNavVibration();
+      }, 100);
+
+      return () => clearTimeout(vibrationTimeout);
+    }
+  }, [isOpen, triggerMobileNavVibration]);
 
   const overlayVariants = {
     closed: {
@@ -40,7 +57,6 @@ export const MobileNav = ({
           const willBeOpen = !isOpen;
           onToggle();
           willBeOpen ? playOpenSound() : playCloseSound();
-          triggerVibration();
         }}
         onMouseEnter={playHoverSound}
         whileHover={{ scale: 1.05 }}

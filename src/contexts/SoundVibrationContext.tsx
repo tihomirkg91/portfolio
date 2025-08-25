@@ -5,22 +5,27 @@ interface SoundVibrationContextType {
   playOpenSound: () => void;
   playCloseSound: () => void;
   triggerVibration: () => void;
+  triggerMobileNavVibration: () => void;
   isMobile: boolean;
 }
 
-const SoundVibrationContext = createContext<SoundVibrationContextType | undefined>(undefined);
+const SoundVibrationContext = createContext<
+  SoundVibrationContextType | undefined
+>(undefined);
 
 export const useSoundVibrationContext = () => {
   const context = useContext(SoundVibrationContext);
   if (context === undefined) {
-    throw new Error('useSoundVibrationContext must be used within a SoundVibrationProvider');
+    throw new Error(
+      'useSoundVibrationContext must be used within a SoundVibrationProvider'
+    );
   }
   return context;
 };
 
-export const SoundVibrationProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const SoundVibrationProvider: React.FC<{
+  children: React.ReactNode;
+}> = ({ children }) => {
   const [isMobile, setIsMobile] = useState(false);
 
   // Check if device is mobile
@@ -130,11 +135,21 @@ export const SoundVibrationProvider: React.FC<{ children: React.ReactNode }> = (
     }
   };
 
+  // Enhanced vibration for mobile nav opening/closing
+  const triggerMobileNavVibration = () => {
+    // Check if the device supports vibration and is mobile
+    if (isMobile && 'vibrate' in navigator) {
+      // Pattern: short vibration, pause, longer vibration for nav opening
+      navigator.vibrate([80, 50, 120]);
+    }
+  };
+
   const value = {
     playHoverSound,
     playOpenSound,
     playCloseSound,
     triggerVibration,
+    triggerMobileNavVibration,
     isMobile,
   };
 
