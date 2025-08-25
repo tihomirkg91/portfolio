@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
-import { useSoundVibrationContext } from '../contexts/SoundVibrationContext';
+import { useSoundContext } from '../contexts/SoundContext';
 import { RandomizingText } from './RandomizingText';
 
 interface DesktopNavProps {
@@ -15,7 +15,7 @@ export const DesktopNav = ({
 }: DesktopNavProps) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
-  const { playHoverSound, playCloseSound } = useSoundVibrationContext();
+  const { playHoverSound, playCloseSound } = useSoundContext();
 
   // Handle click outside sidebar to close it
   useEffect(() => {

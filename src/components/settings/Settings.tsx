@@ -8,13 +8,12 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { useSettings } from '../../contexts/SettingsContext';
-import { useSoundVibrationContext } from '../../contexts/SoundVibrationContext';
+import { useSoundContext } from '../../contexts/SoundContext';
 import { SettingItem } from './SettingItem';
 
 export const Settings = () => {
   const [showSettings, setShowSettings] = useState(false);
-  const { playHoverSound, playOpenSound, playCloseSound } =
-    useSoundVibrationContext();
+  const { playHoverSound, playOpenSound, playCloseSound } = useSoundContext();
   const {
     cursorTrailEnabled,
     setCursorTrailEnabled,

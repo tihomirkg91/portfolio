@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useSoundVibrationContext } from '../contexts/SoundVibrationContext';
+import { useSoundContext } from '../contexts/SoundContext';
 
 interface ToggleProps {
   enabled: boolean;
@@ -14,7 +14,7 @@ export const Toggle = ({
   size = 60,
   disabled = false,
 }: ToggleProps) => {
-  const { playHoverSound } = useSoundVibrationContext();
+  const { playHoverSound } = useSoundContext();
 
   const toggleStyle = {
     width: size,

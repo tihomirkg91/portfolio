@@ -6,7 +6,7 @@ import { Settings } from './settings/Settings';
 import { MobileNav } from './MobileNav';
 import { DesktopNav } from './DesktopNav';
 import { RandomizingText } from './RandomizingText';
-import { useSoundVibrationContext } from '../contexts/SoundVibrationContext';
+import { useSoundContext } from '../contexts/SoundContext';
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,8 +15,7 @@ export const Header = () => {
   const [isLogoHovered, setIsLogoHovered] = useState(false);
 
   const { scrollY } = useScroll();
-  const { playOpenSound, playCloseSound, triggerVibration, isMobile } =
-    useSoundVibrationContext();
+  const { playOpenSound, playCloseSound, isMobile } = useSoundContext();
 
   useMotionValueEvent(scrollY, 'change', (latest) => {
     setIsScrolled(latest > 50);
@@ -87,7 +86,6 @@ export const Header = () => {
               onLinkClick={() => {
                 setIsOpen(false);
                 playCloseSound();
-                triggerVibration();
               }}
             />
 

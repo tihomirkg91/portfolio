@@ -1,28 +1,23 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-interface SoundVibrationContextType {
+interface SoundContextType {
   playHoverSound: () => void;
   playOpenSound: () => void;
   playCloseSound: () => void;
-  triggerVibration: () => void;
   isMobile: boolean;
 }
 
-const SoundVibrationContext = createContext<
-  SoundVibrationContextType | undefined
->(undefined);
+const SoundContext = createContext<SoundContextType | undefined>(undefined);
 
-export const useSoundVibrationContext = () => {
-  const context = useContext(SoundVibrationContext);
+export const useSoundContext = () => {
+  const context = useContext(SoundContext);
   if (context === undefined) {
-    throw new Error(
-      'useSoundVibrationContext must be used within a SoundVibrationProvider'
-    );
+    throw new Error('useSoundContext must be used within a SoundProvider');
   }
   return context;
 };
 
-export const SoundVibrationProvider: React.FC<{
+export const SoundProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   const [isMobile, setIsMobile] = useState(false);
@@ -125,26 +120,14 @@ export const SoundVibrationProvider: React.FC<{
     oscillator.stop(audioContext.currentTime + 0.12);
   };
 
-  // Vibration function for mobile devices
-  const triggerVibration = () => {
-    // Check if the device supports vibration and is mobile
-    if (isMobile && 'vibrate' in navigator) {
-      // Short, gentle vibration (50ms)
-      navigator.vibrate(50);
-    }
-  };
-
   const value = {
     playHoverSound,
     playOpenSound,
     playCloseSound,
-    triggerVibration,
     isMobile,
   };
 
   return (
-    <SoundVibrationContext.Provider value={value}>
-      {children}
-    </SoundVibrationContext.Provider>
+    <SoundContext.Provider value={value}>{children}</SoundContext.Provider>
   );
 };

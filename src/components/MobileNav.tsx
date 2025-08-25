@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
-import { useSoundVibrationContext } from '../contexts/SoundVibrationContext';
+import { useSoundContext } from '../contexts/SoundContext';
 import { RandomizingText } from './RandomizingText';
 
 interface MobileNavProps {
@@ -17,25 +17,7 @@ export const MobileNav = ({
   onToggle,
 }: MobileNavProps) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
-  const {
-    playHoverSound,
-    playOpenSound,
-    playCloseSound,
-    triggerVibration,
-    triggerMobileNavVibration,
-  } = useSoundVibrationContext();
-
-  // Trigger vibration when mobile nav opens
-  useEffect(() => {
-    if (isOpen) {
-      // Small delay to let the animation start, then trigger vibration
-      const vibrationTimeout = setTimeout(() => {
-        triggerMobileNavVibration();
-      }, 100);
-
-      return () => clearTimeout(vibrationTimeout);
-    }
-  }, [isOpen, triggerMobileNavVibration]);
+  const { playHoverSound, playOpenSound, playCloseSound } = useSoundContext();
 
   const overlayVariants = {
     closed: {
@@ -55,10 +37,13 @@ export const MobileNav = ({
         className="mobile-menu-btn"
         onClick={() => {
           const willBeOpen = !isOpen;
+
           onToggle();
           willBeOpen ? playOpenSound() : playCloseSound();
         }}
-        onMouseEnter={playHoverSound}
+        onMouseEnter={() => {
+          playHoverSound();
+        }}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         animate={{ rotate: isOpen ? 180 : 0 }}
@@ -137,7 +122,6 @@ export const MobileNav = ({
                   e.stopPropagation();
                   onLinkClick();
                   playCloseSound();
-                  triggerVibration();
                 }}
                 onMouseEnter={playHoverSound}
                 whileHover={{
@@ -331,11 +315,12 @@ export const MobileNav = ({
                   >
                     <Link
                       to={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
-                      onClick={onLinkClick}
+                      onClick={() => {
+                        onLinkClick();
+                      }}
                       onMouseEnter={() => {
                         setHoveredItem(item);
                         playHoverSound();
-                        triggerVibration();
                       }}
                       onMouseLeave={() => setHoveredItem(null)}
                       style={{
