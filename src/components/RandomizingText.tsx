@@ -1,15 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, CSSProperties } from 'react';
 
 interface RandomizingTextProps {
   text: string;
   isHovered: boolean;
   className?: string;
+  style?: CSSProperties;
 }
 
 export const RandomizingText = ({
   text,
   isHovered,
   className = '',
+  style,
 }: RandomizingTextProps) => {
   const [displayText, setDisplayText] = useState(text);
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
@@ -44,5 +46,9 @@ export const RandomizingText = ({
     return () => clearInterval(interval);
   }, [isHovered, text]);
 
-  return <span className={className}>{displayText}</span>;
+  return (
+    <span className={className} style={style}>
+      {displayText}
+    </span>
+  );
 };

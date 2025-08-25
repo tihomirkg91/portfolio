@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
-import { Settings } from './Settings';
+import { Settings } from './settings/Settings';
 import { MobileNav } from './MobileNav';
 import { DesktopNav } from './DesktopNav';
 import { RandomizingText } from './RandomizingText';
@@ -43,7 +43,11 @@ export const Header = () => {
         }}
       >
         <div className="header-container">
-          <Link to="/" className="logo">
+          <Link
+            to="/"
+            className="logo"
+            style={{ zIndex: 99999999, position: 'relative' }}
+          >
             <motion.h1
               whileHover={{
                 scale: 1.05,
@@ -61,11 +65,17 @@ export const Header = () => {
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
+                zIndex: 99999999,
+                position: 'relative',
               }}
               onMouseEnter={() => setIsLogoHovered(true)}
               onMouseLeave={() => setIsLogoHovered(false)}
             >
-              <RandomizingText text="TT DEV" isHovered={isLogoHovered} />
+              <RandomizingText
+                text="TT DEV"
+                isHovered={isLogoHovered}
+                style={{ zIndex: 10002 }}
+              />
             </motion.h1>
           </Link>
 
