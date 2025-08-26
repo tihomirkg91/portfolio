@@ -6,7 +6,7 @@
   padding: 12px;
   color: #6366f1;
   backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+  /* Removed transition to prevent conflicts with Framer Motion */
 }
 
 .settings-btn--closed {
@@ -132,15 +132,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
-}
-
-.mobile-close-btn:hover {
-  transform: scale(1.15) rotate(180deg);
-}
-
-.mobile-close-btn:active {
-  transform: scale(0.85) rotate(270deg);
+  /* Removed transition to prevent conflicts with Framer Motion */
 }
 
 .mobile-close-icon {

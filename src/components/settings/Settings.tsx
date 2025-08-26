@@ -117,11 +117,9 @@ export const Settings = () => {
                 : { opacity: 0, x: 300, scale: 0.8 }
             }
             transition={{
-              duration: isMobile ? 0.4 : 0.5,
-              ease: isMobile ? [0.4, 0, 0.2, 1] : [0.25, 0.46, 0.45, 0.94],
-              type: isMobile ? 'tween' : 'spring',
-              stiffness: isMobile ? undefined : 300,
-              damping: isMobile ? undefined : 30,
+              duration: 0.4,
+              ease: [0.4, 0, 0.2, 1],
+              type: 'tween',
             }}
             onClick={isMobile ? () => setShowSettings(false) : undefined}
           >

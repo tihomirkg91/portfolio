@@ -201,7 +201,7 @@ body .mobile-nav-overlay a {
   border: 2px solid rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 32px rgba(255, 255, 255, 0.1);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Removed transition to prevent conflicts with Framer Motion */
   position: relative;
   overflow: hidden;
   cursor: pointer;
