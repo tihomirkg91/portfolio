@@ -25,13 +25,7 @@ export const SettingItem = ({
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
   >
-    <div
-      className={`setting-item__header ${
-        isMobile && description
-          ? 'setting-item__header--mobile-with-description'
-          : ''
-      }`}
-    >
+    <div className={`setting-item__header`}>
       <span
         className={`setting-item__label ${
           isMobile ? 'setting-item__label--mobile' : ''
