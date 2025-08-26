@@ -21,43 +21,21 @@ export const SettingItem = ({
   isMobile = false,
 }: SettingItemProps) => (
   <motion.div
+    className={`setting-item ${isMobile ? 'setting-item--mobile' : ''}`}
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
-    style={{
-      background: isMobile
-        ? 'rgba(255, 255, 255, 0.1)'
-        : 'rgba(99, 102, 241, 0.05)',
-      borderRadius: isMobile ? '20px' : '12px',
-      padding: isMobile ? '24px' : '12px 16px',
-      border: isMobile
-        ? '2px solid rgba(255, 255, 255, 0.2)'
-        : '1px solid rgba(99, 102, 241, 0.2)',
-      backdropFilter: isMobile ? 'blur(10px)' : 'none',
-      marginBottom: isMobile ? '0' : '20px',
-      display: 'flex',
-      flexDirection: isMobile ? 'column' : 'row',
-      justifyContent: 'space-between',
-      alignItems: isMobile ? 'flex-start' : 'center',
-    }}
   >
     <div
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%',
-        marginBottom: isMobile && description ? '12px' : 0,
-      }}
+      className={`setting-item__header ${
+        isMobile && description
+          ? 'setting-item__header--mobile-with-description'
+          : ''
+      }`}
     >
       <span
-        style={{
-          color: '#ffffff',
-          fontSize: isMobile ? '18px' : '15px',
-          fontWeight: isMobile ? 'bold' : '500',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-        }}
+        className={`setting-item__label ${
+          isMobile ? 'setting-item__label--mobile' : ''
+        }`}
       >
         <IconComponent size={isMobile ? 20 : 18} /> {label}
       </span>
@@ -68,17 +46,6 @@ export const SettingItem = ({
         disabled={disabled}
       />
     </div>
-    {description && (
-      <p
-        style={{
-          color: '#ff9800',
-          fontSize: '14px',
-          margin: 0,
-          fontStyle: 'italic',
-        }}
-      >
-        {description}
-      </p>
-    )}
+    {description && <p className="setting-item__description">{description}</p>}
   </motion.div>
 );

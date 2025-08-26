@@ -1,0 +1,240 @@
+/* Settings Button */
+.settings-btn {
+  z-index: 10000;
+  border: 2px solid #6366f1;
+  border-radius: 12px;
+  padding: 12px;
+  color: #6366f1;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.settings-btn--closed {
+  background: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.2);
+}
+
+.settings-btn--open {
+  background: linear-gradient(
+    45deg,
+    rgba(99, 102, 241, 0.3),
+    rgba(139, 92, 246, 0.3)
+  );
+  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.3);
+}
+
+.settings-btn:hover {
+  background: linear-gradient(
+    45deg,
+    rgba(99, 102, 241, 0.2),
+    rgba(139, 92, 246, 0.2)
+  ) !important;
+  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.4) !important;
+}
+
+.settings-btn--mobile-cursor,
+.settings-btn--cursor-disabled {
+  cursor: pointer;
+}
+
+.settings-btn--cursor-hidden {
+  cursor: none;
+}
+
+.settings-btn__icon--open {
+  filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.8));
+}
+
+/* Settings Panel */
+.settings-panel {
+  position: fixed;
+  z-index: 9999;
+  backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.settings-panel--desktop {
+  top: 80px;
+  right: 20px;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.95),
+    rgba(20, 20, 40, 0.95)
+  );
+  border: 1px solid #6366f1;
+  border-radius: 16px;
+  padding: 24px;
+  min-width: 300px;
+  max-width: 300px;
+  box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3),
+    0 0 0 1px rgba(99, 102, 241, 0.1);
+  height: auto;
+}
+
+.settings-panel--mobile {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 8888887;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(15, 15, 35, 0.95) 100%
+  );
+  border: none;
+  border-radius: 0;
+  padding: 24px;
+  height: 100vh;
+}
+
+/* Mobile Close Button Container */
+.mobile-close-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.mobile-close-btn {
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.15),
+    rgba(139, 92, 246, 0.15)
+  );
+  border: 2px solid rgba(99, 102, 241, 0.4);
+  border-radius: 50%;
+  width: 52px;
+  height: 52px;
+  color: #6366f1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.mobile-close-btn:hover {
+  transform: scale(1.15) rotate(180deg);
+}
+
+.mobile-close-btn:active {
+  transform: scale(0.85) rotate(270deg);
+}
+
+.mobile-close-icon {
+  position: relative;
+  width: 26px;
+  height: 26px;
+}
+
+.mobile-close-icon__line {
+  position: absolute;
+  width: 20px;
+  height: 2px;
+  background: currentColor;
+  top: 12px;
+  left: 3px;
+  border-radius: 1px;
+}
+
+.mobile-close-icon__line--first {
+  transform: rotate(45deg);
+}
+
+.mobile-close-icon__line--second {
+  transform: rotate(-45deg);
+}
+
+/* Settings Content */
+.settings-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.settings-content--desktop {
+  justify-content: flex-start;
+  padding: 0;
+  min-height: auto;
+}
+
+.settings-content--mobile {
+  justify-content: center;
+  padding: 40px 24px;
+  min-height: 60vh;
+}
+
+.settings-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.settings-list--mobile {
+  max-width: 400px;
+}
+
+/* Setting Item */
+.setting-item {
+  border-radius: 12px;
+  padding: 12px 16px;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  background: rgba(99, 102, 241, 0.05);
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.setting-item--mobile {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 24px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  margin-bottom: 0;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.setting-item__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.setting-item__header--mobile-with-description {
+  margin-bottom: 12px;
+}
+
+.setting-item__label {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.setting-item__label--mobile {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.setting-item__description {
+  color: #ff9800;
+  font-size: 14px;
+  margin: 0;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
