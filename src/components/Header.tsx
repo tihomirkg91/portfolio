@@ -3,12 +3,17 @@ import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Settings } from './settings/Settings';
-import { MobileNav } from './MobileNav';
-import { DesktopNav } from './DesktopNav';
+import { MobileNav } from './settings/mobile/MobileNav';
+import { Navigation } from './navigation/Navigation';
 import { RandomizingText } from './RandomizingText';
 import { useSoundContext } from '../contexts/SoundContext';
 
-export const Header = () => {
+interface HeaderProps {
+  /** Navigation layout type for desktop users - defaults to 'flexbox' */
+  navLayoutType?: 'flexbox' | 'grid';
+}
+
+export const Header = ({ navLayoutType = 'flexbox' }: HeaderProps = {}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -157,9 +162,10 @@ export const Header = () => {
 
       {/* Desktop Navigation */}
       {!isMobile && (
-        <DesktopNav
+        <Navigation
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
+          layoutType={navLayoutType}
         />
       )}
     </>

@@ -86,7 +86,7 @@ export const Settings = () => {
           borderRadius: '12px',
           padding: '12px',
           color: '#6366f1',
-          cursor: 'none',
+          cursor: isMobile || !cursorTrailEnabled ? 'pointer' : 'none',
           backdropFilter: 'blur(10px)',
           boxShadow: showSettings
             ? '0 8px 32px rgba(99, 102, 241, 0.3)'

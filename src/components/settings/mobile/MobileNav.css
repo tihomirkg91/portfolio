@@ -1,0 +1,247 @@
+/* Mobile Navigation Styles */
+
+/* Ensure all interactive elements have pointer cursor */
+.mobile-nav-overlay button,
+.mobile-nav-overlay a,
+.mobile-menu-btn {
+  cursor: pointer !important;
+}
+
+/* Override global cursor: none for mobile nav - highest specificity */
+.mobile-menu-btn,
+.mobile-menu-btn *,
+.mobile-menu-btn svg,
+.mobile-nav-overlay,
+.mobile-nav-overlay *,
+.mobile-nav-overlay button,
+.mobile-nav-overlay a,
+.mobile-nav-close-btn,
+.mobile-nav-close-btn *,
+.mobile-nav-close-btn svg,
+.mobile-nav-link,
+.mobile-nav-link *,
+.mobile-nav-item,
+.mobile-nav-item * {
+  cursor: pointer !important;
+}
+
+/* Ensure mobile nav works even when cursor trail is enabled */
+body .mobile-menu-btn,
+body .mobile-nav-overlay button,
+body .mobile-nav-overlay a {
+  cursor: pointer !important;
+}
+
+.mobile-menu-btn {
+  background: rgba(0, 0, 0, 0.8) !important;
+  border: 2px solid #6366f1 !important;
+  border-radius: 12px !important;
+  padding: 12px !important;
+  color: #6366f1 !important;
+  cursor: pointer !important;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.2);
+  z-index: 1000001;
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+}
+
+.mobile-menu-btn *,
+.mobile-menu-btn svg {
+  cursor: pointer !important;
+}
+
+.mobile-menu-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer !important;
+}
+
+.mobile-nav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(15, 15, 35, 0.95) 100%
+  );
+  backdrop-filter: blur(20px);
+  z-index: 8888888;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100vh;
+}
+
+.mobile-nav-top-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.mobile-nav-close-btn {
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.15),
+    rgba(139, 92, 246, 0.15)
+  );
+  border: 2px solid rgba(99, 102, 241, 0.4);
+  border-radius: 50%;
+  width: 52px;
+  height: 52px;
+  color: #6366f1;
+  cursor: pointer !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(15px);
+  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.mobile-nav-close-btn:hover {
+  background-color: rgba(245, 158, 11, 0.2);
+  border-color: rgba(245, 158, 11, 0.5);
+  box-shadow: 0 12px 40px rgba(245, 158, 11, 0.4);
+}
+
+.mobile-nav-close-btn-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle,
+    rgba(99, 102, 241, 0.2) 0%,
+    transparent 70%
+  );
+  border-radius: 50%;
+}
+
+.mobile-nav-close-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.mobile-nav-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 24px;
+  position: relative;
+  min-height: 60vh;
+}
+
+.mobile-nav-decoration-1 {
+  position: absolute;
+  top: 10%;
+  right: 10%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(99, 102, 241, 0.1) 0%,
+    transparent 70%
+  );
+  z-index: -1;
+}
+
+.mobile-nav-decoration-2 {
+  position: absolute;
+  bottom: 15%;
+  left: 15%;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(139, 92, 246, 0.1) 0%,
+    transparent 70%
+  );
+  z-index: -1;
+}
+
+.mobile-nav-items {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 400px;
+  z-index: 10;
+}
+
+.mobile-nav-item {
+  z-index: 20;
+}
+
+.mobile-nav-link {
+  display: block;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 28px;
+  font-weight: bold;
+  padding: 20px 32px;
+  text-align: center;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link.hovered {
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.3) 0%,
+    rgba(139, 92, 246, 0.3) 100%
+  );
+  border: 2px solid rgba(99, 102, 241, 0.6);
+  box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
+}
+
+.mobile-nav-link-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.1) 0%,
+    rgba(139, 92, 246, 0.1) 100%
+  );
+  border-radius: 18px;
+  z-index: -1;
+}
+
+.mobile-nav-link-text {
+  display: block;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 28px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.mobile-nav-bottom-gradient {
+  height: 60px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+}
