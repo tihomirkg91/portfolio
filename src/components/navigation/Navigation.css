@@ -29,8 +29,9 @@
   padding: 100px 30px 30px;
 }
 
-.navigation-grid {
-  display: grid;
+.navigation-nav {
+  display: flex;
+  flex-direction: column;
   gap: 10px;
 }
 

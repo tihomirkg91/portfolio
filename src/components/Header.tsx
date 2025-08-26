@@ -8,12 +8,7 @@ import { Navigation } from './navigation/Navigation';
 import { RandomizingText } from './RandomizingText';
 import { useSoundContext } from '../contexts/SoundContext';
 
-interface HeaderProps {
-  /** Navigation layout type for desktop users - defaults to 'flexbox' */
-  navLayoutType?: 'flexbox' | 'grid';
-}
-
-export const Header = ({ navLayoutType = 'flexbox' }: HeaderProps = {}) => {
+export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -165,7 +160,6 @@ export const Header = ({ navLayoutType = 'flexbox' }: HeaderProps = {}) => {
         <Navigation
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
-          layoutType={navLayoutType}
         />
       )}
     </>

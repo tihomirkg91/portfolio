@@ -8,14 +8,11 @@ import './Navigation.css';
 interface NavigationProps {
   isSidebarOpen: boolean;
   setIsSidebarOpen: (isOpen: boolean) => void;
-  /** Layout type for navigation - 'flexbox' for flexible layout, 'grid' for structured grid layout */
-  layoutType?: 'flexbox' | 'grid';
 }
 
 export const Navigation = ({
   isSidebarOpen,
   setIsSidebarOpen,
-  layoutType = 'flexbox', // Default to flexbox
 }: NavigationProps) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
@@ -192,11 +189,7 @@ export const Navigation = ({
             exit="closed"
           >
             {/* Enhanced Navigation Items */}
-            <nav
-              className={
-                layoutType === 'grid' ? 'navigation-grid' : 'navigation-menu'
-              }
-            >
+            <nav className="navigation-nav">
               {['HOME', 'ABOUT', 'PROJECTS', 'CONTACT'].map((item, index) => (
                 <motion.div
                   key={item}
