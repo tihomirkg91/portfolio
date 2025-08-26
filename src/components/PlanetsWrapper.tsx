@@ -3,7 +3,7 @@ import { Planet } from './planets/Planet';
 import { PlanetMovement } from './planets/movement/PlanetMovement';
 import type { OrbState as MovementOrbState } from './planets/movement/types';
 
-interface FloatingOrbsProps {
+interface PlanetsWrapperProps {
   orbCount: number;
   orbSize: number; // Size in pixels (width/height)
   baseKickForce: number;
@@ -11,13 +11,13 @@ interface FloatingOrbsProps {
   initialPositions?: Array<{ x: number; y: number }>;
 }
 
-export const FloatingOrbs = ({
+export const PlanetsWrapper = ({
   orbCount,
   orbSize,
   baseKickForce,
   speedMultiplier,
   initialPositions,
-}: FloatingOrbsProps) => {
+}: PlanetsWrapperProps) => {
   return (
     <PlanetMovement
       orbCount={orbCount}

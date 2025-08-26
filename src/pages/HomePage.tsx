@@ -2,7 +2,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useRef, useEffect, useState } from 'react';
-import { FloatingOrbs } from '../components/FloatingOrbs';
+import { PlanetsWrapper } from '../components/PlanetsWrapper';
 import { useCursorTrail } from '../contexts/CursorTrailContext';
 import { useSettings } from '../contexts/SettingsContext';
 
@@ -182,7 +182,7 @@ export const HomePage = () => {
 
       {/* Floating Background Elements */}
       {orbsEnabled && (
-        <FloatingOrbs
+        <PlanetsWrapper
           orbCount={6}
           orbSize={60}
           baseKickForce={15}
