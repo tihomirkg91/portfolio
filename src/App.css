@@ -2189,7 +2189,7 @@ h6 {
   }
 }
 
-/* ==================== FLOATING ORBS - SOLAR SYSTEM PLANETS ==================== */
+/* ==================== PLANETS - SOLAR SYSTEM PLANETS ==================== */
 .floating-orb:hover .planet-tooltip {
   opacity: 1 !important;
 }

@@ -48,7 +48,7 @@ export const Settings = () => {
     },
     {
       icon: Orbit,
-      label: 'Floating Orbs',
+      label: 'Planets',
       enabled: orbsEnabled,
       onClick: () => setOrbsEnabled(!orbsEnabled),
     },
