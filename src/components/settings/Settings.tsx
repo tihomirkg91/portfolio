@@ -101,10 +101,28 @@ export const Settings = () => {
             className={`settings-panel ${
               isMobile ? 'settings-panel--mobile' : 'settings-panel--desktop'
             }`}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+            initial={
+              isMobile
+                ? { opacity: 0, scale: 0.95 }
+                : { opacity: 0, x: 300, scale: 0.8 }
+            }
+            animate={
+              isMobile
+                ? { opacity: 1, scale: 1 }
+                : { opacity: 1, x: 0, scale: 1 }
+            }
+            exit={
+              isMobile
+                ? { opacity: 0, scale: 0.95 }
+                : { opacity: 0, x: 300, scale: 0.8 }
+            }
+            transition={{
+              duration: isMobile ? 0.4 : 0.5,
+              ease: isMobile ? [0.4, 0, 0.2, 1] : [0.25, 0.46, 0.45, 0.94],
+              type: isMobile ? 'tween' : 'spring',
+              stiffness: isMobile ? undefined : 300,
+              damping: isMobile ? undefined : 30,
+            }}
             onClick={isMobile ? () => setShowSettings(false) : undefined}
           >
             {/* Mobile Close Button */}
@@ -142,10 +160,14 @@ export const Settings = () => {
                   ? 'settings-content--mobile'
                   : 'settings-content--desktop'
               }`}
-              initial={{ opacity: 0, y: 50 }}
+              initial={isMobile ? { opacity: 0, y: 50 } : { opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 50 }}
-              transition={{ duration: 0.4, delay: 0.2 }}
+              exit={isMobile ? { opacity: 0, y: 50 } : { opacity: 0, y: 30 }}
+              transition={{
+                duration: isMobile ? 0.4 : 0.3,
+                delay: isMobile ? 0.2 : 0.1,
+                ease: [0.4, 0, 0.2, 1],
+              }}
               onClick={(e) => e.stopPropagation()}
             >
               <div
@@ -156,9 +178,21 @@ export const Settings = () => {
                 {settingsData.map((setting, index) => (
                   <motion.div
                     key={setting.label}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 + index * 0.1 }}
+                    initial={
+                      isMobile
+                        ? { opacity: 0, y: 20 }
+                        : { opacity: 0, x: 50, scale: 0.9 }
+                    }
+                    animate={
+                      isMobile
+                        ? { opacity: 1, y: 0 }
+                        : { opacity: 1, x: 0, scale: 1 }
+                    }
+                    transition={{
+                      delay: isMobile ? 0.3 + index * 0.1 : 0.2 + index * 0.1,
+                      duration: isMobile ? 0.4 : 0.3,
+                      ease: [0.4, 0, 0.2, 1],
+                    }}
                   >
                     <SettingItem {...setting} isMobile={isMobile} />
                   </motion.div>
