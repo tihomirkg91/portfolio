@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { useSoundContext } from '../../../contexts/SoundContext';
+import { usePreventScroll } from '../../../hooks/usePreventScroll';
 import { RandomizingText } from '../../RandomizingText';
 import './MobileNav.css';
 
@@ -31,6 +32,9 @@ export const MobileNav = ({
       scale: 1,
     },
   };
+
+  // Prevent body scroll when navigation is open
+  usePreventScroll(isOpen);
 
   return (
     <>

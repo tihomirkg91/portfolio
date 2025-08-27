@@ -10,6 +10,7 @@ import {
 import { useState } from 'react';
 import { useSettings } from '../../contexts/SettingsContext';
 import { useSoundContext } from '../../contexts/SoundContext';
+import { usePreventScroll } from '../../hooks/usePreventScroll';
 import { SettingItem } from './SettingItem';
 import './Settings.css';
 
@@ -60,6 +61,9 @@ export const Settings = () => {
     setShowSettings(willBeOpen);
     willBeOpen ? playOpenSound() : playCloseSound();
   };
+
+  // Prevent body scroll on mobile when settings menu is open
+  usePreventScroll(isMobile && showSettings);
 
   return (
     <>
