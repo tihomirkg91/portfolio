@@ -75,7 +75,7 @@ export const Settings = () => {
         onClick={handleSettingsToggle}
         onMouseEnter={() => playHoverSound()}
         whileHover={{
-          scale: 1.15,
+          scale: 1.05,
         }}
         whileTap={{ scale: 0.85 }}
         animate={{

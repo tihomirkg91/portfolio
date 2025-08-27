@@ -23,13 +23,15 @@
   box-shadow: 0 8px 32px rgba(99, 102, 241, 0.3);
 }
 
-.settings-btn:hover {
-  background: linear-gradient(
-    45deg,
-    rgba(99, 102, 241, 0.2),
-    rgba(139, 92, 246, 0.2)
-  ) !important;
-  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.4) !important;
+@media (hover: hover) {
+  .settings-btn:hover {
+    background: linear-gradient(
+      45deg,
+      rgba(99, 102, 241, 0.2),
+      rgba(139, 92, 246, 0.2)
+    ) !important;
+    box-shadow: 0 12px 40px rgba(99, 102, 241, 0.4) !important;
+  }
 }
 
 .settings-btn--mobile-cursor,

@@ -109,10 +109,12 @@ body .mobile-nav-overlay a {
   overflow: hidden;
 }
 
-.mobile-nav-close-btn:hover {
-  background-color: rgba(245, 158, 11, 0.2);
-  border-color: rgba(245, 158, 11, 0.5);
-  box-shadow: 0 12px 40px rgba(245, 158, 11, 0.4);
+@media (hover: hover) {
+  .mobile-nav-close-btn:hover {
+    background-color: rgba(245, 158, 11, 0.2);
+    border-color: rgba(245, 158, 11, 0.5);
+    box-shadow: 0 12px 40px rgba(245, 158, 11, 0.4);
+  }
 }
 
 .mobile-nav-close-btn-bg {
@@ -207,15 +209,17 @@ body .mobile-nav-overlay a {
   cursor: pointer;
 }
 
-.mobile-nav-link:hover,
-.mobile-nav-link.hovered {
-  background: linear-gradient(
-    135deg,
-    rgba(99, 102, 241, 0.3) 0%,
-    rgba(139, 92, 246, 0.3) 100%
-  );
-  border: 2px solid rgba(99, 102, 241, 0.6);
-  box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
+@media (hover: hover) {
+  .mobile-nav-link:hover,
+  .mobile-nav-link.hovered {
+    background: linear-gradient(
+      135deg,
+      rgba(99, 102, 241, 0.3) 0%,
+      rgba(139, 92, 246, 0.3) 100%
+    );
+    border: 2px solid rgba(99, 102, 241, 0.6);
+    box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
+  }
 }
 
 .mobile-nav-link-bg {
