@@ -5,6 +5,7 @@ import { Menu, X } from 'lucide-react';
 import { useSoundContext } from '../../../contexts/SoundContext';
 import { usePreventScroll } from '../../../hooks/usePreventScroll';
 import { RandomizingText } from '../../RandomizingText';
+import { useCurrentActivePage } from '../../../hooks/useCurrentActivePage';
 import './MobileNav.css';
 
 interface MobileNavProps {
@@ -21,6 +22,7 @@ export const MobileNav = ({
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [isAnimationComplete, setIsAnimationComplete] = useState(false);
   const { playHoverSound, playOpenSound, playCloseSound } = useSoundContext();
+  const { isActive } = useCurrentActivePage();
 
   const overlayVariants = {
     closed: {
@@ -221,7 +223,7 @@ export const MobileNav = ({
                       to={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
                       className={`mobile-nav-link ${
                         hoveredItem === item ? 'hovered' : ''
-                      }`}
+                      } ${isActive(item, 'mobile') ? 'active' : ''}`}
                       onClick={() => {
                         onLinkClick();
                       }}

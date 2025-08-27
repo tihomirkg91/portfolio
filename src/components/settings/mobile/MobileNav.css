@@ -222,6 +222,21 @@ body .mobile-nav-overlay a {
   }
 }
 
+.mobile-nav-link.active {
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.4) 0%,
+    rgba(139, 92, 246, 0.4) 100%
+  );
+  border: 2px solid rgba(99, 102, 241, 0.7);
+  box-shadow: 0 20px 40px rgba(99, 102, 241, 0.5);
+}
+
+.mobile-nav-link.active .mobile-nav-link-text {
+  color: #6366f1;
+  text-shadow: 0 2px 4px rgba(99, 102, 241, 0.3);
+}
+
 .mobile-nav-link-bg {
   position: absolute;
   top: 0;

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import { useSoundContext } from '../../contexts/SoundContext';
 import { RandomizingText } from '../RandomizingText';
+import { useCurrentActivePage } from '../../hooks/useCurrentActivePage';
 import './Navigation.css';
 
 interface NavigationProps {
@@ -17,6 +18,7 @@ export const Navigation = ({
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const { playHoverSound, playCloseSound } = useSoundContext();
+  const { isActive } = useCurrentActivePage();
 
   // Handle click outside sidebar to close it
   useEffect(() => {
@@ -209,7 +211,9 @@ export const Navigation = ({
                           ? '/'
                           : `/${item.toLowerCase().replace(' ', '-')}`
                       }
-                      className="navigation-link"
+                      className={`navigation-link ${
+                        isActive(item, 'desktop') ? 'active' : ''
+                      }`}
                       onClick={handleLinkClick}
                       onMouseEnter={() => {
                         setHoveredItem(item);
@@ -220,10 +224,14 @@ export const Navigation = ({
                         background:
                           hoveredItem === item
                             ? 'rgba(99, 102, 241, 0.1)'
+                            : isActive(item, 'desktop')
+                            ? 'rgba(99, 102, 241, 0.15)'
                             : 'transparent',
                         border:
                           hoveredItem === item
                             ? '1px solid rgba(99, 102, 241, 0.3)'
+                            : isActive(item, 'desktop')
+                            ? '1px solid rgba(99, 102, 241, 0.4)'
                             : '1px solid transparent',
                       }}
                     >
