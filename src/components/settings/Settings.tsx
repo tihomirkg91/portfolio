@@ -5,6 +5,7 @@ import {
   Volume2,
   Orbit,
   Smartphone,
+  X,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useSettings } from '../../contexts/SettingsContext';
@@ -126,14 +127,14 @@ export const Settings = () => {
             {/* Mobile Close Button */}
             {isMobile && (
               <motion.div
-                className="mobile-close-container"
+                className="mobile-nav-top-bar"
                 initial={{ y: -100, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: -100, opacity: 0 }}
                 transition={{ duration: 0.3, delay: 0.1 }}
               >
                 <motion.button
-                  className="mobile-close-btn"
+                  className="mobile-nav-close-btn"
                   onClick={(e) => {
                     e.stopPropagation();
                     setShowSettings(false);
@@ -142,11 +143,40 @@ export const Settings = () => {
                   onMouseEnter={playHoverSound}
                   whileHover={{ scale: 1.15, rotate: 180 }}
                   whileTap={{ scale: 0.85, rotate: 270 }}
+                  initial={{ x: 20, opacity: 0, rotate: -180 }}
+                  animate={{ x: 0, opacity: 1, rotate: 0 }}
+                  exit={{
+                    x: 20,
+                    opacity: 0,
+                    rotate: 180,
+                    scale: 0.8,
+                    transition: { duration: 0.2 },
+                  }}
+                  transition={{
+                    delay: 0.2,
+                    type: 'spring',
+                    stiffness: 200,
+                    damping: 15,
+                  }}
                 >
-                  <div className="mobile-close-icon">
-                    <div className="mobile-close-icon__line mobile-close-icon__line--first" />
-                    <div className="mobile-close-icon__line mobile-close-icon__line--second" />
-                  </div>
+                  {/* Animated background effect */}
+                  <motion.div
+                    className="mobile-nav-close-btn-bg"
+                    initial={{ scale: 0, opacity: 0 }}
+                    whileHover={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                  {/* Enhanced X icon with animation */}
+                  <motion.div
+                    className="mobile-nav-close-icon"
+                    whileHover={{
+                      rotate: 90,
+                      scale: 1.1,
+                    }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <X size={26} strokeWidth={2.5} />
+                  </motion.div>
                 </motion.button>
               </motion.div>
             )}
