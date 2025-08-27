@@ -1,0 +1,16 @@
+/* Contact Page Styles */
+
+.contact-page {
+  padding: 2rem;
+}
+
+.contact-hero {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}

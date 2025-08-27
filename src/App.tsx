@@ -7,9 +7,9 @@ import {
 } from './contexts/CursorTrailContext';
 import { SettingsProvider, useSettings } from './contexts/SettingsContext';
 import { HomePage } from './pages/home-page/HomePage';
-import { AboutPage } from './pages/AboutPage';
-import { ProjectsPage } from './pages/ProjectsPage';
-import { ContactPage } from './pages/ContactPage';
+import { AboutPage } from './pages/about-page/AboutPage';
+import { ProjectsPage } from './pages/projects-page/ProjectsPage';
+import { ContactPage } from './pages/contact-page/ContactPage';
 import './App.css';
 
 function AppContent() {
