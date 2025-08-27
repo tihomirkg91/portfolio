@@ -592,7 +592,7 @@ h6 {
   z-index: 1;
 }
 
-.floating-orb {
+.planets {
   position: absolute;
   width: 120px;
   height: 120px;
@@ -639,7 +639,7 @@ h6 {
     padding: 1.5rem;
   }
 
-  .floating-orb {
+  .planets {
     width: 80px;
     height: 80px;
   }
@@ -827,7 +827,7 @@ h6 {
   z-index: 1;
 }
 
-.floating-orb {
+.planets {
   position: absolute;
   width: 60px;
   height: 60px;
@@ -1578,7 +1578,7 @@ h6 {
   z-index: 1;
 }
 
-.floating-orb {
+.planets {
   position: absolute;
   width: 120px;
   height: 120px;
@@ -1804,7 +1804,7 @@ h6 {
     padding: 6rem 0 3rem;
   }
 
-  .floating-orb {
+  .planets {
     width: 80px;
     height: 80px;
   }
@@ -1837,15 +1837,15 @@ h6 {
 }
 
 /* ==================== PLANETS - SOLAR SYSTEM PLANETS ==================== */
-.floating-orb:hover .planet-tooltip {
+.planets:hover .planet-tooltip {
   opacity: 1 !important;
 }
 
-.floating-orb {
+.planets {
   transition: transform 0.3s ease;
 }
 
-.floating-orb:hover {
+.planets:hover {
   transform: scale(1.05);
 }
 

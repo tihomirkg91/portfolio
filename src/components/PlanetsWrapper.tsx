@@ -34,7 +34,7 @@ export const PlanetsWrapper = ({
             return (
               <motion.div
                 key={orb.id}
-                className="floating-orb"
+                className="planets"
                 animate={{
                   left: `${orb.position.x}%`,
                   top: `${orb.position.y}%`,
