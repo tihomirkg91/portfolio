@@ -6,7 +6,7 @@ import {
   useCursorTrail,
 } from './contexts/CursorTrailContext';
 import { SettingsProvider, useSettings } from './contexts/SettingsContext';
-import { HomePage } from './pages/HomePage';
+import { HomePage } from './pages/home-page/HomePage';
 import { AboutPage } from './pages/AboutPage';
 import { ProjectsPage } from './pages/ProjectsPage';
 import { ContactPage } from './pages/ContactPage';

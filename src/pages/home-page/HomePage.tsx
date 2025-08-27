@@ -2,9 +2,9 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useRef, useEffect, useState } from 'react';
-import { PlanetsWrapper } from '../components/PlanetsWrapper';
-import { useCursorTrail } from '../contexts/CursorTrailContext';
-import { useSettings } from '../contexts/SettingsContext';
+import { PlanetsWrapper } from '../../components/PlanetsWrapper';
+import { useCursorTrail } from '../../contexts/CursorTrailContext';
+import { useSettings } from '../../contexts/SettingsContext';
 import './homePage.css';
 
 export const HomePage = () => {
