@@ -18,6 +18,7 @@ export const MobileNav = ({
   onToggle,
 }: MobileNavProps) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [isAnimationComplete, setIsAnimationComplete] = useState(false);
   const { playHoverSound, playOpenSound, playCloseSound } = useSoundContext();
 
   const overlayVariants = {
@@ -185,6 +186,9 @@ export const MobileNav = ({
                 }}
                 initial="closed"
                 animate="open"
+                onAnimationStart={() => {
+                  setIsAnimationComplete(false);
+                }}
               >
                 {['Home', 'About', 'Projects', 'Contact'].map((item) => (
                   <motion.div
@@ -202,6 +206,12 @@ export const MobileNav = ({
                       y: -2,
                     }}
                     whileTap={{ scale: 0.98 }}
+                    onAnimationComplete={() => {
+                      // Only trigger when the last item (Contact) finishes animating
+                      if (item === 'Contact' && isOpen) {
+                        setIsAnimationComplete(true);
+                      }
+                    }}
                   >
                     <Link
                       to={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
@@ -231,7 +241,9 @@ export const MobileNav = ({
                       <motion.span className="mobile-nav-link-text">
                         <RandomizingText
                           text={item}
-                          isHovered={hoveredItem === item}
+                          isHovered={
+                            hoveredItem === item && isAnimationComplete
+                          }
                         />
                       </motion.span>
                     </Link>
