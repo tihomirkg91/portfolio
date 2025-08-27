@@ -2,22 +2,42 @@ import { useState, useEffect, CSSProperties } from 'react';
 
 interface RandomizingTextProps {
   text: string;
-  isHovered: boolean;
+  isHovered?: boolean;
+  isClicked?: boolean;
+  triggerType?: 'hover' | 'click';
   className?: string;
   style?: CSSProperties;
+  onClick?: () => void;
 }
 
 export const RandomizingText = ({
   text,
-  isHovered,
+  isHovered = false,
+  isClicked = false,
+  triggerType = 'hover',
   className = '',
   style,
+  onClick,
 }: RandomizingTextProps) => {
   const [displayText, setDisplayText] = useState(text);
+  const [internalClicked, setInternalClicked] = useState(false);
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
 
+  // Determine if animation should trigger based on trigger type
+  const shouldAnimate =
+    triggerType === 'hover' ? isHovered : isClicked || internalClicked;
+
+  const handleClick = () => {
+    if (triggerType === 'click') {
+      setInternalClicked(true);
+      // Reset after animation completes
+      setTimeout(() => setInternalClicked(false), text.length * 80 + 500);
+    }
+    onClick?.();
+  };
+
   useEffect(() => {
-    if (!isHovered) {
+    if (!shouldAnimate) {
       setDisplayText(text);
       return;
     }
@@ -44,10 +64,16 @@ export const RandomizingText = ({
     }, 80);
 
     return () => clearInterval(interval);
-  }, [isHovered, text]);
+  }, [shouldAnimate, text]);
 
   return (
-    <span className={className} style={style}>
+    <span
+      className={className}
+      style={style}
+      onClick={triggerType === 'click' ? handleClick : undefined}
+      role={triggerType === 'click' ? 'button' : undefined}
+      tabIndex={triggerType === 'click' ? 0 : undefined}
+    >
       {displayText}
     </span>
   );

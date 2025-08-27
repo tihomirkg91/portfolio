@@ -12,7 +12,6 @@ export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isLogoHovered, setIsLogoHovered] = useState(false);
 
   const { scrollY } = useScroll();
   const { playOpenSound, playCloseSound, isMobile } = useSoundContext();
@@ -67,12 +66,10 @@ export const Header = () => {
                 zIndex: 99999999,
                 position: 'relative',
               }}
-              onMouseEnter={() => setIsLogoHovered(true)}
-              onMouseLeave={() => setIsLogoHovered(false)}
             >
               <RandomizingText
                 text="TT DEV"
-                isHovered={isLogoHovered}
+                triggerType="click"
                 style={{ zIndex: 10002 }}
               />
             </motion.h1>
