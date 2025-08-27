@@ -1,6 +1,24 @@
 import { useEffect, useState } from 'react';
-import { planetsData } from '../planetsData';
+import { mercuryData } from '../Mercury';
+import { venusData } from '../Venus';
+import { earthData } from '../Earth';
+import { marsData } from '../Mars';
+import { jupiterData } from '../Jupiter';
+import { saturnData } from '../Saturn';
+import { uranusData } from '../Uranus';
+import { neptuneData } from '../Neptune';
 import type { OrbState, MovementProps, CursorPosition } from './types';
+
+const planetsData = [
+  mercuryData,
+  venusData,
+  earthData,
+  marsData,
+  jupiterData,
+  saturnData,
+  uranusData,
+  neptuneData,
+];
 
 export const PlanetMovement = ({
   orbCount,
@@ -68,7 +86,7 @@ export const PlanetMovement = ({
         const orbVisualRadius = orbSize / 2;
         const kickTriggerRadius = orbVisualRadius + 5; // Detection zone for reliable kicks
 
-        let newOrb = { ...orb };
+        const newOrb = { ...orb };
 
         // Check if cursor is currently near the ball
         const isNearBall = distance <= kickTriggerRadius;
@@ -142,7 +160,7 @@ export const PlanetMovement = ({
     const updatePhysics = () => {
       setOrbStates((prevStates) =>
         prevStates.map((orb) => {
-          let newOrb = { ...orb };
+          const newOrb = { ...orb };
 
           // Update position if orb is moving
           if (orb.isKicked) {

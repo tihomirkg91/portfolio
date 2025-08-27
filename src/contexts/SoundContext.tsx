@@ -1,3 +1,4 @@
+/* @refresh skip */
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface SoundContextType {
