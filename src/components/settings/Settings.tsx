@@ -22,8 +22,8 @@ export const Settings = () => {
     setCursorTrailEnabled,
     soundEffectsEnabled,
     setSoundEffectsEnabled,
-    orbsEnabled,
-    setOrbsEnabled,
+    usePlanets,
+    setUsePlanets,
     isMobile,
     isUserCursorTrailEnabled,
   } = useSettings();
@@ -51,8 +51,8 @@ export const Settings = () => {
     {
       icon: Orbit,
       label: 'Planets',
-      enabled: orbsEnabled,
-      onClick: () => setOrbsEnabled(!orbsEnabled),
+      enabled: usePlanets,
+      onClick: () => setUsePlanets(!usePlanets),
     },
   ];
 

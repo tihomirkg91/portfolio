@@ -9,7 +9,7 @@ import './homePage.css';
 
 export const HomePage = () => {
   const { setTrailType } = useCursorTrail();
-  const { orbsEnabled } = useSettings();
+  const { usePlanets } = useSettings();
   const { scrollY } = useScroll();
   const heroRef = useRef(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -136,7 +136,7 @@ export const HomePage = () => {
       </motion.div>
 
       {/* Floating Background Elements */}
-      {orbsEnabled && (
+      {usePlanets && (
         <PlanetsWrapper
           orbCount={6}
           orbSize={60}

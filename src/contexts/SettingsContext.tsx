@@ -11,8 +11,8 @@ interface SettingsContextType {
   setCursorTrailEnabled: (enabled: boolean) => void;
   soundEffectsEnabled: boolean;
   setSoundEffectsEnabled: (enabled: boolean) => void;
-  orbsEnabled: boolean;
-  setOrbsEnabled: (enabled: boolean) => void;
+  usePlanets: boolean;
+  setUsePlanets: (enabled: boolean) => void;
   isMobile: boolean;
   isUserCursorTrailEnabled: boolean; // User's preference regardless of mobile
 }
@@ -39,7 +39,7 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
   const [isUserCursorTrailEnabled, setIsUserCursorTrailEnabled] =
     useState(true);
   const [soundEffectsEnabled, setSoundEffectsEnabled] = useState(true);
-  const [orbsEnabled, setOrbsEnabled] = useState(true);
+  const [usePlanets, setUsePlanets] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
   // Mobile detection effect
@@ -75,8 +75,8 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
     setCursorTrailEnabled,
     soundEffectsEnabled,
     setSoundEffectsEnabled,
-    orbsEnabled,
-    setOrbsEnabled,
+    usePlanets,
+    setUsePlanets,
     isMobile,
     isUserCursorTrailEnabled,
   };
