@@ -39,7 +39,11 @@ export const Planet = ({
         style={{
           background: isKicked
             ? planetData.kickedGradient
+            : planetData.texture
+            ? `url(${planetData.texture}), ${planetData.gradient}`
             : planetData.gradient,
+          backgroundSize: planetData.texture ? 'cover' : undefined,
+          backgroundPosition: planetData.texture ? 'center' : undefined,
           boxShadow: isKicked
             ? planetData.kickedBoxShadow
             : planetData.boxShadow,

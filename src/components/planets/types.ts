@@ -8,6 +8,7 @@ export interface PlanetData {
   kickedBoxShadow: string;
   rings?: boolean;
   moons?: number;
+  texture?: string;
 }
 
 export interface PlanetProps {
