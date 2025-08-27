@@ -56,16 +56,24 @@
   backdrop-filter: blur(10px);
   background: rgba(0, 0, 0, 0.8);
   box-shadow: 0 4px 16px rgba(99, 102, 241, 0.2);
-  transition: all 0.3s ease;
+  /* Removed transition to prevent conflicts with Framer Motion */
 }
 
 .desktop-menu-btn:hover {
-  background: linear-gradient(45deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+  background: linear-gradient(
+    45deg,
+    rgba(99, 102, 241, 0.2),
+    rgba(139, 92, 246, 0.2)
+  );
   box-shadow: 0 8px 32px rgba(99, 102, 241, 0.4);
 }
 
 .desktop-menu-btn.open {
-  background: linear-gradient(45deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3));
+  background: linear-gradient(
+    45deg,
+    rgba(99, 102, 241, 0.3),
+    rgba(139, 92, 246, 0.3)
+  );
   box-shadow: 0 8px 32px rgba(99, 102, 241, 0.3);
 }
 
