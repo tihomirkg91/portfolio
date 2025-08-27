@@ -1,0 +1,107 @@
+/* HomePage Styles */
+
+/* Parallax Layers */
+.parallax-layer-1 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 120vh;
+  z-index: -3;
+  background: radial-gradient(
+      circle at 20% 80%,
+      rgba(99, 102, 241, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(139, 92, 246, 0.1) 0%,
+      transparent 50%
+    );
+}
+
+.parallax-layer-2 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 120vh;
+  z-index: -2;
+}
+
+.parallax-layer-2 .floating-shape-1 {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(
+    45deg,
+    rgba(99, 102, 241, 0.1),
+    rgba(139, 92, 246, 0.1)
+  );
+  border-radius: 20px;
+}
+
+.parallax-layer-2 .floating-shape-2 {
+  position: absolute;
+  top: 60%;
+  right: 15%;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.1),
+    rgba(99, 102, 241, 0.1)
+  );
+  border-radius: 50%;
+}
+
+.parallax-layer-3 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 120vh;
+  z-index: -1;
+}
+
+.parallax-layer-3 .fast-element-1 {
+  position: absolute;
+  top: 30%;
+  right: 30%;
+  width: 60px;
+  height: 60px;
+  background: rgba(99, 102, 241, 0.2);
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+}
+
+.parallax-layer-3 .fast-element-2 {
+  position: absolute;
+  bottom: 20%;
+  left: 20%;
+  width: 40px;
+  height: 40px;
+  background: rgba(139, 92, 246, 0.2);
+  border-radius: 50%;
+}
+
+/* Hero Section */
+.text-gradient {
+  background: linear-gradient(45deg, #6366f1, #8b5cf6, #ec4899, #f59e0b);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Services Section */
+.service-card:hover {
+  transform: scale(1.05) rotateY(5deg);
+  box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+}
+
+/* Featured Projects Section */
+.featured-preview .text-center {
+  margin-top: 3rem;
+}

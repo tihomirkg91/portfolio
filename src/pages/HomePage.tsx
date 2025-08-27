@@ -5,6 +5,7 @@ import { useRef, useEffect, useState } from 'react';
 import { PlanetsWrapper } from '../components/PlanetsWrapper';
 import { useCursorTrail } from '../contexts/CursorTrailContext';
 import { useSettings } from '../contexts/SettingsContext';
+import './homePage.css';
 
 export const HomePage = () => {
   const { setTrailType } = useCursorTrail();
@@ -89,14 +90,6 @@ export const HomePage = () => {
         className="parallax-layer parallax-layer-1"
         style={{
           y: y1,
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '120vh',
-          zIndex: -3,
-          background:
-            'radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%)',
         }}
       />
 
@@ -104,38 +97,18 @@ export const HomePage = () => {
         className="parallax-layer parallax-layer-2"
         style={{
           y: y2,
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '120vh',
-          zIndex: -2,
         }}
       >
         {/* Floating geometric shapes */}
         <motion.div
+          className="floating-shape-1"
           style={{
-            position: 'absolute',
-            top: '10%',
-            left: '10%',
-            width: '100px',
-            height: '100px',
-            background:
-              'linear-gradient(45deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1))',
-            borderRadius: '20px',
             rotate: rotate,
           }}
         />
         <motion.div
+          className="floating-shape-2"
           style={{
-            position: 'absolute',
-            top: '60%',
-            right: '15%',
-            width: '80px',
-            height: '80px',
-            background:
-              'linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(99, 102, 241, 0.1))',
-            borderRadius: '50%',
             scale: scale,
           }}
         />
@@ -145,36 +118,18 @@ export const HomePage = () => {
         className="parallax-layer parallax-layer-3"
         style={{
           y: y3,
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '120vh',
-          zIndex: -1,
         }}
       >
         {/* Fast moving elements */}
         <motion.div
+          className="fast-element-1"
           style={{
-            position: 'absolute',
-            top: '30%',
-            right: '30%',
-            width: '60px',
-            height: '60px',
-            background: 'rgba(99, 102, 241, 0.2)',
-            borderRadius: '30% 70% 70% 30% / 30% 30% 70% 70%',
             filter: blurEffect,
           }}
         />
         <motion.div
+          className="fast-element-2"
           style={{
-            position: 'absolute',
-            bottom: '20%',
-            left: '20%',
-            width: '40px',
-            height: '40px',
-            background: 'rgba(139, 92, 246, 0.2)',
-            borderRadius: '50%',
             y: y4, // Reverse parallax
           }}
         />
@@ -346,11 +301,6 @@ export const HomePage = () => {
                 key={service.title}
                 className="card service-card"
                 variants={itemVariants}
-                whileHover={{
-                  scale: 1.05,
-                  rotateY: 5,
-                  boxShadow: '0 20px 40px rgba(99, 102, 241, 0.2)',
-                }}
                 transition={{ type: 'spring', stiffness: 300, damping: 30 }}
               >
                 <motion.div
@@ -446,7 +396,6 @@ export const HomePage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-center"
-            style={{ marginTop: '3rem' }}
           >
             <Link to="/projects" className="btn">
               View All Projects <ArrowRight size={20} />
