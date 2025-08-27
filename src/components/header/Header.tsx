@@ -2,11 +2,12 @@ import { Link } from 'react-router-dom';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
-import { Settings } from './settings/Settings';
-import { MobileNav } from './settings/mobile/MobileNav';
-import { Navigation } from './navigation/Navigation';
-import { RandomizingText } from './RandomizingText';
-import { useSoundContext } from '../contexts/SoundContext';
+import { Settings } from '../settings/Settings';
+import { MobileNav } from '../settings/mobile/MobileNav';
+import { Navigation } from '../navigation/Navigation';
+import { RandomizingText } from '../RandomizingText';
+import { useSoundContext } from '../../contexts/SoundContext';
+import './Header.css';
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,18 +35,9 @@ export const Header = () => {
           stiffness: 100,
           damping: 20,
         }}
-        style={{
-          backgroundColor: isScrolled
-            ? 'rgba(0, 0, 0, 0.98)'
-            : 'rgba(0, 0, 0, 0.95)',
-        }}
       >
         <div className="header-container">
-          <Link
-            to="/"
-            className="logo"
-            style={{ zIndex: 99999999, position: 'relative' }}
-          >
+          <Link to="/" className="logo">
             <motion.h1
               whileHover={{
                 scale: 1.05,
@@ -56,26 +48,16 @@ export const Header = () => {
               animate={{
                 backgroundPosition: isScrolled ? '100% 0%' : '0% 0%',
               }}
-              style={{
-                background:
-                  'linear-gradient(90deg, #fff 0%, #6366f1 50%, #fff 100%)',
-                backgroundSize: '200% 100%',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                zIndex: 99999999,
-                position: 'relative',
-              }}
             >
               <RandomizingText
                 text="TT DEV"
                 triggerType="click"
-                style={{ zIndex: 10002 }}
+                className="randomizing-text"
               />
             </motion.h1>
           </Link>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <div className="header-actions">
             {/* Mobile Menu with all mobile functionality - Always visible for testing */}
             <MobileNav
               isOpen={isOpen}
@@ -89,7 +71,7 @@ export const Header = () => {
             {/* Desktop Menu Button */}
             {!isMobile && (
               <motion.button
-                className="desktop-menu-btn"
+                className={`desktop-menu-btn ${isSidebarOpen ? 'open' : ''}`}
                 onClick={() => {
                   const willBeOpen = !isSidebarOpen;
                   setIsSidebarOpen(willBeOpen);
@@ -105,29 +87,15 @@ export const Header = () => {
                 whileTap={{ scale: 0.9 }}
                 animate={{
                   rotate: isSidebarOpen ? 180 : 0,
-                  background: isSidebarOpen
-                    ? 'linear-gradient(45deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3))'
-                    : 'rgba(0, 0, 0, 0.8)',
                 }}
                 transition={{
                   type: 'spring',
                   stiffness: 400,
                   damping: 25,
                 }}
-                style={{
-                  zIndex: 10001,
-                  border: '2px solid #6366f1',
-                  borderRadius: '12px',
-                  padding: '12px',
-                  color: '#6366f1',
-                  cursor: 'none',
-                  backdropFilter: 'blur(10px)',
-                  boxShadow: isSidebarOpen
-                    ? '0 8px 32px rgba(99, 102, 241, 0.3)'
-                    : '0 4px 16px rgba(99, 102, 241, 0.2)',
-                }}
               >
                 <motion.div
+                  className="icon-container"
                   animate={{
                     rotate: isSidebarOpen ? 45 : 0,
                     filter: isSidebarOpen
@@ -135,11 +103,6 @@ export const Header = () => {
                       : 'none',
                   }}
                   transition={{ duration: 0.3 }}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
                 >
                   {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
                 </motion.div>
