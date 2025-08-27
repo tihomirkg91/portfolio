@@ -102,9 +102,13 @@ export const CursorTrail = ({
 
       // Check if hovering over interactive elements
       const target = e.target as HTMLElement;
-      const isClickable = target.matches(
-        'a, button, [role="button"], .btn, .project-card, .service-card, .nav-link'
-      );
+      const isClickable =
+        target.matches(
+          'a, button, [role="button"], .btn, .project-card, .service-card, .nav-link, .navigation-link, .desktop-menu-btn, .settings-btn, .sidebar, .navigation-container'
+        ) ||
+        target.closest(
+          '.navigation-link, .desktop-menu-btn, .settings-btn, .sidebar, .navigation-container'
+        ) !== null;
       setIsPointer(isClickable);
 
       // Create new particle
