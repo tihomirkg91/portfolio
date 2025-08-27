@@ -1,5 +1,6 @@
 import { Planet } from './Planet';
 import { PlanetProps } from './types';
+import './earth.css';
 
 export const Earth = (props: Omit<PlanetProps, 'planetData'>) => {
   const earthData = {

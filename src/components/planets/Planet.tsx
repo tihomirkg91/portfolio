@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { PlanetProps } from './types';
 import { SaturnRings } from './SaturnRings';
+import './planet.css';
+import './earth.css';
 
 export const Planet = ({
   planetData,
@@ -33,161 +35,27 @@ export const Planet = ({
           repeat: isKicked ? 0 : Infinity,
           ease: 'linear',
         }}
+        className="planet"
         style={{
-          position: 'relative',
-          width: '100%',
-          height: '100%',
-          borderRadius: '50%',
           background: isKicked
             ? planetData.kickedGradient
             : planetData.gradient,
           boxShadow: isKicked
             ? planetData.kickedBoxShadow
             : planetData.boxShadow,
-          zIndex: 1,
-          overflow: 'hidden',
         }}
       >
         {/* Earth-specific enhancements */}
         {planetData.name === 'Earth' && (
           <>
             {/* Base ocean layer */}
-            <div
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                borderRadius: '50%',
-                background: `
-                  radial-gradient(circle at 50% 50%, 
-                    #1e3a8a 0%, 
-                    #1e40af 25%, 
-                    #2563eb 50%, 
-                    #3b82f6 75%, 
-                    #60a5fa 100%
-                  )
-                `,
-                zIndex: 1,
-              }}
-            />
+            <div className="earth-ocean" />
 
             {/* Continental landmasses */}
-            <div
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                borderRadius: '50%',
-                background: `
-                  /* North America */
-                  radial-gradient(ellipse 25% 35% at 25% 35%, 
-                    #16a34a 0%, 
-                    #15803d 30%, 
-                    #166534 60%, 
-                    transparent 80%
-                  ),
-                  /* South America */
-                  radial-gradient(ellipse 15% 40% at 35% 65%, 
-                    #22c55e 0%, 
-                    #16a34a 40%, 
-                    #15803d 70%, 
-                    transparent 85%
-                  ),
-                  /* Africa */
-                  radial-gradient(ellipse 20% 45% at 55% 50%, 
-                    #fbbf24 0%, 
-                    #f59e0b 20%, 
-                    #22c55e 40%, 
-                    #16a34a 60%, 
-                    transparent 80%
-                  ),
-                  /* Europe */
-                  radial-gradient(ellipse 12% 15% at 52% 25%, 
-                    #22c55e 0%, 
-                    #16a34a 50%, 
-                    transparent 70%
-                  ),
-                  /* Asia */
-                  radial-gradient(ellipse 35% 40% at 75% 35%, 
-                    #fbbf24 0%, 
-                    #f59e0b 15%, 
-                    #22c55e 30%, 
-                    #16a34a 50%, 
-                    #15803d 70%, 
-                    transparent 85%
-                  ),
-                  /* Australia */
-                  radial-gradient(ellipse 8% 10% at 82% 70%, 
-                    #fbbf24 0%, 
-                    #f59e0b 40%, 
-                    transparent 70%
-                  ),
-                  /* Antarctica */
-                  radial-gradient(ellipse 60% 15% at 50% 95%, 
-                    #f8fafc 0%, 
-                    #e2e8f0 50%, 
-                    transparent 80%
-                  ),
-                  /* Greenland */
-                  radial-gradient(ellipse 8% 12% at 30% 15%, 
-                    #f8fafc 0%, 
-                    #e2e8f0 60%, 
-                    transparent 80%
-                  )
-                `,
-                zIndex: 2,
-              }}
-            />
+            <div className="earth-continents" />
 
             {/* Mountain ranges and terrain details */}
-            <div
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                borderRadius: '50%',
-                background: `
-                  /* Himalayas */
-                  radial-gradient(ellipse 8% 3% at 68% 30%, 
-                    #78716c 0%, 
-                    #57534e 50%, 
-                    transparent 70%
-                  ),
-                  /* Andes Mountains */
-                  radial-gradient(ellipse 3% 35% at 32% 65%, 
-                    #78716c 0%, 
-                    #57534e 40%, 
-                    transparent 60%
-                  ),
-                  /* Rocky Mountains */
-                  radial-gradient(ellipse 4% 20% at 22% 40%, 
-                    #78716c 0%, 
-                    #57534e 50%, 
-                    transparent 70%
-                  ),
-                  /* Sahara Desert */
-                  radial-gradient(ellipse 18% 15% at 52% 40%, 
-                    #fde047 0%, 
-                    #facc15 30%, 
-                    #eab308 60%, 
-                    transparent 80%
-                  ),
-                  /* Amazon Rainforest */
-                  radial-gradient(ellipse 12% 20% at 38% 60%, 
-                    #166534 0%, 
-                    #14532d 40%, 
-                    transparent 70%
-                  )
-                `,
-                zIndex: 3,
-              }}
-            />
+            <div className="earth-mountains" />
 
             {/* Realistic cloud formations */}
             <motion.div
@@ -199,171 +67,42 @@ export const Planet = ({
                 repeat: isKicked ? 0 : Infinity,
                 ease: 'linear',
               }}
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                borderRadius: '50%',
-                background: `
-                  /* Large weather systems */
-                  radial-gradient(ellipse 35% 20% at 20% 30%, 
-                    rgba(255, 255, 255, 0.7) 0%, 
-                    rgba(255, 255, 255, 0.4) 40%, 
-                    transparent 70%
-                  ),
-                  radial-gradient(ellipse 25% 30% at 70% 45%, 
-                    rgba(255, 255, 255, 0.6) 0%, 
-                    rgba(255, 255, 255, 0.3) 50%, 
-                    transparent 75%
-                  ),
-                  /* Hurricane spiral */
-                  radial-gradient(ellipse 15% 15% at 15% 50%, 
-                    rgba(255, 255, 255, 0.8) 0%, 
-                    rgba(255, 255, 255, 0.5) 30%, 
-                    transparent 60%
-                  ),
-                  /* Scattered clouds */
-                  radial-gradient(ellipse 12% 8% at 45% 25%, 
-                    rgba(255, 255, 255, 0.5) 0%, 
-                    transparent 60%
-                  ),
-                  radial-gradient(ellipse 10% 12% at 60% 70%, 
-                    rgba(255, 255, 255, 0.6) 0%, 
-                    transparent 65%
-                  ),
-                  radial-gradient(ellipse 8% 6% at 85% 40%, 
-                    rgba(255, 255, 255, 0.4) 0%, 
-                    transparent 70%
-                  )
-                `,
-                opacity: 0.8,
-                zIndex: 4,
-              }}
+              className="earth-clouds"
             />
 
             {/* Atmospheric glow with multiple layers */}
             <div
+              className="earth-atmospheric-glow"
               style={{
-                position: 'absolute',
-                top: '-4px',
-                left: '-4px',
-                width: 'calc(100% + 8px)',
-                height: 'calc(100% + 8px)',
-                borderRadius: '50%',
-                background: `
-                  radial-gradient(circle, 
-                    transparent 55%, 
-                    rgba(135, 206, 250, 0.2) 65%, 
-                    rgba(100, 149, 237, 0.4) 80%, 
-                    rgba(70, 130, 180, 0.6) 90%, 
-                    rgba(25, 25, 112, 0.3) 95%, 
-                    transparent 100%
-                  )
-                `,
-                animation: isKicked ? 'none' : 'pulse 5s ease-in-out infinite',
-                zIndex: 5,
+                animation: isKicked
+                  ? 'none'
+                  : 'earth-pulse 5s ease-in-out infinite',
               }}
             />
 
             {/* Day/night terminator with realistic lighting */}
-            <div
-              style={{
-                position: 'absolute',
-                top: 0,
-                right: '-5%',
-                width: '60%',
-                height: '110%',
-                borderRadius: '50%',
-                background: `
-                  linear-gradient(85deg, 
-                    transparent 0%, 
-                    rgba(0, 0, 0, 0.05) 15%, 
-                    rgba(0, 0, 0, 0.15) 35%, 
-                    rgba(0, 0, 0, 0.35) 55%, 
-                    rgba(0, 0, 0, 0.55) 75%, 
-                    rgba(0, 0, 0, 0.75) 90%, 
-                    rgba(0, 0, 0, 0.9) 100%
-                  )
-                `,
-                zIndex: 6,
-              }}
-            />
+            <div className="earth-terminator" />
 
             {/* City lights on dark side */}
-            <div
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: '65%',
-                width: '35%',
-                height: '100%',
-                borderRadius: '50%',
-                background: `
-                  /* Major city clusters */
-                  radial-gradient(ellipse 2px 1px at 75% 25%, #ffd700 0%, transparent 50%),
-                  radial-gradient(ellipse 1px 2px at 80% 30%, #ffd700 0%, transparent 60%),
-                  radial-gradient(ellipse 2px 2px at 70% 45%, #ffd700 0%, transparent 40%),
-                  radial-gradient(ellipse 1px 1px at 85% 50%, #ffd700 0%, transparent 50%),
-                  radial-gradient(ellipse 2px 1px at 75% 65%, #ffd700 0%, transparent 55%),
-                  radial-gradient(ellipse 1px 1px at 78% 35%, #ffd700 0%, transparent 45%),
-                  radial-gradient(ellipse 1px 2px at 82% 70%, #ffd700 0%, transparent 60%)
-                `,
-                opacity: 0.6,
-                zIndex: 7,
-              }}
-            />
+            <div className="earth-city-lights" />
 
             {/* Sun reflection highlight */}
-            <div
-              style={{
-                position: 'absolute',
-                top: '15%',
-                left: '15%',
-                width: '25%',
-                height: '25%',
-                borderRadius: '50%',
-                background: `
-                  radial-gradient(circle, 
-                    rgba(255, 255, 255, 0.3) 0%, 
-                    rgba(255, 255, 255, 0.1) 40%, 
-                    transparent 70%
-                  )
-                `,
-                filter: 'blur(1px)',
-                zIndex: 8,
-              }}
-            />
+            <div className="earth-sun-reflection" />
           </>
         )}{' '}
         {/* Surface texture overlay for all planets */}
         <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            borderRadius: '50%',
-            background:
-              planetData.name === 'Earth'
-                ? `radial-gradient(circle at 60% 25%, rgba(255, 255, 255, 0.15) 0%, transparent 40%)`
-                : `radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%)`,
-            opacity: planetData.name === 'Earth' ? 0.8 : 0.6,
-            zIndex: 5,
-          }}
+          className={
+            planetData.name === 'Earth'
+              ? 'earth-surface-texture'
+              : 'planet-surface-texture other'
+          }
         />
         {/* Atmospheric glow for gas giants */}
         {isGasGiant && (
           <div
+            className="gas-giant-atmosphere"
             style={{
-              position: 'absolute',
-              top: '-2px',
-              left: '-2px',
-              width: 'calc(100% + 4px)',
-              height: 'calc(100% + 4px)',
-              borderRadius: '50%',
               background: `radial-gradient(circle, transparent 70%, ${planetData.color}40 100%)`,
               animation: isKicked ? 'none' : 'pulse 3s ease-in-out infinite',
             }}
@@ -373,24 +112,10 @@ export const Planet = ({
 
       {/* Planet name tooltip */}
       <div
-        style={{
-          position: 'absolute',
-          bottom: `${planetSize + 10}px`,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          background: 'rgba(0, 0, 0, 0.8)',
-          color: 'white',
-          padding: '4px 8px',
-          borderRadius: '4px',
-          fontSize: '12px',
-          fontWeight: 'bold',
-          opacity: 0,
-          pointerEvents: 'none',
-          transition: 'opacity 0.3s ease',
-          whiteSpace: 'nowrap',
-          zIndex: 10,
-        }}
         className="planet-tooltip"
+        style={{
+          bottom: `${planetSize + 10}px`,
+        }}
       >
         {planetData.name}
       </div>
