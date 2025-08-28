@@ -32,7 +32,10 @@
   gap: 15px;
 }
 
-.score, .combo {
+.score,
+.combo,
+.time,
+.level {
   color: #00ffff;
   font-family: 'Courier New', monospace;
   font-size: 18px;
@@ -40,9 +43,9 @@
   text-shadow: 0 0 5px #00ffff;
 }
 
-.combo {
-  color: #ff6b6b;
-  text-shadow: 0 0 5px #ff6b6b;
+.level {
+  color: #ff6b35;
+  text-shadow: 0 0 5px #ff6b35;
 }
 
 .game-btn {
@@ -90,11 +93,21 @@
 }
 
 /* Lane positioning */
-.lane-0 { left: 0%; }
-.lane-1 { left: 20%; }
-.lane-2 { left: 40%; }
-.lane-3 { left: 60%; }
-.lane-4 { left: 80%; }
+.lane-0 {
+  left: 0%;
+}
+.lane-1 {
+  left: 20%;
+}
+.lane-2 {
+  left: 40%;
+}
+.lane-3 {
+  left: 60%;
+}
+.lane-4 {
+  left: 80%;
+}
 
 .lane-bg {
   position: absolute;
@@ -123,11 +136,21 @@
 }
 
 /* Hit zone positioning */
-.hit-zone-0 { left: 0%; }
-.hit-zone-1 { left: 20%; }
-.hit-zone-2 { left: 40%; }
-.hit-zone-3 { left: 60%; }
-.hit-zone-4 { left: 80%; }
+.hit-zone-0 {
+  left: 0%;
+}
+.hit-zone-1 {
+  left: 20%;
+}
+.hit-zone-2 {
+  left: 40%;
+}
+.hit-zone-3 {
+  left: 60%;
+}
+.hit-zone-4 {
+  left: 80%;
+}
 
 .hit-zone:hover {
   opacity: 0.9;
@@ -183,11 +206,21 @@
 }
 
 /* Note lane positioning */
-.note-lane-0 { left: 10%; }  /* 0 * 20 + 10 */
-.note-lane-1 { left: 30%; }  /* 1 * 20 + 10 */
-.note-lane-2 { left: 50%; }  /* 2 * 20 + 10 */
-.note-lane-3 { left: 70%; }  /* 3 * 20 + 10 */
-.note-lane-4 { left: 90%; }  /* 4 * 20 + 10 */
+.note-lane-0 {
+  left: 10%;
+} /* 0 * 20 + 10 */
+.note-lane-1 {
+  left: 30%;
+} /* 1 * 20 + 10 */
+.note-lane-2 {
+  left: 50%;
+} /* 2 * 20 + 10 */
+.note-lane-3 {
+  left: 70%;
+} /* 3 * 20 + 10 */
+.note-lane-4 {
+  left: 90%;
+} /* 4 * 20 + 10 */
 
 .note-glow {
   width: 80%;
@@ -263,7 +296,8 @@
     font-size: 24px;
   }
 
-  .score, .combo {
+  .score,
+  .combo {
     font-size: 20px;
   }
 
