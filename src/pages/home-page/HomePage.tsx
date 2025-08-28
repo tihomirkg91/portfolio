@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 
 import { useCursorTrail } from '../../contexts/CursorTrailContext';
+import { SpaceGame } from '../../components/space-game/SpaceGame';
 import './homePage.css';
 
 export const HomePage = () => {
@@ -165,6 +166,20 @@ export const HomePage = () => {
           }}
           transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
         />
+      </section>
+
+      {/* Interactive Game Section */}
+      <section className="game-section">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <SpaceGame />
+          </motion.div>
+        </div>
       </section>
     </div>
   );

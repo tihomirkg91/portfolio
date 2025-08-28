@@ -1,0 +1,99 @@
+.space-game {
+  background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+  border: 2px solid #00ffff;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0;
+  position: relative;
+  overflow: hidden;
+  min-height: 300px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.game-header h3 {
+  color: #ff00ff;
+  font-family: 'Courier New', monospace;
+  margin: 0;
+  text-shadow: 0 0 10px #ff00ff;
+}
+
+.game-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.score {
+  color: #00ffff;
+  font-family: 'Courier New', monospace;
+  font-size: 18px;
+  font-weight: bold;
+  text-shadow: 0 0 5px #00ffff;
+}
+
+.game-btn {
+  background: linear-gradient(45deg, #ff00ff, #00ffff);
+  border: none;
+  color: #000;
+  padding: 10px 20px;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+}
+
+.game-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 0, 255, 0.8);
+}
+
+.game-area {
+  position: relative;
+  height: 200px;
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 0, 50, 0.5) 0%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+}
+
+.game-instructions {
+  margin-top: 15px;
+  text-align: center;
+  color: #cccccc;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+}
+
+/* Touch device optimizations */
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .star {
+    font-size: 28px;
+    min-width: 40px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .game-btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
