@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { Maximize2, Minimize2, Play, Square, Gamepad2, Smartphone } from 'lucide-react';
 import './FallingPlanet.css';
 
 interface Note {
@@ -217,11 +218,62 @@ export const FallingPlanet = () => {
   // Full screen functionality
   const enterFullscreen = useCallback(async () => {
     try {
-      if (document.documentElement.requestFullscreen) {
-        await document.documentElement.requestFullscreen();
+      // Check if we're on a mobile device
+      const isMobile =
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        );
+
+      if (isMobile) {
+        // For mobile devices, try different approaches
+        if (document.documentElement.requestFullscreen) {
+          // Try standard fullscreen first
+          try {
+            await document.documentElement.requestFullscreen();
+            setIsFullscreen(true);
+            document.body.classList.add('fullscreen-active');
+            return;
+          } catch (error) {
+            console.log(
+              'Standard fullscreen failed, trying mobile-specific methods'
+            );
+          }
+        }
+
+        // For iOS Safari and other mobile browsers that don't support fullscreen
+        // We'll simulate fullscreen by maximizing the viewport
         setIsFullscreen(true);
-        // Add class to body for CSS targeting
-        document.body.classList.add('fullscreen-active');
+        document.body.classList.add('fullscreen-active', 'mobile-fullscreen');
+
+        // Add viewport meta tag for better mobile fullscreen experience
+        let viewport = document.querySelector('meta[name=viewport]');
+        if (!viewport) {
+          viewport = document.createElement('meta');
+          viewport.setAttribute('name', 'viewport');
+          document.head.appendChild(viewport);
+        }
+        viewport.setAttribute(
+          'content',
+          'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover'
+        );
+
+        // Prevent scrolling and hide address bar
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+
+        // Try to hide mobile browser UI
+        if (window.scrollTo) {
+          window.scrollTo(0, 1);
+        }
+
+        console.log('Mobile fullscreen mode activated (simulated)');
+      } else {
+        // Desktop fullscreen
+        if (document.documentElement.requestFullscreen) {
+          await document.documentElement.requestFullscreen();
+          setIsFullscreen(true);
+          document.body.classList.add('fullscreen-active');
+        }
       }
     } catch (error) {
       console.error('Error entering fullscreen:', error);
@@ -230,11 +282,40 @@ export const FallingPlanet = () => {
 
   const exitFullscreen = useCallback(async () => {
     try {
-      if (document.exitFullscreen) {
-        await document.exitFullscreen();
+      const isMobile =
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        );
+
+      if (isMobile) {
+        // Exit mobile fullscreen simulation
         setIsFullscreen(false);
-        // Remove class from body
-        document.body.classList.remove('fullscreen-active');
+        document.body.classList.remove(
+          'fullscreen-active',
+          'mobile-fullscreen'
+        );
+
+        // Restore viewport
+        const viewport = document.querySelector('meta[name=viewport]');
+        if (viewport) {
+          viewport.setAttribute(
+            'content',
+            'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes'
+          );
+        }
+
+        // Restore scrolling
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+
+        console.log('Mobile fullscreen mode deactivated');
+      } else {
+        // Desktop exit fullscreen
+        if (document.exitFullscreen) {
+          await document.exitFullscreen();
+          setIsFullscreen(false);
+          document.body.classList.remove('fullscreen-active');
+        }
       }
     } catch (error) {
       console.error('Error exiting fullscreen:', error);
@@ -264,15 +345,27 @@ export const FallingPlanet = () => {
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
+      const isMobile =
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        );
+
       if (event.key === 'F11') {
         event.preventDefault();
         toggleFullscreen();
-      } else if (event.key === 'Escape' && document.fullscreenElement) {
+      } else if (
+        event.key === 'Escape' &&
+        (document.fullscreenElement || isFullscreen)
+      ) {
         exitFullscreen();
       } else if (event.key === 'f' && event.ctrlKey) {
         event.preventDefault();
         toggleFullscreen();
       }
+
+      // On mobile, we don't need keyboard handling for game controls
+      if (isMobile) return;
+
       // Don't prevent default for game keys when not in fullscreen
       if (!isFullscreen) return;
 
@@ -458,7 +551,10 @@ export const FallingPlanet = () => {
         <h3>
           Falling Planet{' '}
           {isFullscreen && (
-            <span className="fullscreen-indicator">🎮 FULLSCREEN</span>
+            <span className="fullscreen-indicator">
+              <Gamepad2 size={16} className="icon-margin" />
+              FULLSCREEN
+            </span>
           )}
         </h3>
         <div className="game-controls">
@@ -475,14 +571,16 @@ export const FallingPlanet = () => {
                 : 'Enter Fullscreen (F11 or Ctrl+F)'
             }
           >
-            {isFullscreen ? '🗗' : '🗖'}
+            {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
           </button>
           {!gameActive ? (
             <button className="game-btn start-btn" onClick={startGame}>
+              <Play size={16} className="icon-margin" />
               Start Game
             </button>
           ) : (
             <button className="game-btn end-btn" onClick={endGame}>
+              <Square size={16} className="icon-margin" />
               End Game
             </button>
           )}
@@ -534,20 +632,53 @@ export const FallingPlanet = () => {
       <div className="game-instructions">
         {!gameActive ? (
           <p>
-            Press "Start Game" to begin! Use A, S, D, F, G keys or tap the
-            colored zones to hit the falling notes!{' '}
-            <span className="keyboard-hint">
-              Press F11 or Ctrl+F for fullscreen mode!
-            </span>
+            Press "Start Game" to begin!{' '}
+            {/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+              navigator.userAgent
+            ) ? (
+              <>
+                Tap the colored zones to hit the falling notes!{' '}
+                <span className="mobile-hint">
+                  📱 Mobile Mode: Tap fullscreen button for immersive
+                  experience!
+                </span>
+              </>
+            ) : (
+              <>
+                Use A, S, D, F, G keys or tap the colored zones to hit the
+                falling notes!{' '}
+                <span className="keyboard-hint">
+                  Press F11 or Ctrl+F for fullscreen mode!
+                </span>
+              </>
+            )}
           </p>
         ) : (
           <p>
-            Hit the notes when they reach the colored zones! Perfect timing =
-            more points!{' '}
-            {isFullscreen && (
-              <span className="fullscreen-hint">
-                🎮 Fullscreen Mode: Press Escape to exit
-              </span>
+            {/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+              navigator.userAgent
+            ) ? (
+              <>
+                Tap the colored zones when notes reach them! Perfect timing =
+                more points!{' '}
+                {isFullscreen && (
+                  <span className="fullscreen-hint">
+                    <Smartphone size={16} className="icon-margin" />
+                    Mobile Fullscreen: Tap zones to play!
+                  </span>
+                )}
+              </>
+            ) : (
+              <>
+                Hit the notes when they reach the colored zones! Perfect timing
+                = more points!{' '}
+                {isFullscreen && (
+                  <span className="fullscreen-hint">
+                    <Gamepad2 size={16} className="icon-margin" />
+                    Fullscreen Mode: Press Escape to exit
+                  </span>
+                )}
+              </>
             )}
           </p>
         )}

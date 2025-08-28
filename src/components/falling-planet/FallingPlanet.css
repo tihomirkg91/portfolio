@@ -45,6 +45,10 @@
   }
 }
 
+.icon-margin {
+  margin-right: 6px;
+}
+
 .game-controls {
   display: flex !important;
   align-items: center;
@@ -294,6 +298,12 @@
   text-shadow: 0 0 5px #ff6b35;
 }
 
+.mobile-hint {
+  color: #4ecdc4;
+  font-weight: bold;
+  text-shadow: 0 0 5px #4ecdc4;
+}
+
 .fullscreen-hint {
   color: #ff00ff;
   font-weight: bold;
@@ -463,4 +473,207 @@ body.fullscreen-active {
   font-size: 12px !important;
   padding: 5px !important;
   line-height: 1.2 !important;
+}
+
+/* Mobile fullscreen styles */
+.mobile-fullscreen,
+body.mobile-fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.mobile-fullscreen .falling-planet {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  padding: 10px !important;
+  z-index: 9999 !important;
+}
+
+.mobile-fullscreen .game-area {
+  height: calc(100vh - 120px) !important;
+  max-height: calc(100vh - 120px) !important;
+}
+
+.mobile-fullscreen .lane {
+  height: calc(100vh - 160px) !important;
+}
+
+.mobile-fullscreen .hit-zone {
+  height: 50px !important;
+  min-height: 50px !important;
+}
+
+.mobile-fullscreen .hit-zone-key {
+  font-size: 20px !important;
+  padding: 5px !important;
+}
+
+.mobile-fullscreen .game-header {
+  margin-bottom: 10px !important;
+  padding: 5px 0 !important;
+}
+
+.mobile-fullscreen .game-header h3 {
+  font-size: 18px !important;
+  margin-bottom: 5px !important;
+}
+
+.mobile-fullscreen .game-controls {
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+}
+
+.mobile-fullscreen .score,
+.mobile-fullscreen .combo,
+.mobile-fullscreen .time,
+.mobile-fullscreen .level {
+  font-size: 14px !important;
+}
+
+.mobile-fullscreen .game-instructions {
+  margin-top: 3px !important;
+  margin-bottom: 3px !important;
+  font-size: 11px !important;
+  padding: 3px !important;
+  line-height: 1.1 !important;
+}
+
+.mobile-fullscreen .game-btn {
+  padding: 8px 12px !important;
+  font-size: 12px !important;
+  min-height: 35px !important;
+}
+
+/* Touch optimizations for mobile fullscreen */
+.mobile-fullscreen .hit-zone {
+  cursor: pointer !important;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1) !important;
+  touch-action: manipulation !important;
+}
+
+.mobile-fullscreen .note {
+  pointer-events: none !important;
+}
+
+/* Mobile font size reductions */
+@media (max-width: 768px) {
+  /* General mobile font reductions */
+  .falling-planet {
+    font-size: 14px;
+  }
+
+  /* Header fonts */
+  .game-header h3 {
+    font-size: 16px !important;
+  }
+
+  .fullscreen-indicator {
+    font-size: 12px !important;
+  }
+
+  /* Game controls */
+  .score,
+  .combo,
+  .time,
+  .level {
+    font-size: 12px !important;
+  }
+
+  /* Hit zone keys */
+  .hit-zone-key {
+    font-size: 16px !important;
+  }
+
+  /* Game instructions */
+  .game-instructions {
+    font-size: 12px !important;
+  }
+
+  .keyboard-hint,
+  .mobile-hint,
+  .fullscreen-hint {
+    font-size: 11px !important;
+  }
+
+  /* Button text */
+  .game-btn {
+    font-size: 12px !important;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 480px) {
+  /* Even smaller fonts for very small screens */
+  .game-header h3 {
+    font-size: 14px !important;
+  }
+
+  .score,
+  .combo,
+  .time,
+  .level {
+    font-size: 11px !important;
+  }
+
+  .hit-zone-key {
+    font-size: 14px !important;
+  }
+
+  .game-instructions {
+    font-size: 11px !important;
+  }
+
+  .keyboard-hint,
+  .mobile-hint,
+  .fullscreen-hint {
+    font-size: 10px !important;
+  }
+
+  .game-btn {
+    font-size: 11px !important;
+  }
+}
+
+/* Touch device specific optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .hit-zone-key {
+    font-size: 18px !important;
+    font-weight: bold !important;
+  }
+
+  .game-btn {
+    font-size: 14px !important;
+    min-height: 40px !important;
+    padding: 10px 15px !important;
+  }
+
+  /* Better spacing for touch devices */
+  .game-controls {
+    gap: 10px !important;
+  }
+
+  .game-header {
+    margin-bottom: 15px !important;
+  }
+
+  /* Ensure touch targets are large enough */
+  .hit-zone {
+    min-height: 60px !important;
+  }
 }
