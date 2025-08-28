@@ -1,180 +1,354 @@
-import { motion } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import './SpaceGame.css';
 
-interface Star {
+interface Note {
   id: number;
-  x: number;
+  lane: number;
   y: number;
   speed: number;
   size: number;
+  color: string;
 }
 
+interface HitZone {
+  lane: number;
+  active: boolean;
+  timer: number;
+}
+
+const LANES = 5;
+const LANE_KEYS = ['a', 's', 'd', 'f', 'g'];
+const LANE_COLORS = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#f0932b'];
+
 export const SpaceGame = () => {
-  const [stars, setStars] = useState<Star[]>([]);
+  const [notes, setNotes] = useState<Note[]>([]);
   const [score, setScore] = useState(0);
+  const [combo, setCombo] = useState(0);
   const [gameActive, setGameActive] = useState(false);
-  const [starId, setStarId] = useState(0);
+  const [noteId, setNoteId] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [hitZones, setHitZones] = useState<HitZone[]>(
+    Array.from({ length: LANES }, (_, i) => ({ lane: i, active: false, timer: 0 }))
+  );
+
+  // Use refs for immediate access to avoid state delays
+  const comboRef = useRef(0);
+  const scoreRef = useRef(0);
+  const gameActiveRef = useRef(false);
+  const notesRef = useRef<Note[]>([]);
+  const hitZonesRef = useRef<HitZone[]>(Array.from({ length: LANES }, (_, i) => ({ lane: i, active: false, timer: 0 })));
+
   const gameRef = useRef<HTMLDivElement>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const animationFrameRef = useRef<number | null>(null);
+  const lastNoteSpawnRef = useRef(0);
+
+  // Sync refs with state
+  useEffect(() => {
+    comboRef.current = combo;
+  }, [combo]);
+
+  useEffect(() => {
+    scoreRef.current = score;
+  }, [score]);
+
+  useEffect(() => {
+    gameActiveRef.current = gameActive;
+  }, [gameActive]);
+
+  useEffect(() => {
+    notesRef.current = notes;
+  }, [notes]);
+
+  useEffect(() => {
+    hitZonesRef.current = hitZones;
+  }, [hitZones]);
 
   const startGame = () => {
     setGameActive(true);
     setScore(0);
-    setStars([]);
+    setCombo(0);
+    setNotes([]);
+    setHitZones(Array.from({ length: LANES }, (_, i) => ({ lane: i, active: false, timer: 0 })));
   };
 
   const endGame = () => {
     setGameActive(false);
-    setStars([]);
+    setNotes([]);
+    setHitZones(Array.from({ length: LANES }, (_, i) => ({ lane: i, active: false, timer: 0 })));
   };
 
-  const collectStar = (id: number) => {
-    setStars((prev) => prev.filter((star) => star.id !== id));
-    setScore((prev) => prev + 10);
-  };
+  const playSound = useCallback((frequency: number, duration: number = 200) => {
+    if (!audioContextRef.current) {
+      audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+    }
+    const ctx = audioContextRef.current;
+    const oscillator = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(ctx.destination);
+
+    oscillator.frequency.setValueAtTime(frequency, ctx.currentTime);
+    oscillator.type = 'sine';
+
+    gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration / 1000);
+
+    oscillator.start(ctx.currentTime);
+    oscillator.stop(ctx.currentTime + duration / 1000);
+  }, []);
+
+  const hitNote = useCallback((lane: number) => {
+    const hitZoneY = 85;
+    const tolerance = 15;
+    const currentNotes = notesRef.current;
+    const currentCombo = comboRef.current;
+
+    // Find the note to hit using more efficient search
+    let bestNoteIndex = -1;
+    let bestAccuracy = tolerance + 1;
+
+    for (let i = 0; i < currentNotes.length; i++) {
+      const note = currentNotes[i];
+      if (note.lane === lane) {
+        const accuracy = Math.abs(note.y - hitZoneY);
+        if (accuracy <= tolerance) {
+          if (accuracy < bestAccuracy) {
+            bestAccuracy = accuracy;
+            bestNoteIndex = i;
+          }
+        }
+      }
+    }
+
+    if (bestNoteIndex !== -1) {
+      const note = currentNotes[bestNoteIndex];
+      const accuracy = Math.abs(note.y - hitZoneY);
+      let points = 100;
+
+      if (accuracy <= 5) {
+        points = 300;
+      } else if (accuracy <= 10) {
+        points = 200;
+      }
+
+      const newScore = scoreRef.current + points * (currentCombo + 1);
+      const newCombo = currentCombo + 1;
+
+      // Batch state updates for better performance
+      setScore(newScore);
+      setCombo(newCombo);
+
+      // Update refs immediately
+      scoreRef.current = newScore;
+      comboRef.current = newCombo;
+
+      playSound(440 + lane * 110, 150);
+
+      // Remove the hit note efficiently
+      setNotes(prev => prev.filter((_, index) => index !== bestNoteIndex));
+    } else {
+      // Missed note - reset combo
+      setCombo(0);
+      comboRef.current = 0;
+      playSound(150, 100);
+    }
+
+    // Activate hit zone animation with shorter duration
+    setHitZones(prev => prev.map(hz =>
+      hz.lane === lane ? { ...hz, active: true, timer: 100 } : hz
+    ));
+  }, [playSound]);
+
+  // Handle touch events for mobile
+  const handleTouchStart = useCallback((lane: number) => {
+    hitNote(lane);
+  }, [hitNote]);
 
   // Full screen functionality
-  const enterFullscreen = () => {
-    const element = gameRef.current;
-    if (!element) {
-      console.log('Game element not found');
-      return;
-    }
-
-    console.log('Attempting to enter fullscreen');
-
-    if (element.requestFullscreen) {
-      element.requestFullscreen();
-    } else if ((element as any).mozRequestFullScreen) {
-      (element as any).mozRequestFullScreen();
-    } else if ((element as any).webkitRequestFullscreen) {
-      (element as any).webkitRequestFullscreen();
-    } else if ((element as any).msRequestFullscreen) {
-      (element as any).msRequestFullscreen();
+  const enterFullscreen = async () => {
+    try {
+      if (document.documentElement.requestFullscreen) {
+        await document.documentElement.requestFullscreen();
+        setIsFullscreen(true);
+      }
+    } catch (error) {
+      console.error('Error entering fullscreen:', error);
     }
   };
 
-  const exitFullscreen = () => {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if ((document as any).mozCancelFullScreen) {
-      (document as any).mozCancelFullScreen();
-    } else if ((document as any).webkitExitFullscreen) {
-      (document as any).webkitExitFullscreen();
-    } else if ((document as any).msExitFullscreen) {
-      (document as any).msExitFullscreen();
+  const exitFullscreen = async () => {
+    try {
+      if (document.exitFullscreen) {
+        await document.exitFullscreen();
+        setIsFullscreen(false);
+      }
+    } catch (error) {
+      console.error('Error exiting fullscreen:', error);
     }
   };
 
   const toggleFullscreen = () => {
-    if (
-      !document.fullscreenElement &&
-      !(document as any).mozFullScreenElement &&
-      !(document as any).webkitFullscreenElement &&
-      !(document as any).msFullscreenElement
-    ) {
+    if (!document.fullscreenElement) {
       enterFullscreen();
     } else {
       exitFullscreen();
     }
   };
 
-  // Listen for fullscreen changes
+  // Handle fullscreen change events
   useEffect(() => {
     const handleFullscreenChange = () => {
-      const isCurrentlyFullscreen = !!(
-        document.fullscreenElement ||
-        (document as any).mozFullScreenElement ||
-        (document as any).webkitFullscreenElement ||
-        (document as any).msFullscreenElement
-      );
-      console.log('Fullscreen change detected:', isCurrentlyFullscreen);
-      setIsFullscreen(isCurrentlyFullscreen);
+      setIsFullscreen(!!document.fullscreenElement);
+    };
 
-      // Add/remove class to body to hide other content
-      if (isCurrentlyFullscreen) {
-        document.body.classList.add('game-fullscreen-active');
-        console.log('Added game-fullscreen-active class to body');
-      } else {
-        document.body.classList.remove('game-fullscreen-active');
-        console.log('Removed game-fullscreen-active class from body');
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'F11') {
+        event.preventDefault();
+        toggleFullscreen();
+      } else if (event.key === 'Escape' && document.fullscreenElement) {
+        exitFullscreen();
       }
     };
 
     document.addEventListener('fullscreenchange', handleFullscreenChange);
-    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
-    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
-    document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+    document.addEventListener('keydown', handleKeyDown);
 
     return () => {
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
-      document.removeEventListener(
-        'mozfullscreenchange',
-        handleFullscreenChange
-      );
-      document.removeEventListener(
-        'webkitfullscreenchange',
-        handleFullscreenChange
-      );
-      document.removeEventListener(
-        'MSFullscreenChange',
-        handleFullscreenChange
-      );
-      document.body.classList.remove('game-fullscreen-active');
+      document.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
 
+  // Handle keyboard input
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (!gameActive) return;
+
+      const key = event.key.toLowerCase();
+      const laneIndex = LANE_KEYS.indexOf(key);
+
+      if (laneIndex !== -1) {
+        event.preventDefault();
+        hitNote(laneIndex);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [gameActive, hitNote]);
+
+  // Optimized game loop using requestAnimationFrame
+  useEffect(() => {
+    if (!gameActive) {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+      return;
+    }
+
+    let lastTime = 0;
+    const targetFPS = 60;
+    const frameInterval = 1000 / targetFPS;
+
+    const gameLoop = (currentTime: number) => {
+      if (currentTime - lastTime >= frameInterval) {
+        // Spawn new notes less frequently for better performance
+        if (currentTime - lastNoteSpawnRef.current > 800 && Math.random() < 0.4) {
+          const lane = Math.floor(Math.random() * LANES);
+          const newNote: Note = {
+            id: noteId,
+            lane,
+            y: -10,
+            speed: 3, // Slightly faster for more challenge
+            size: 30,
+            color: LANE_COLORS[lane],
+          };
+
+          setNotes(prev => [...prev, newNote]);
+          setNoteId(prev => prev + 1);
+          lastNoteSpawnRef.current = currentTime;
+        }
+
+        // Move notes and remove missed ones
+        setNotes(prev => {
+          const updatedNotes = prev
+            .map(note => ({
+              ...note,
+              y: note.y + note.speed,
+            }))
+            .filter(note => {
+              if (note.y > 100) {
+                // Missed note - reset combo
+                setCombo(0);
+                comboRef.current = 0;
+                playSound(150, 100);
+                return false;
+              }
+              return true;
+            });
+
+          return updatedNotes;
+        });
+
+        lastTime = currentTime;
+      }
+
+      if (gameActive) {
+        animationFrameRef.current = requestAnimationFrame(gameLoop);
+      }
+    };
+
+    animationFrameRef.current = requestAnimationFrame(gameLoop);
+
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, [gameActive, noteId, playSound]);
+
+  // Optimized hit zone animation using requestAnimationFrame
   useEffect(() => {
     if (!gameActive) return;
 
-    const gameInterval = setInterval(
-      () => {
-        // Add new star
-        const newStar: Star = {
-          id: starId,
-          x: Math.random() * 90 + 5, // 5% to 95% of width
-          y: -10,
-          speed: Math.random() * 2 + 1,
-          size: Math.random() * 20 + 10,
-        };
-        setStars((prev) => [...prev, newStar]);
-        setStarId((prev) => prev + 1);
+    let animationId: number;
+    let lastTime = 0;
 
-        // Move existing stars
-        setStars(
-          (prev) =>
-            prev
-              .map((star) => ({
-                ...star,
-                y: star.y + star.speed,
-              }))
-              .filter((star) => star.y < 110) // Remove stars that fell off screen
-        );
-      },
-      isFullscreen ? 600 : 1000
-    ); // Faster star spawning in fullscreen
+    const animateHitZones = (currentTime: number) => {
+      if (currentTime - lastTime >= 16) { // ~60fps
+        setHitZones(prev => prev.map(hz => ({
+          ...hz,
+          timer: Math.max(0, hz.timer - 16),
+          active: hz.timer > 0
+        })));
+        lastTime = currentTime;
+      }
 
-    return () => clearInterval(gameInterval);
-  }, [gameActive, starId, isFullscreen]);
+      animationId = requestAnimationFrame(animateHitZones);
+    };
+
+    animationId = requestAnimationFrame(animateHitZones);
+
+    return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    };
+  }, [gameActive]);
 
   return (
     <div
       className={`space-game ${isFullscreen ? 'fullscreen-active' : ''}`}
       ref={gameRef}
-      style={
-        isFullscreen
-          ? {
-              border: '4px solid #ff00ff',
-              boxShadow: '0 0 50px rgba(255, 0, 255, 0.8)',
-            }
-          : {}
-      }
     >
       <div className="game-header">
-        <h3>Space Star Collector</h3>
+        <h3>Rhythm Hero</h3>
         <div className="game-controls">
           <span className="score">Score: {score}</span>
+          <span className="combo">Combo: {combo}x</span>
           <button
             className="game-btn fullscreen-btn"
             onClick={toggleFullscreen}
@@ -195,43 +369,60 @@ export const SpaceGame = () => {
       </div>
 
       <div className="game-area">
-        {stars.map((star) => (
-          <motion.div
-            key={star.id}
-            className="star"
+        {/* Lane backgrounds */}
+        {Array.from({ length: LANES }, (_, i) => (
+          <div key={i} className="lane" style={{ left: `${i * 20}%` }}>
+            <div className="lane-bg"></div>
+          </div>
+        ))}
+
+        {/* Hit zones */}
+        {hitZones.map((hz, i) => (
+          <div
+            key={i}
+            className={`hit-zone ${hz.active ? 'active' : ''}`}
             style={{
-              left: `${star.x}%`,
-              top: `${star.y}%`,
-              width: `${star.size}px`,
-              height: `${star.size}px`,
+              left: `${i * 20}%`,
+              backgroundColor: LANE_COLORS[i],
             }}
-            animate={{
-              rotate: 360,
-              scale: [1, 1.2, 1],
+            onTouchStart={(e) => {
+              e.preventDefault();
+              handleTouchStart(i);
             }}
-            transition={{
-              rotate: { duration: 2, repeat: Infinity, ease: 'linear' },
-              scale: { duration: 1, repeat: Infinity },
-            }}
-            onClick={() => collectStar(star.id)}
-            whileHover={{ scale: 1.3 }}
-            whileTap={{ scale: 0.8 }}
+            onClick={() => handleTouchStart(i)}
           >
-            ⭐
-          </motion.div>
+            <div className="hit-zone-key">{LANE_KEYS[i].toUpperCase()}</div>
+          </div>
+        ))}
+
+        {/* Falling notes - optimized with CSS animations */}
+        {notes.map((note) => (
+          <div
+            key={note.id}
+            className="note"
+            style={{
+              left: `${note.lane * 20 + 10}%`,
+              top: `${note.y}%`,
+              backgroundColor: note.color,
+              width: `${note.size}px`,
+              height: `${note.size}px`,
+            }}
+          >
+            <div className="note-glow" style={{ backgroundColor: note.color }}></div>
+          </div>
         ))}
       </div>
 
       <div className="game-instructions">
         {!gameActive ? (
           <p>
-            Click "Start Game" to begin collecting falling stars!{' '}
+            Press "Start Game" to begin! Use A, S, D, F, G keys or tap the colored zones to hit the falling notes!{' '}
             {isFullscreen && '🎮 Fullscreen Mode Active'}
           </p>
         ) : (
           <p>
-            Click on the falling stars to collect them and earn points!{' '}
-            {isFullscreen && '⭐ Stars spawn faster in fullscreen!'}
+            Hit the notes when they reach the colored zones! Perfect timing = more points!{' '}
+            {isFullscreen && '⭐ Faster notes in fullscreen!'}
           </p>
         )}
       </div>

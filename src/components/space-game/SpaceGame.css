@@ -32,12 +32,17 @@
   gap: 15px;
 }
 
-.score {
+.score, .combo {
   color: #00ffff;
   font-family: 'Courier New', monospace;
   font-size: 18px;
   font-weight: bold;
   text-shadow: 0 0 5px #00ffff;
+}
+
+.combo {
+  color: #ff6b6b;
+  text-shadow: 0 0 5px #ff6b6b;
 }
 
 .game-btn {
@@ -60,7 +65,7 @@
 
 .game-area {
   position: relative;
-  height: 200px;
+  height: 400px;
   background: radial-gradient(
     circle at center,
     rgba(0, 0, 50, 0.5) 0%,
@@ -69,6 +74,123 @@
   border-radius: 5px;
   overflow: hidden;
   border: 1px solid rgba(0, 255, 255, 0.3);
+  display: flex;
+  align-items: flex-end;
+}
+
+.lane {
+  position: absolute;
+  width: 20%;
+  height: 100%;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lane:last-child {
+  border-right: none;
+}
+
+.lane-bg {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.1), transparent);
+}
+
+.hit-zone {
+  position: absolute;
+  bottom: 0;
+  width: 20%;
+  height: 60px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.7;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hit-zone:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+
+.hit-zone:active {
+  transform: scale(0.98);
+  opacity: 1;
+}
+
+.hit-zone.active {
+  transform: scale(1.1);
+  opacity: 1;
+  box-shadow: 0 0 20px currentColor;
+  animation: hitZonePulse 0.2s ease-out;
+}
+
+@keyframes hitZonePulse {
+  0% {
+    box-shadow: 0 0 20px currentColor;
+  }
+  50% {
+    box-shadow: 0 0 30px currentColor, 0 0 40px currentColor;
+  }
+  100% {
+    box-shadow: 0 0 20px currentColor;
+  }
+}
+
+.hit-zone-key {
+  color: white;
+  font-family: 'Courier New', monospace;
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+.note {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(-50%);
+  box-shadow: 0 0 10px currentColor;
+  animation: notePulse 0.6s ease-in-out infinite alternate;
+}
+
+.note-glow {
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: noteGlow 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes notePulse {
+  0% {
+    transform: translateX(-50%) scale(1);
+    box-shadow: 0 0 10px currentColor;
+  }
+  100% {
+    transform: translateX(-50%) scale(1.15);
+    box-shadow: 0 0 20px currentColor, 0 0 30px currentColor;
+  }
+}
+
+@keyframes noteGlow {
+  0% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
 }
 
 .game-instructions {
@@ -80,20 +202,75 @@
 }
 
 /* Touch device optimizations */
-
-/* Touch device optimizations */
 @media (hover: none) and (pointer: coarse) {
-  .star {
+  .hit-zone {
+    min-height: 80px;
+    height: 80px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .hit-zone-key {
     font-size: 28px;
-    min-width: 40px;
-    min-height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    font-weight: bold;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+  }
+
+  .note {
+    min-width: 50px;
+    min-height: 50px;
   }
 
   .game-btn {
-    min-height: 44px;
-    min-width: 44px;
+    min-height: 50px;
+    min-width: 50px;
+    font-size: 16px;
   }
+
+  .game-area {
+    height: 350px;
+  }
+
+  .game-header h3 {
+    font-size: 24px;
+  }
+
+  .score, .combo {
+    font-size: 20px;
+  }
+
+  .game-instructions {
+    font-size: 16px;
+    padding: 10px;
+  }
+}
+
+/* Additional mobile optimizations */
+@media (max-width: 768px) {
+  .hit-zone {
+    min-height: 70px;
+    height: 70px;
+  }
+
+  .hit-zone-key {
+    font-size: 24px;
+  }
+
+  .game-area {
+    height: 300px;
+  }
+}
+
+/* Fullscreen styles */
+.fullscreen-active {
+  border: 4px solid #ff00ff !important;
+  box-shadow: 0 0 50px rgba(255, 0, 255, 0.8) !important;
+  min-height: 100vh !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+}
+
+.fullscreen-active .game-area {
+  height: calc(100vh - 120px) !important;
 }
