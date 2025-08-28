@@ -102,73 +102,6 @@
     );
 }
 
-/* Player Info Section */
-.player-info {
-  padding: 5rem 0;
-  background: linear-gradient(
-    135deg,
-    rgba(0, 0, 0, 0.9) 0%,
-    rgba(20, 20, 20, 0.9) 100%
-  );
-}
-
-.player-card {
-  display: flex;
-  align-items: center;
-  gap: 3rem;
-  background: rgba(0, 0, 0, 0.8);
-  border: 2px solid #00ffff;
-  border-radius: 0;
-  padding: 2rem;
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3),
-    inset 0 0 20px rgba(0, 255, 255, 0.1);
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.player-avatar {
-  flex-shrink: 0;
-}
-
-.avatar-glow {
-  padding: 1rem;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.8);
-  border: 2px solid #ff00ff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.player-stats h3 {
-  color: #ff00ff;
-  margin-bottom: 1rem;
-  font-size: 1rem;
-}
-
-.player-stats p {
-  color: #ccc;
-  margin-bottom: 1.5rem;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.5rem;
-}
-
-.stat {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #00ffff;
-  font-size: 0.7rem;
-}
-
-.stat svg {
-  color: #ff00ff;
-}
-
 /* Parallax Layers */
 .parallax-layer-1 {
   position: fixed;
@@ -281,16 +214,6 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .player-card {
-    flex-direction: column;
-    text-align: center;
-    gap: 2rem;
-  }
-
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   .hero-title {
     font-size: clamp(1.5rem, 6vw, 3rem);
   }
