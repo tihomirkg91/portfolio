@@ -18,13 +18,7 @@ export const HomePage = () => {
 
   // Enhanced Parallax effects with multiple layers
   const y1 = useTransform(scrollY, [0, 1000], [0, -100]); // Slow background layer
-  const y2 = useTransform(scrollY, [0, 1000], [0, -200]); // Medium layer
-  const y3 = useTransform(scrollY, [0, 1000], [0, -400]); // Fast foreground layer
-  const y4 = useTransform(scrollY, [0, 1000], [0, 50]); // Reverse parallax
   const opacity = useTransform(scrollY, [0, 500], [1, 0]);
-  const scale = useTransform(scrollY, [0, 500], [1, 1.2]);
-  const rotate = useTransform(scrollY, [0, 1000], [0, 360]);
-  const blurEffect = useTransform(scrollY, [0, 500], [0, 10]);
 
   // Mouse tracking for interactive effects
   useEffect(() => {
@@ -85,54 +79,19 @@ export const HomePage = () => {
       <div className="crt-overlay" />
       <div className="scanlines" />
       {/* Parallax Background Layers */}
-      <motion.div
-        className="parallax-layer parallax-layer-1"
-        style={{
-          y: y1,
-        }}
-      />
+      <div className="parallax-layer parallax-layer-1" />
 
-      <motion.div
-        className="parallax-layer parallax-layer-2"
-        style={{
-          y: y2,
-        }}
-      >
+      <div className="parallax-layer parallax-layer-2">
         {/* Floating geometric shapes */}
-        <motion.div
-          className="floating-shape-1"
-          style={{
-            rotate: rotate,
-          }}
-        />
-        <motion.div
-          className="floating-shape-2"
-          style={{
-            scale: scale,
-          }}
-        />
-      </motion.div>
+        <div className="floating-shape-1" />
+        <div className="floating-shape-2" />
+      </div>
 
-      <motion.div
-        className="parallax-layer parallax-layer-3"
-        style={{
-          y: y3,
-        }}
-      >
+      <div className="parallax-layer parallax-layer-3">
         {/* Fast moving elements */}
-        <motion.div
-          className="fast-element-1"
-          style={{
-            filter: blurEffect,
-          }}
-        />
-        <motion.div
-          className="fast-element-2"
-          style={{
-            y: y4, // Reverse parallax
-          }}
-        />
-      </motion.div>
+        <div className="fast-element-1" />
+        <div className="fast-element-2" />
+      </div>
 
       {/* Game Title Screen */}
       <section className="hero game-title-screen" ref={heroRef}>

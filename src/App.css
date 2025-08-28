@@ -657,10 +657,7 @@ h6 {
 }
 
 /* Performance optimizations */
-.cursor-trail-container *,
-.parallax-bg-layer,
-.parallax-shapes-layer,
-.parallax-fast-layer {
+.cursor-trail-container * {
   will-change: transform, opacity;
   backface-visibility: hidden;
 }
@@ -979,15 +976,6 @@ h6 {
 
 .tilt-card:hover {
   transform: perspective(1000px) rotateX(5deg) rotateY(5deg) translateZ(10px);
-}
-
-/* Parallax Text */
-.parallax-text {
-  background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  background-attachment: fixed;
 }
 
 /* Pulse Animation */
@@ -1483,47 +1471,6 @@ h6 {
   cursor: none; /* Hide default cursor for custom effect */
   position: relative;
   overflow-x: hidden; /* Prevent horizontal scrolling from parallax elements */
-}
-
-/* Parallax Layer Styles */
-.parallax-layer {
-  pointer-events: none; /* Prevent interaction with background layers */
-}
-
-.parallax-layer-1 {
-  opacity: 0.6;
-}
-
-.parallax-layer-2 {
-  opacity: 0.4;
-}
-
-.parallax-layer-3 {
-  opacity: 0.3;
-}
-
-/* Parallax Component Styles */
-.parallax-container {
-  position: relative;
-  width: 100%;
-  min-height: 100vh;
-}
-
-.parallax-bg-layer,
-.parallax-shapes-layer,
-.parallax-fast-layer {
-  will-change: transform;
-  backface-visibility: hidden;
-}
-
-/* Performance optimizations for parallax */
-@media (prefers-reduced-motion: reduce) {
-  .parallax-layer,
-  .parallax-bg-layer,
-  .parallax-shapes-layer,
-  .parallax-fast-layer {
-    transform: none !important;
-  }
 }
 
 /* Cursor Trail System */
