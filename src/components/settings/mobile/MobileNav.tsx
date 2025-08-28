@@ -196,65 +196,73 @@ export const MobileNav = ({
                   setIsAnimationComplete(false);
                 }}
               >
-                {['Home', 'About', 'Projects', 'Contact'].map((item) => (
-                  <motion.div
-                    key={item}
-                    className="mobile-nav-item"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{
-                      delay:
-                        0.1 *
-                        ['Home', 'About', 'Projects', 'Contact'].indexOf(item),
-                    }}
-                    whileHover={{
-                      scale: 1.02,
-                      y: -2,
-                    }}
-                    whileTap={{ scale: 0.98 }}
-                    onAnimationComplete={() => {
-                      // Only trigger when the last item (Contact) finishes animating
-                      if (item === 'Contact' && isOpen) {
-                        setIsAnimationComplete(true);
-                      }
-                    }}
-                  >
-                    <Link
-                      to={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
-                      className={`mobile-nav-link ${
-                        hoveredItem === item ? 'hovered' : ''
-                      } ${isActive(item, 'mobile') ? 'active' : ''}`}
-                      onClick={() => {
-                        onLinkClick();
+                {['Home', 'About', 'Projects', 'Planets', 'Contact'].map(
+                  (item) => (
+                    <motion.div
+                      key={item}
+                      className="mobile-nav-item"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{
+                        delay:
+                          0.1 *
+                          [
+                            'Home',
+                            'About',
+                            'Projects',
+                            'Planets',
+                            'Contact',
+                          ].indexOf(item),
                       }}
-                      onMouseEnter={() => {
-                        setHoveredItem(item);
-                        playHoverSound();
+                      whileHover={{
+                        scale: 1.02,
+                        y: -2,
                       }}
-                      onMouseLeave={() => setHoveredItem(null)}
+                      whileTap={{ scale: 0.98 }}
+                      onAnimationComplete={() => {
+                        // Only trigger when the last item (Contact) finishes animating
+                        if (item === 'Contact' && isOpen) {
+                          setIsAnimationComplete(true);
+                        }
+                      }}
                     >
-                      {/* Animated background on hover */}
-                      <motion.div
-                        className="mobile-nav-link-bg"
-                        initial={{ scale: 0, opacity: 0 }}
-                        animate={{
-                          scale: hoveredItem === item ? 1 : 0,
-                          opacity: hoveredItem === item ? 1 : 0,
+                      <Link
+                        to={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
+                        className={`mobile-nav-link ${
+                          hoveredItem === item ? 'hovered' : ''
+                        } ${isActive(item, 'mobile') ? 'active' : ''}`}
+                        onClick={() => {
+                          onLinkClick();
                         }}
-                        transition={{ duration: 0.3 }}
-                      />
-
-                      <motion.span className="mobile-nav-link-text">
-                        <RandomizingText
-                          text={item}
-                          isHovered={
-                            hoveredItem === item && isAnimationComplete
-                          }
+                        onMouseEnter={() => {
+                          setHoveredItem(item);
+                          playHoverSound();
+                        }}
+                        onMouseLeave={() => setHoveredItem(null)}
+                      >
+                        {/* Animated background on hover */}
+                        <motion.div
+                          className="mobile-nav-link-bg"
+                          initial={{ scale: 0, opacity: 0 }}
+                          animate={{
+                            scale: hoveredItem === item ? 1 : 0,
+                            opacity: hoveredItem === item ? 1 : 0,
+                          }}
+                          transition={{ duration: 0.3 }}
                         />
-                      </motion.span>
-                    </Link>
-                  </motion.div>
-                ))}
+
+                        <motion.span className="mobile-nav-link-text">
+                          <RandomizingText
+                            text={item}
+                            isHovered={
+                              hoveredItem === item && isAnimationComplete
+                            }
+                          />
+                        </motion.span>
+                      </Link>
+                    </motion.div>
+                  )
+                )}
               </motion.div>
             </motion.div>
 

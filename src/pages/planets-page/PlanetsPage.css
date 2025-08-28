@@ -1,0 +1,121 @@
+.planets-page {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+}
+
+.planets-hero {
+  padding: 120px 0 80px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.planets-hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.planets-hero .section-title {
+  font-size: 4rem;
+  margin-bottom: 2rem;
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 3s ease infinite;
+}
+
+.planets-subtitle {
+  font-size: 1.5rem;
+  color: #b8c5d6;
+  margin-bottom: 3rem;
+  opacity: 0.9;
+}
+
+.planets-info {
+  padding: 80px 0;
+  position: relative;
+  z-index: 2;
+}
+
+.planets-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 3rem;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.planets-card h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: #4ecdc4;
+}
+
+.controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.control-item {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 1.5rem;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.control-key {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ff6b6b;
+  margin-bottom: 0.5rem;
+  background: rgba(255, 107, 107, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+}
+
+.control-desc {
+  color: #b8c5d6;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+@keyframes gradientShift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .planets-hero .section-title {
+    font-size: 2.5rem;
+  }
+
+  .planets-subtitle {
+    font-size: 1.2rem;
+  }
+
+  .planets-card {
+    padding: 2rem;
+    margin: 0 1rem;
+  }
+
+  .controls-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

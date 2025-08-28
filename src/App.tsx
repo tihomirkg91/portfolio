@@ -10,6 +10,7 @@ import { HomePage } from './pages/home-page/HomePage';
 import { AboutPage } from './pages/about-page/AboutPage';
 import { ProjectsPage } from './pages/projects-page/ProjectsPage';
 import { ContactPage } from './pages/contact-page/ContactPage';
+import { PlanetsPage } from './pages/planets-page/PlanetsPage';
 import './App.css';
 
 function AppContent() {
@@ -27,6 +28,7 @@ function AppContent() {
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/planets" element={<PlanetsPage />} />
           <Route path="/contact" element={<ContactPage />} />
         </Routes>
       </main>

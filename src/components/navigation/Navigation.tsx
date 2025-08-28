@@ -192,73 +192,75 @@ export const Navigation = ({
           >
             {/* Enhanced Navigation Items */}
             <nav className="navigation-nav">
-              {['HOME', 'ABOUT', 'PROJECTS', 'CONTACT'].map((item, index) => (
-                <motion.div
-                  key={item}
-                  variants={menuItemVariants}
-                  custom={index}
-                  whileHover="hover"
-                  whileTap="tap"
-                  className="navigation-item"
-                >
+              {['HOME', 'ABOUT', 'PROJECTS', 'PLANETS', 'CONTACT'].map(
+                (item, index) => (
                   <motion.div
-                    variants={linkHoverVariants}
+                    key={item}
+                    variants={menuItemVariants}
+                    custom={index}
+                    whileHover="hover"
+                    whileTap="tap"
                     className="navigation-item"
                   >
-                    <Link
-                      to={
-                        item === 'HOME'
-                          ? '/'
-                          : `/${item.toLowerCase().replace(' ', '-')}`
-                      }
-                      className={`navigation-link ${
-                        isActive(item, 'desktop') ? 'active' : ''
-                      }`}
-                      onClick={handleLinkClick}
-                      onMouseEnter={() => {
-                        setHoveredItem(item);
-                        playHoverSound();
-                      }}
-                      onMouseLeave={() => setHoveredItem(null)}
-                      style={{
-                        background:
-                          hoveredItem === item
-                            ? 'rgba(99, 102, 241, 0.1)'
-                            : isActive(item, 'desktop')
-                            ? 'rgba(99, 102, 241, 0.15)'
-                            : 'transparent',
-                        border:
-                          hoveredItem === item
-                            ? '1px solid rgba(99, 102, 241, 0.3)'
-                            : isActive(item, 'desktop')
-                            ? '1px solid rgba(99, 102, 241, 0.4)'
-                            : '1px solid transparent',
-                      }}
+                    <motion.div
+                      variants={linkHoverVariants}
+                      className="navigation-item"
                     >
-                      <motion.span
-                        className="navigation-link-content"
-                        whileHover={{
-                          color: '#6366f1',
-                          scale: 1.05,
+                      <Link
+                        to={
+                          item === 'HOME'
+                            ? '/'
+                            : `/${item.toLowerCase().replace(' ', '-')}`
+                        }
+                        className={`navigation-link ${
+                          isActive(item, 'desktop') ? 'active' : ''
+                        }`}
+                        onClick={handleLinkClick}
+                        onMouseEnter={() => {
+                          setHoveredItem(item);
+                          playHoverSound();
                         }}
-                        transition={{ type: 'spring', stiffness: 300 }}
+                        onMouseLeave={() => setHoveredItem(null)}
+                        style={{
+                          background:
+                            hoveredItem === item
+                              ? 'rgba(99, 102, 241, 0.1)'
+                              : isActive(item, 'desktop')
+                              ? 'rgba(99, 102, 241, 0.15)'
+                              : 'transparent',
+                          border:
+                            hoveredItem === item
+                              ? '1px solid rgba(99, 102, 241, 0.3)'
+                              : isActive(item, 'desktop')
+                              ? '1px solid rgba(99, 102, 241, 0.4)'
+                              : '1px solid transparent',
+                        }}
                       >
-                        <RandomizingText
-                          text={item}
-                          isHovered={hoveredItem === item}
-                        />
-                      </motion.span>
+                        <motion.span
+                          className="navigation-link-content"
+                          whileHover={{
+                            color: '#6366f1',
+                            scale: 1.05,
+                          }}
+                          transition={{ type: 'spring', stiffness: 300 }}
+                        >
+                          <RandomizingText
+                            text={item}
+                            isHovered={hoveredItem === item}
+                          />
+                        </motion.span>
 
-                      <motion.div
-                        className="nav-link-underline"
-                        initial={{ scaleX: 0 }}
-                        whileHover={{ scaleX: 1 }}
-                        transition={{ duration: 0.3 }}
-                      />
-                    </Link>
+                        <motion.div
+                          className="nav-link-underline"
+                          initial={{ scaleX: 0 }}
+                          whileHover={{ scaleX: 1 }}
+                          transition={{ duration: 0.3 }}
+                        />
+                      </Link>
+                    </motion.div>
                   </motion.div>
-                </motion.div>
-              ))}
+                )
+              )}
             </nav>
 
             {/* Enhanced Sidebar Footer */}

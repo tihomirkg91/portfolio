@@ -20,7 +20,7 @@ interface ClickEffect {
 }
 
 interface CursorTrailProps {
-  trailType?: 'default' | 'hero' | 'projects' | 'about' | 'contact';
+  trailType?: 'default' | 'hero' | 'projects' | 'about' | 'contact' | 'planets';
   maxParticles?: number;
   particleLifetime?: number;
 }
@@ -90,6 +90,16 @@ export const CursorTrail = ({
       shapes: ['star' as const, 'circle' as const],
       spawnRate: 35,
       baseSize: 11,
+    },
+    planets: {
+      colors: [
+        'rgba(255, 107, 107, 0.8)',
+        'rgba(78, 205, 196, 0.6)',
+        'rgba(69, 183, 209, 0.4)',
+      ],
+      shapes: ['circle' as const, 'star' as const, 'triangle' as const],
+      spawnRate: 25,
+      baseSize: 14,
     },
   };
 

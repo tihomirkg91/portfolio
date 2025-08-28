@@ -39,7 +39,7 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
   const [isUserCursorTrailEnabled, setIsUserCursorTrailEnabled] =
     useState(true);
   const [soundEffectsEnabled, setSoundEffectsEnabled] = useState(true);
-  const [usePlanets, setUsePlanets] = useState(true);
+  const [usePlanets, setUsePlanets] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   // Mobile detection effect

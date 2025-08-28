@@ -1,6 +1,12 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 
-type TrailType = 'default' | 'hero' | 'projects' | 'about' | 'contact';
+type TrailType =
+  | 'default'
+  | 'hero'
+  | 'projects'
+  | 'about'
+  | 'contact'
+  | 'planets';
 
 interface CursorTrailContextType {
   trailType: TrailType;
