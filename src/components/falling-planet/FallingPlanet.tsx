@@ -65,7 +65,7 @@ export const FallingPlanet = () => {
   const lastNoteSpawnRef = useRef(0);
   const startTimeRef = useRef<number>(0);
   const timerIntervalRef = useRef<number | null>(null);
-  const currentSpeedRef = useRef(2);
+  const currentSpeedRef = useRef(1.5);
 
   // Sync refs with state
   useEffect(() => {
@@ -94,7 +94,7 @@ export const FallingPlanet = () => {
     setCombo(0);
     setPlayingTime(0);
     setCurrentLevel(1);
-    currentSpeedRef.current = 2;
+    currentSpeedRef.current = 1.5;
     setNotes([]);
     setHitZones(
       Array.from({ length: LANES }, (_, i) => ({
@@ -391,7 +391,7 @@ export const FallingPlanet = () => {
 
         // Increase speed every 10 seconds
         const speedLevel = Math.floor(elapsed / 10) + 1;
-        const newSpeed = 2 + (speedLevel - 1) * 0.3; // Start at 2, increase by 0.3 every 10s
+        const newSpeed = 1 + (speedLevel - 1) * 0.3; // Start at 1.5, increase by 0.3 every 10s
         setCurrentLevel(speedLevel);
         currentSpeedRef.current = newSpeed;
       }, 1000);
