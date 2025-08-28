@@ -1,4 +1,4 @@
-.space-game {
+.falling-planet {
   background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
   border: 2px solid #00ffff;
   border-radius: 10px;
@@ -8,6 +8,7 @@
   overflow: hidden;
   min-height: 300px;
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+  z-index: 100;
 }
 
 .game-header {
@@ -26,21 +27,41 @@
   text-shadow: 0 0 10px #ff00ff;
 }
 
+.fullscreen-indicator {
+  color: #00ffff;
+  font-size: 14px;
+  font-weight: bold;
+  text-shadow: 0 0 5px #00ffff;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
 .game-controls {
-  display: flex;
+  display: flex !important;
   align-items: center;
   gap: 15px;
+  flex-wrap: wrap;
 }
 
 .score,
 .combo,
 .time,
 .level {
-  color: #00ffff;
+  color: #00ffff !important;
   font-family: 'Courier New', monospace;
   font-size: 18px;
   font-weight: bold;
   text-shadow: 0 0 5px #00ffff;
+  display: inline-block !important;
 }
 
 .level {
@@ -59,6 +80,9 @@
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+  display: inline-block !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
 }
 
 .game-btn:hover {
@@ -79,6 +103,7 @@
   border: 1px solid rgba(0, 255, 255, 0.3);
   display: flex;
   align-items: flex-end;
+  visibility: visible !important;
 }
 
 .lane {
@@ -124,7 +149,7 @@
   height: 60px;
   border: 2px solid rgba(255, 255, 255, 0.5);
   border-radius: 5px;
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
   transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
@@ -133,6 +158,8 @@
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   background-color: var(--lane-color);
+  visibility: visible !important;
+  pointer-events: auto !important;
 }
 
 /* Hit zone positioning */
@@ -261,6 +288,19 @@
   font-size: 14px;
 }
 
+.keyboard-hint {
+  color: #ff6b35;
+  font-weight: bold;
+  text-shadow: 0 0 5px #ff6b35;
+}
+
+.fullscreen-hint {
+  color: #ff00ff;
+  font-weight: bold;
+  text-shadow: 0 0 5px #ff00ff;
+  animation: pulse 2s infinite;
+}
+
 /* Touch device optimizations */
 @media (hover: none) and (pointer: coarse) {
   .hit-zone {
@@ -325,13 +365,102 @@
 
 /* Fullscreen styles */
 .fullscreen-active {
-  border: 4px solid #ff00ff !important;
-  box-shadow: 0 0 50px rgba(255, 0, 255, 0.8) !important;
-  min-height: 100vh !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 9999 !important;
   margin: 0 !important;
   border-radius: 0 !important;
+  padding: 20px !important;
+  border: 4px solid #ff00ff !important;
+  box-shadow: 0 0 50px rgba(255, 0, 255, 0.8) !important;
+  background: linear-gradient(
+    135deg,
+    #0c0c0c 0%,
+    #1a1a2e 50%,
+    #16213e 100%
+  ) !important;
+  transition: all 0.3s ease !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+/* Hide scrollbars globally when fullscreen is active */
+body.fullscreen-active,
+body.fullscreen-active *,
+html:has(.fullscreen-active),
+body:has(.fullscreen-active),
+html:has(.fullscreen-active) *,
+body:has(.fullscreen-active) * {
+  overflow: hidden !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+body.fullscreen-active::-webkit-scrollbar,
+body.fullscreen-active *::-webkit-scrollbar,
+html:has(.fullscreen-active)::-webkit-scrollbar,
+body:has(.fullscreen-active)::-webkit-scrollbar,
+html:has(.fullscreen-active) *::-webkit-scrollbar,
+body:has(.fullscreen-active) *::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Hide headers and navigation when fullscreen is active */
+body.fullscreen-active header,
+body.fullscreen-active nav,
+body.fullscreen-active .header,
+body.fullscreen-active .navigation,
+body.fullscreen-active .navbar {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* Ensure fullscreen covers everything */
+body.fullscreen-active {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+}
+
+.fullscreen-active * {
+  box-sizing: border-box !important;
 }
 
 .fullscreen-active .game-area {
-  height: calc(100vh - 120px) !important;
+  height: calc(100vh - 140px) !important;
+  max-height: calc(100vh - 140px) !important;
+  transition: height 0.3s ease !important;
+  overflow: hidden !important;
+}
+
+.fullscreen-active .lane {
+  height: calc(100vh - 180px) !important;
+  overflow: hidden !important;
+}
+
+.fullscreen-active .hit-zone {
+  height: 60px !important; /* Keep original height */
+  bottom: 0 !important; /* Ensure positioned at bottom */
+  overflow: hidden !important;
+}
+
+.fullscreen-active .game-instructions {
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+  font-size: 12px !important;
+  padding: 5px !important;
+  line-height: 1.2 !important;
 }

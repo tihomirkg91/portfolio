@@ -220,6 +220,8 @@ export const FallingPlanet = () => {
       if (document.documentElement.requestFullscreen) {
         await document.documentElement.requestFullscreen();
         setIsFullscreen(true);
+        // Add class to body for CSS targeting
+        document.body.classList.add('fullscreen-active');
       }
     } catch (error) {
       console.error('Error entering fullscreen:', error);
@@ -231,6 +233,8 @@ export const FallingPlanet = () => {
       if (document.exitFullscreen) {
         await document.exitFullscreen();
         setIsFullscreen(false);
+        // Remove class from body
+        document.body.classList.remove('fullscreen-active');
       }
     } catch (error) {
       console.error('Error exiting fullscreen:', error);
@@ -248,7 +252,15 @@ export const FallingPlanet = () => {
   // Handle fullscreen change events
   useEffect(() => {
     const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
+      const isNowFullscreen = !!document.fullscreenElement;
+      setIsFullscreen(isNowFullscreen);
+
+      // Manage body class based on fullscreen state
+      if (isNowFullscreen) {
+        document.body.classList.add('fullscreen-active');
+      } else {
+        document.body.classList.remove('fullscreen-active');
+      }
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -257,6 +269,22 @@ export const FallingPlanet = () => {
         toggleFullscreen();
       } else if (event.key === 'Escape' && document.fullscreenElement) {
         exitFullscreen();
+      } else if (event.key === 'f' && event.ctrlKey) {
+        event.preventDefault();
+        toggleFullscreen();
+      }
+      // Don't prevent default for game keys when not in fullscreen
+      if (!isFullscreen) return;
+
+      // Handle game keys only in fullscreen mode
+      if (!gameActive) return;
+
+      const key = event.key.toLowerCase();
+      const laneIndex = LANE_KEYS.indexOf(key);
+
+      if (laneIndex !== -1) {
+        event.preventDefault();
+        hitNote(laneIndex);
       }
     };
 
@@ -423,11 +451,16 @@ export const FallingPlanet = () => {
 
   return (
     <div
-      className={`space-game ${isFullscreen ? 'fullscreen-active' : ''}`}
+      className={`falling-planet ${isFullscreen ? 'fullscreen-active' : ''}`}
       ref={gameRef}
     >
       <div className="game-header">
-        <h3>Falling Planet</h3>
+        <h3>
+          Falling Planet{' '}
+          {isFullscreen && (
+            <span className="fullscreen-indicator">🎮 FULLSCREEN</span>
+          )}
+        </h3>
         <div className="game-controls">
           <span className="score">Score: {score}</span>
           <span className="combo">Combo: {combo}x</span>
@@ -436,7 +469,11 @@ export const FallingPlanet = () => {
           <button
             className="game-btn fullscreen-btn"
             onClick={toggleFullscreen}
-            title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
+            title={
+              isFullscreen
+                ? 'Exit Fullscreen (F11 or Ctrl+F)'
+                : 'Enter Fullscreen (F11 or Ctrl+F)'
+            }
           >
             {isFullscreen ? '🗗' : '🗖'}
           </button>
@@ -499,12 +536,19 @@ export const FallingPlanet = () => {
           <p>
             Press "Start Game" to begin! Use A, S, D, F, G keys or tap the
             colored zones to hit the falling notes!{' '}
-            {isFullscreen && '🎮 Fullscreen Mode Active'}
+            <span className="keyboard-hint">
+              Press F11 or Ctrl+F for fullscreen mode!
+            </span>
           </p>
         ) : (
           <p>
             Hit the notes when they reach the colored zones! Perfect timing =
-            more points! {isFullscreen && '⭐ Faster notes in fullscreen!'}
+            more points!{' '}
+            {isFullscreen && (
+              <span className="fullscreen-hint">
+                🎮 Fullscreen Mode: Press Escape to exit
+              </span>
+            )}
           </p>
         )}
       </div>
