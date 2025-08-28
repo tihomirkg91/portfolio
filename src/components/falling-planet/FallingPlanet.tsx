@@ -1,6 +1,13 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { Maximize2, Minimize2, Play, Square, Gamepad2, Smartphone } from 'lucide-react';
 import './FallingPlanet.css';
+import { useSettings } from '../../contexts/SettingsContext';
+import {
+  Maximize2,
+  Minimize2,
+  Gamepad2,
+  Smartphone,
+  Keyboard,
+} from 'lucide-react';
 
 interface Note {
   id: number;
@@ -22,6 +29,7 @@ const LANE_KEYS = ['a', 's', 'd', 'f', 'g'];
 const LANE_COLORS = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#f0932b'];
 
 export const FallingPlanet = () => {
+  const { isMobile } = useSettings();
   const [notes, setNotes] = useState<Note[]>([]);
   const [score, setScore] = useState(0);
   const [combo, setCombo] = useState(0);
@@ -218,12 +226,6 @@ export const FallingPlanet = () => {
   // Full screen functionality
   const enterFullscreen = useCallback(async () => {
     try {
-      // Check if we're on a mobile device
-      const isMobile =
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-          navigator.userAgent
-        );
-
       if (isMobile) {
         // For mobile devices, try different approaches
         if (document.documentElement.requestFullscreen) {
@@ -282,11 +284,6 @@ export const FallingPlanet = () => {
 
   const exitFullscreen = useCallback(async () => {
     try {
-      const isMobile =
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-          navigator.userAgent
-        );
-
       if (isMobile) {
         // Exit mobile fullscreen simulation
         setIsFullscreen(false);
@@ -345,11 +342,6 @@ export const FallingPlanet = () => {
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      const isMobile =
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-          navigator.userAgent
-        );
-
       if (event.key === 'F11') {
         event.preventDefault();
         toggleFullscreen();
@@ -552,8 +544,7 @@ export const FallingPlanet = () => {
           Falling Planet{' '}
           {isFullscreen && (
             <span className="fullscreen-indicator">
-              <Gamepad2 size={16} className="icon-margin" />
-              FULLSCREEN
+              <Gamepad2 size={16} /> FULLSCREEN
             </span>
           )}
         </h3>
@@ -575,12 +566,10 @@ export const FallingPlanet = () => {
           </button>
           {!gameActive ? (
             <button className="game-btn start-btn" onClick={startGame}>
-              <Play size={16} className="icon-margin" />
               Start Game
             </button>
           ) : (
             <button className="game-btn end-btn" onClick={endGame}>
-              <Square size={16} className="icon-margin" />
               End Game
             </button>
           )}
@@ -633,14 +622,12 @@ export const FallingPlanet = () => {
         {!gameActive ? (
           <p>
             Press "Start Game" to begin!{' '}
-            {/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-              navigator.userAgent
-            ) ? (
+            {isMobile ? (
               <>
                 Tap the colored zones to hit the falling notes!{' '}
                 <span className="mobile-hint">
-                  📱 Mobile Mode: Tap fullscreen button for immersive
-                  experience!
+                  <Smartphone size={14} /> Mobile Mode: Tap fullscreen button
+                  for immersive experience!
                 </span>
               </>
             ) : (
@@ -648,23 +635,22 @@ export const FallingPlanet = () => {
                 Use A, S, D, F, G keys or tap the colored zones to hit the
                 falling notes!{' '}
                 <span className="keyboard-hint">
-                  Press F11 or Ctrl+F for fullscreen mode!
+                  <Keyboard size={14} /> Press F11 or Ctrl+F for fullscreen
+                  mode!
                 </span>
               </>
             )}
           </p>
         ) : (
           <p>
-            {/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-              navigator.userAgent
-            ) ? (
+            {isMobile ? (
               <>
                 Tap the colored zones when notes reach them! Perfect timing =
                 more points!{' '}
                 {isFullscreen && (
                   <span className="fullscreen-hint">
-                    <Smartphone size={16} className="icon-margin" />
-                    Mobile Fullscreen: Tap zones to play!
+                    <Smartphone size={14} /> Mobile Fullscreen: Tap zones to
+                    play!
                   </span>
                 )}
               </>
@@ -674,8 +660,7 @@ export const FallingPlanet = () => {
                 = more points!{' '}
                 {isFullscreen && (
                   <span className="fullscreen-hint">
-                    <Gamepad2 size={16} className="icon-margin" />
-                    Fullscreen Mode: Press Escape to exit
+                    <Gamepad2 size={14} /> Fullscreen Mode: Press Escape to exit
                   </span>
                 )}
               </>
