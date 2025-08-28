@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import './SpaceGame.css';
+import './FallingPlanet.css';
 
 interface Note {
   id: number;
@@ -20,7 +20,7 @@ const LANES = 5;
 const LANE_KEYS = ['a', 's', 'd', 'f', 'g'];
 const LANE_COLORS = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#f0932b'];
 
-export const SpaceGame = () => {
+export const FallingPlanet = () => {
   const [notes, setNotes] = useState<Note[]>([]);
   const [score, setScore] = useState(0);
   const [combo, setCombo] = useState(0);
@@ -28,11 +28,7 @@ export const SpaceGame = () => {
   const [noteId, setNoteId] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [hitZones, setHitZones] = useState<HitZone[]>(
-    Array.from({ length: LANES }, (_, i) => ({
-      lane: i,
-      active: false,
-      timer: 0,
-    }))
+    Array.from({ length: LANES }, (_, i) => ({ lane: i, active: false, timer: 0 }))
   );
 
   // Use refs for immediate access to avoid state delays
@@ -40,13 +36,7 @@ export const SpaceGame = () => {
   const scoreRef = useRef(0);
   const gameActiveRef = useRef(false);
   const notesRef = useRef<Note[]>([]);
-  const hitZonesRef = useRef<HitZone[]>(
-    Array.from({ length: LANES }, (_, i) => ({
-      lane: i,
-      active: false,
-      timer: 0,
-    }))
-  );
+  const hitZonesRef = useRef<HitZone[]>(Array.from({ length: LANES }, (_, i) => ({ lane: i, active: false, timer: 0 })));
 
   const gameRef = useRef<HTMLDivElement>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -79,31 +69,18 @@ export const SpaceGame = () => {
     setScore(0);
     setCombo(0);
     setNotes([]);
-    setHitZones(
-      Array.from({ length: LANES }, (_, i) => ({
-        lane: i,
-        active: false,
-        timer: 0,
-      }))
-    );
+    setHitZones(Array.from({ length: LANES }, (_, i) => ({ lane: i, active: false, timer: 0 })));
   };
 
   const endGame = () => {
     setGameActive(false);
     setNotes([]);
-    setHitZones(
-      Array.from({ length: LANES }, (_, i) => ({
-        lane: i,
-        active: false,
-        timer: 0,
-      }))
-    );
+    setHitZones(Array.from({ length: LANES }, (_, i) => ({ lane: i, active: false, timer: 0 })));
   };
 
   const playSound = useCallback((frequency: number, duration: number = 200) => {
     if (!audioContextRef.current) {
-      audioContextRef.current = new (window.AudioContext ||
-        (window as any).webkitAudioContext)();
+      audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
     }
     const ctx = audioContextRef.current;
     const oscillator = ctx.createOscillator();
@@ -116,89 +93,78 @@ export const SpaceGame = () => {
     oscillator.type = 'sine';
 
     gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(
-      0.01,
-      ctx.currentTime + duration / 1000
-    );
+    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration / 1000);
 
     oscillator.start(ctx.currentTime);
     oscillator.stop(ctx.currentTime + duration / 1000);
   }, []);
 
-  const hitNote = useCallback(
-    (lane: number) => {
-      const hitZoneY = 85;
-      const tolerance = 15;
-      const currentNotes = notesRef.current;
-      const currentCombo = comboRef.current;
+  const hitNote = useCallback((lane: number) => {
+    const hitZoneY = 85;
+    const tolerance = 15;
+    const currentNotes = notesRef.current;
+    const currentCombo = comboRef.current;
 
-      // Find the note to hit using more efficient search
-      let bestNoteIndex = -1;
-      let bestAccuracy = tolerance + 1;
+    // Find the note to hit using more efficient search
+    let bestNoteIndex = -1;
+    let bestAccuracy = tolerance + 1;
 
-      for (let i = 0; i < currentNotes.length; i++) {
-        const note = currentNotes[i];
-        if (note.lane === lane) {
-          const accuracy = Math.abs(note.y - hitZoneY);
-          if (accuracy <= tolerance) {
-            if (accuracy < bestAccuracy) {
-              bestAccuracy = accuracy;
-              bestNoteIndex = i;
-            }
+    for (let i = 0; i < currentNotes.length; i++) {
+      const note = currentNotes[i];
+      if (note.lane === lane) {
+        const accuracy = Math.abs(note.y - hitZoneY);
+        if (accuracy <= tolerance) {
+          if (accuracy < bestAccuracy) {
+            bestAccuracy = accuracy;
+            bestNoteIndex = i;
           }
         }
       }
+    }
 
-      if (bestNoteIndex !== -1) {
-        const note = currentNotes[bestNoteIndex];
-        const accuracy = Math.abs(note.y - hitZoneY);
-        let points = 100;
+    if (bestNoteIndex !== -1) {
+      const note = currentNotes[bestNoteIndex];
+      const accuracy = Math.abs(note.y - hitZoneY);
+      let points = 100;
 
-        if (accuracy <= 5) {
-          points = 300;
-        } else if (accuracy <= 10) {
-          points = 200;
-        }
-
-        const newScore = scoreRef.current + points * (currentCombo + 1);
-        const newCombo = currentCombo + 1;
-
-        // Batch state updates for better performance
-        setScore(newScore);
-        setCombo(newCombo);
-
-        // Update refs immediately
-        scoreRef.current = newScore;
-        comboRef.current = newCombo;
-
-        playSound(440 + lane * 110, 150);
-
-        // Remove the hit note efficiently
-        setNotes((prev) => prev.filter((_, index) => index !== bestNoteIndex));
-      } else {
-        // Missed note - reset combo
-        setCombo(0);
-        comboRef.current = 0;
-        playSound(150, 100);
+      if (accuracy <= 5) {
+        points = 300;
+      } else if (accuracy <= 10) {
+        points = 200;
       }
 
-      // Activate hit zone animation with shorter duration
-      setHitZones((prev) =>
-        prev.map((hz) =>
-          hz.lane === lane ? { ...hz, active: true, timer: 100 } : hz
-        )
-      );
-    },
-    [playSound]
-  );
+      const newScore = scoreRef.current + points * (currentCombo + 1);
+      const newCombo = currentCombo + 1;
+
+      // Batch state updates for better performance
+      setScore(newScore);
+      setCombo(newCombo);
+
+      // Update refs immediately
+      scoreRef.current = newScore;
+      comboRef.current = newCombo;
+
+      playSound(440 + lane * 110, 150);
+
+      // Remove the hit note efficiently
+      setNotes(prev => prev.filter((_, index) => index !== bestNoteIndex));
+    } else {
+      // Missed note - reset combo
+      setCombo(0);
+      comboRef.current = 0;
+      playSound(150, 100);
+    }
+
+    // Activate hit zone animation with shorter duration
+    setHitZones(prev => prev.map(hz =>
+      hz.lane === lane ? { ...hz, active: true, timer: 100 } : hz
+    ));
+  }, [playSound]);
 
   // Handle touch events for mobile
-  const handleTouchStart = useCallback(
-    (lane: number) => {
-      hitNote(lane);
-    },
-    [hitNote]
-  );
+  const handleTouchStart = useCallback((lane: number) => {
+    hitNote(lane);
+  }, [hitNote]);
 
   // Full screen functionality
   const enterFullscreen = async () => {
@@ -290,10 +256,7 @@ export const SpaceGame = () => {
     const gameLoop = (currentTime: number) => {
       if (currentTime - lastTime >= frameInterval) {
         // Spawn new notes less frequently for better performance
-        if (
-          currentTime - lastNoteSpawnRef.current > 800 &&
-          Math.random() < 0.4
-        ) {
+        if (currentTime - lastNoteSpawnRef.current > 800 && Math.random() < 0.4) {
           const lane = Math.floor(Math.random() * LANES);
           const newNote: Note = {
             id: noteId,
@@ -304,19 +267,19 @@ export const SpaceGame = () => {
             color: LANE_COLORS[lane],
           };
 
-          setNotes((prev) => [...prev, newNote]);
-          setNoteId((prev) => prev + 1);
+          setNotes(prev => [...prev, newNote]);
+          setNoteId(prev => prev + 1);
           lastNoteSpawnRef.current = currentTime;
         }
 
         // Move notes and remove missed ones
-        setNotes((prev) => {
+        setNotes(prev => {
           const updatedNotes = prev
-            .map((note) => ({
+            .map(note => ({
               ...note,
               y: note.y + note.speed,
             }))
-            .filter((note) => {
+            .filter(note => {
               if (note.y > 100) {
                 // Missed note - reset combo
                 setCombo(0);
@@ -355,15 +318,12 @@ export const SpaceGame = () => {
     let lastTime = 0;
 
     const animateHitZones = (currentTime: number) => {
-      if (currentTime - lastTime >= 16) {
-        // ~60fps
-        setHitZones((prev) =>
-          prev.map((hz) => ({
-            ...hz,
-            timer: Math.max(0, hz.timer - 16),
-            active: hz.timer > 0,
-          }))
-        );
+      if (currentTime - lastTime >= 16) { // ~60fps
+        setHitZones(prev => prev.map(hz => ({
+          ...hz,
+          timer: Math.max(0, hz.timer - 16),
+          active: hz.timer > 0
+        })));
         lastTime = currentTime;
       }
 
@@ -385,7 +345,7 @@ export const SpaceGame = () => {
       ref={gameRef}
     >
       <div className="game-header">
-        <h3>Rhythm Hero</h3>
+        <h3>Falling Planet</h3>
         <div className="game-controls">
           <span className="score">Score: {score}</span>
           <span className="combo">Combo: {combo}x</span>
@@ -437,13 +397,11 @@ export const SpaceGame = () => {
           <div
             key={note.id}
             className={`note note-lane-${note.lane}`}
-            style={
-              {
-                '--note-color': note.color,
-                '--note-y': `${note.y}%`,
-                '--note-size': `${note.size}px`,
-              } as React.CSSProperties
-            }
+            style={{
+              '--note-color': note.color,
+              '--note-y': `${note.y}%`,
+              '--note-size': `${note.size}px`
+            } as React.CSSProperties}
           >
             <div className="note-glow"></div>
           </div>
@@ -453,14 +411,13 @@ export const SpaceGame = () => {
       <div className="game-instructions">
         {!gameActive ? (
           <p>
-            Press "Start Game" to begin! Use A, S, D, F, G keys or tap the
-            colored zones to hit the falling notes!{' '}
+            Press "Start Game" to begin! Use A, S, D, F, G keys or tap the colored zones to hit the falling notes!{' '}
             {isFullscreen && '🎮 Fullscreen Mode Active'}
           </p>
         ) : (
           <p>
-            Hit the notes when they reach the colored zones! Perfect timing =
-            more points! {isFullscreen && '⭐ Faster notes in fullscreen!'}
+            Hit the notes when they reach the colored zones! Perfect timing = more points!{' '}
+            {isFullscreen && '⭐ Faster notes in fullscreen!'}
           </p>
         )}
       </div>

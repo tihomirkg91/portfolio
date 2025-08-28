@@ -2,7 +2,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 
 import { useCursorTrail } from '../../contexts/CursorTrailContext';
-import { SpaceGame } from '../../components/space-game/SpaceGame';
+import { FallingPlanet } from '../../components/falling-planet/FallingPlanet';
 import './homePage.css';
 
 export const HomePage = () => {
@@ -177,7 +177,7 @@ export const HomePage = () => {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <SpaceGame />
+            <FallingPlanet />
           </motion.div>
         </div>
       </section>

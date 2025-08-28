@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import './SpaceGame.css';
+import './FallingPlanet.css';
 
 interface Note {
   id: number;
@@ -20,7 +20,7 @@ const LANES = 5;
 const LANE_KEYS = ['a', 's', 'd', 'f', 'g'];
 const LANE_COLORS = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#f0932b'];
 
-export const SpaceGame = () => {
+export const FallingPlanet = () => {
   const [notes, setNotes] = useState<Note[]>([]);
   const [score, setScore] = useState(0);
   const [combo, setCombo] = useState(0);
@@ -385,7 +385,7 @@ export const SpaceGame = () => {
       ref={gameRef}
     >
       <div className="game-header">
-        <h3>Rhythm Hero</h3>
+        <h3>Falling Planet</h3>
         <div className="game-controls">
           <span className="score">Score: {score}</span>
           <span className="combo">Combo: {combo}x</span>
