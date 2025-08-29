@@ -151,8 +151,8 @@ export const FallingPlanet = () => {
 
   const hitNote = useCallback(
     (lane: number) => {
-      const hitZoneY = 85;
-      const tolerance = 15;
+      const hitZoneY = 90; // Adjusted to better align with hit zones
+      const tolerance = 20; // Increased tolerance for better hit detection
       const currentNotes = notesRef.current;
       const currentCombo = comboRef.current;
 
@@ -724,21 +724,25 @@ export const FallingPlanet = () => {
 
         {/* Falling notes - optimized with CSS animations */}
         <div className="notes-container">
-          {notes.map((note) => (
-            <div
-              key={note.id}
-              className={`note note-lane-${note.lane}`}
-              style={
-                {
-                  '--note-color': note.color,
-                  '--note-y': `${note.y}%`,
-                  '--note-size': `${note.size}px`,
-                } as React.CSSProperties
-              }
-            >
-              <div className="note-glow"></div>
-            </div>
-          ))}
+          {notes.map((note) => {
+            const lanePositions = ['10%', '30%', '50%', '70%', '90%'];
+            return (
+              <div
+                key={note.id}
+                className="note"
+                style={
+                  {
+                    '--note-color': note.color,
+                    '--note-y': `${note.y}%`,
+                    '--note-size': `${note.size}px`,
+                    '--note-left': lanePositions[note.lane],
+                  } as React.CSSProperties
+                }
+              >
+                <div className="note-glow"></div>
+              </div>
+            );
+          })}
         </div>
       </div>
 

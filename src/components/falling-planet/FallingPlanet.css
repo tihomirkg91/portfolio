@@ -266,26 +266,30 @@
   width: var(--note-size);
   height: var(--note-size);
   top: var(--note-y);
-  left: 50%;
+  left: var(--note-left, 50%);
   transform: translateX(-50%);
 }
 
-/* Note lane positioning with flexbox */
+/* Note lane positioning with absolute positioning */
+.note-lane-0 {
+  /* First lane */
+  left: 10%;
+}
 .note-lane-1 {
   /* Second lane */
-  margin-left: 20%;
+  left: 30%;
 }
 .note-lane-2 {
   /* Third lane */
-  margin-left: 40%;
+  left: 50%;
 }
 .note-lane-3 {
   /* Fourth lane */
-  margin-left: 60%;
+  left: 70%;
 }
 .note-lane-4 {
   /* Fifth lane */
-  margin-left: 80%;
+  left: 90%;
 }
 
 .note-glow {
