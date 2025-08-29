@@ -540,6 +540,12 @@ export const FallingPlanet = () => {
       ref={gameRef}
     >
       <div className="game-header">
+        <div className="game-controls">
+          <span className="score">Score: {score}</span>
+          <span className="combo">Combo: {combo}x</span>
+          <span className="level">Level: {currentLevel}</span>
+          <span className="time">Time: {playingTime}s</span>
+        </div>
         <h3>
           {isFullscreen && (
             <span className="fullscreen-indicator">
@@ -547,11 +553,16 @@ export const FallingPlanet = () => {
             </span>
           )}
         </h3>
-        <div className="game-controls">
-          <span className="score">Score: {score}</span>
-          <span className="combo">Combo: {combo}x</span>
-          <span className="level">Level: {currentLevel}</span>
-          <span className="time">Time: {playingTime}s</span>
+        <div className="fullscreen-controls">
+          {!gameActive ? (
+            <button className="game-btn start-btn" onClick={startGame} style={{ marginRight: '10px' }}>
+              Start Game
+            </button>
+          ) : (
+            <button className="game-btn end-btn" onClick={endGame} style={{ marginRight: '10px' }}>
+              End Game
+            </button>
+          )}
           <button
             className="game-btn fullscreen-btn"
             onClick={toggleFullscreen}
@@ -563,15 +574,6 @@ export const FallingPlanet = () => {
           >
             {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
           </button>
-          {!gameActive ? (
-            <button className="game-btn start-btn" onClick={startGame}>
-              Start Game
-            </button>
-          ) : (
-            <button className="game-btn end-btn" onClick={endGame}>
-              End Game
-            </button>
-          )}
         </div>
       </div>
 
