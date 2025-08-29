@@ -1,13 +1,13 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
-import './FallingPlanet.css';
-import { useSettings } from '../../contexts/SettingsContext';
 import {
+  Gamepad2,
+  Keyboard,
   Maximize2,
   Minimize2,
-  Gamepad2,
   Smartphone,
-  Keyboard,
 } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useSettings } from '../../contexts/SettingsContext';
+import './FallingPlanet.css';
 
 interface Note {
   id: number;
@@ -36,6 +36,7 @@ export const FallingPlanet = () => {
   const [gameActive, setGameActive] = useState(false);
   const [noteId, setNoteId] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isExitingFullscreen, setIsExitingFullscreen] = useState(false);
   const [playingTime, setPlayingTime] = useState(0);
   const [currentLevel, setCurrentLevel] = useState(1);
   const [hitZones, setHitZones] = useState<HitZone[]>(
@@ -227,6 +228,8 @@ export const FallingPlanet = () => {
   const enterFullscreen = useCallback(async () => {
     try {
       if (isMobile) {
+        console.log('Attempting mobile fullscreen...');
+
         // For mobile devices, try different approaches
         if (document.documentElement.requestFullscreen) {
           // Try standard fullscreen first
@@ -234,16 +237,19 @@ export const FallingPlanet = () => {
             await document.documentElement.requestFullscreen();
             setIsFullscreen(true);
             document.body.classList.add('fullscreen-active');
+            console.log('Mobile fullscreen activated successfully');
             return;
           } catch (error) {
             console.log(
-              'Standard fullscreen failed, trying mobile-specific methods'
+              'Standard fullscreen failed, trying mobile-specific methods:',
+              error
             );
           }
         }
 
         // For iOS Safari and other mobile browsers that don't support fullscreen
         // We'll simulate fullscreen by maximizing the viewport
+        console.log('Using simulated fullscreen for mobile');
         setIsFullscreen(true);
         document.body.classList.add('fullscreen-active', 'mobile-fullscreen');
 
@@ -268,6 +274,18 @@ export const FallingPlanet = () => {
           window.scrollTo(0, 1);
         }
 
+        // Force a re-render to apply fullscreen styles
+        setTimeout(() => {
+          if (gameRef.current) {
+            gameRef.current.style.position = 'fixed';
+            gameRef.current.style.top = '0';
+            gameRef.current.style.left = '0';
+            gameRef.current.style.width = '100vw';
+            gameRef.current.style.height = '100vh';
+            gameRef.current.style.zIndex = '9999';
+          }
+        }, 100);
+
         console.log('Mobile fullscreen mode activated (simulated)');
       } else {
         // Desktop fullscreen
@@ -275,22 +293,39 @@ export const FallingPlanet = () => {
           await document.documentElement.requestFullscreen();
           setIsFullscreen(true);
           document.body.classList.add('fullscreen-active');
+          console.log('Desktop fullscreen activated');
         }
       }
     } catch (error) {
       console.error('Error entering fullscreen:', error);
     }
-  }, []);
+  }, [isMobile]);
 
   const exitFullscreen = useCallback(async () => {
     try {
       if (isMobile) {
-        // Exit mobile fullscreen simulation
-        setIsFullscreen(false);
-        document.body.classList.remove(
-          'fullscreen-active',
-          'mobile-fullscreen'
-        );
+        console.log('Exiting mobile fullscreen...');
+        setIsExitingFullscreen(true);
+
+        // Reset game element styles
+        if (gameRef.current) {
+          gameRef.current.style.position = '';
+          gameRef.current.style.top = '';
+          gameRef.current.style.left = '';
+          gameRef.current.style.width = '';
+          gameRef.current.style.height = '';
+          gameRef.current.style.zIndex = '';
+        }
+
+        // Small delay to ensure styles are reset before updating state
+        setTimeout(() => {
+          setIsFullscreen(false);
+          setIsExitingFullscreen(false);
+          document.body.classList.remove(
+            'fullscreen-active',
+            'mobile-fullscreen'
+          );
+        }, 50);
 
         // Restore viewport
         const viewport = document.querySelector('meta[name=viewport]');
@@ -317,15 +352,23 @@ export const FallingPlanet = () => {
     } catch (error) {
       console.error('Error exiting fullscreen:', error);
     }
-  }, []);
+  }, [isMobile]);
 
   const toggleFullscreen = useCallback(() => {
-    if (!document.fullscreenElement) {
+    console.log('Toggle fullscreen called. Current state:', {
+      isFullscreen,
+      documentFullscreen: !!document.fullscreenElement,
+      isMobile
+    });
+
+    if (!document.fullscreenElement && !isFullscreen) {
+      console.log('Entering fullscreen...');
       enterFullscreen();
     } else {
+      console.log('Exiting fullscreen...');
       exitFullscreen();
     }
-  }, [enterFullscreen, exitFullscreen]);
+  }, [enterFullscreen, exitFullscreen, isFullscreen, isMobile]);
 
   // Handle fullscreen change events
   useEffect(() => {
@@ -546,31 +589,49 @@ export const FallingPlanet = () => {
           <span className="level">Level: {currentLevel}</span>
           <span className="time">Time: {playingTime}s</span>
         </div>
-        <h3>
-          {isFullscreen && (
-            <span className="fullscreen-indicator">
-              <Gamepad2 size={16} />
-            </span>
-          )}
-        </h3>
+
         <div className="fullscreen-controls">
           {!gameActive ? (
-            <button className="game-btn start-btn" onClick={startGame} style={{ marginRight: '10px' }}>
+            <button
+              className="game-btn start-btn"
+              onClick={startGame}
+              style={{ marginRight: '10px' }}
+            >
               Start Game
             </button>
           ) : (
-            <button className="game-btn end-btn" onClick={endGame} style={{ marginRight: '10px' }}>
+            <button
+              className="game-btn end-btn"
+              onClick={endGame}
+              style={{ marginRight: '10px' }}
+            >
               End Game
             </button>
           )}
           <button
             className="game-btn fullscreen-btn"
-            onClick={toggleFullscreen}
+            onClick={() => {
+              console.log('Fullscreen button clicked on mobile:', isMobile);
+              toggleFullscreen();
+            }}
             title={
               isFullscreen
                 ? 'Exit Fullscreen (F11 or Ctrl+F)'
                 : 'Enter Fullscreen (F11 or Ctrl+F)'
             }
+            style={{
+              background: isExitingFullscreen
+                ? 'linear-gradient(45deg, #ffa500, #ff8c00)'
+                : isFullscreen
+                ? 'linear-gradient(45deg, #ff6b6b, #ff4757)'
+                : 'linear-gradient(45deg, #ff00ff, #00ffff)',
+              transform: isExitingFullscreen
+                ? 'scale(0.95)'
+                : isFullscreen
+                ? 'scale(1.05)'
+                : 'scale(1)',
+              opacity: isExitingFullscreen ? 0.7 : 1,
+            }}
           >
             {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
           </button>
