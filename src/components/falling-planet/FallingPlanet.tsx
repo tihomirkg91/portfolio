@@ -149,29 +149,6 @@ export const FallingPlanet = () => {
     oscillator.stop(ctx.currentTime + duration / 1000);
   }, []);
 
-  // Haptic feedback for mobile devices
-  const triggerHapticFeedback = useCallback(
-    (type: 'light' | 'medium' | 'heavy' = 'light') => {
-      if (!isMobile) return;
-
-      try {
-        // Modern vibration API
-        if ('vibrate' in navigator) {
-          const patterns = {
-            light: 50,
-            medium: [50, 50, 50],
-            heavy: [100, 50, 100],
-          };
-          navigator.vibrate(patterns[type]);
-        }
-      } catch (error) {
-        // Silently fail if vibration is not supported
-        console.log('Haptic feedback not supported');
-      }
-    },
-    [isMobile]
-  );
-
   const hitNote = useCallback(
     (lane: number) => {
       const hitZoneY = 85;
@@ -219,7 +196,6 @@ export const FallingPlanet = () => {
         comboRef.current = newCombo;
 
         playSound(440 + lane * 110, 150);
-        triggerHapticFeedback('medium');
 
         // Remove the hit note efficiently
         setNotes((prev) => prev.filter((_, index) => index !== bestNoteIndex));
@@ -228,7 +204,6 @@ export const FallingPlanet = () => {
         setCombo(0);
         comboRef.current = 0;
         playSound(150, 100);
-        triggerHapticFeedback('light');
       }
 
       // Activate hit zone animation with shorter duration
@@ -238,7 +213,7 @@ export const FallingPlanet = () => {
         )
       );
     },
-    [playSound, triggerHapticFeedback]
+    [playSound]
   );
 
   // Handle touch events for mobile
@@ -426,6 +401,34 @@ export const FallingPlanet = () => {
     const handleFullscreenChange = () => {
       const isNowFullscreen = !!document.fullscreenElement;
       setIsFullscreen(isNowFullscreen);
+
+      // Debug logging for mobile fullscreen
+      if (isMobile && isNowFullscreen) {
+        console.log('Mobile fullscreen activated');
+        setTimeout(() => {
+          const gameArea = document.querySelector('.game-area') as HTMLElement;
+          const hitZonesContainer = document.querySelector(
+            '.hit-zones-container'
+          ) as HTMLElement;
+          const hitZone = document.querySelector('.hit-zone') as HTMLElement;
+
+          if (gameArea) console.log('Game area height:', gameArea.offsetHeight);
+          if (hitZonesContainer) {
+            console.log(
+              'Hit zones container height:',
+              hitZonesContainer.offsetHeight
+            );
+            console.log(
+              'Hit zones container style:',
+              getComputedStyle(hitZonesContainer).height
+            );
+          }
+          if (hitZone) {
+            console.log('Hit zone height:', hitZone.offsetHeight);
+            console.log('Hit zone style:', getComputedStyle(hitZone).height);
+          }
+        }, 100);
+      }
 
       // Manage body class based on fullscreen state
       if (isNowFullscreen) {
@@ -743,23 +746,16 @@ export const FallingPlanet = () => {
         {!gameActive ? (
           <p>
             Press "Start Game" to begin!{' '}
-            {isMobile ? (
-              <>
-                Tap the colored zones to hit the falling notes!{' '}
-                <span className="mobile-hint">
-                  <Smartphone size={14} /> Mobile Mode: Tap fullscreen button
-                  for immersive experience! Use vibration feedback for better
-                  timing.
-                </span>
-              </>
-            ) : (
+            {isMobile ? null : (
               <>
                 Use A, S, D, F, G keys or tap the colored zones to hit the
-                falling notes!{' '}
-                <span className="keyboard-hint">
-                  <Keyboard size={14} /> Press F11 or Ctrl+F for fullscreen
-                  mode!
-                </span>
+                falling notes!
+                <div className="keyboard-hint-container">
+                  <span className="keyboard-hint">
+                    <Keyboard size={14} /> Press F11 or Ctrl+F for fullscreen
+                    mode!
+                  </span>
+                </div>
               </>
             )}
           </p>
@@ -769,22 +765,11 @@ export const FallingPlanet = () => {
               <>
                 Tap the colored zones when notes reach them! Perfect timing =
                 more points!{' '}
-                {isFullscreen && (
-                  <span className="fullscreen-hint">
-                    <Smartphone size={14} /> Mobile Fullscreen: Tap zones to
-                    play! Feel the vibration feedback!
-                  </span>
-                )}
               </>
             ) : (
               <>
                 Hit the notes when they reach the colored zones! Perfect timing
-                = more points!{' '}
-                {isFullscreen && (
-                  <span className="fullscreen-hint">
-                    <Gamepad2 size={14} /> Fullscreen Mode: Press Escape to exit
-                  </span>
-                )}
+                = more points!
               </>
             )}
           </p>

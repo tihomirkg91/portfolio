@@ -325,12 +325,26 @@
   color: #cccccc;
   font-family: 'Courier New', monospace;
   font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .keyboard-hint {
   color: #ff6b35;
   font-weight: bold;
   text-shadow: 0 0 5px #ff6b35;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.keyboard-hint-container {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .mobile-hint {
@@ -617,6 +631,11 @@ body.fullscreen-active {
   font-size: 12px !important;
   padding: 5px !important;
   line-height: 1.2 !important;
+  text-align: center !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
 }
 
 /* Mobile fullscreen styles */
@@ -651,19 +670,49 @@ body.mobile-fullscreen {
 }
 
 .mobile-fullscreen .game-area {
-  height: calc(100vh - 120px) !important;
-  max-height: calc(100vh - 120px) !important;
+  height: calc(100vh - 200px) !important;
+  max-height: calc(100vh - 200px) !important;
 }
 
 .mobile-fullscreen .lane {
-  height: calc(100vh - 160px) !important;
+  height: calc(100vh - 290px) !important;
+}
+
+.mobile-fullscreen .lanes-container,
+.mobile-fullscreen .notes-container {
+  bottom: 90px !important; /* Leave space for 90px hit zones */
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: calc(100vh - 290px) !important;
+}
+
+.mobile-fullscreen .hit-zones-container {
+  height: 90px !important; /* Explicit height for mobile fullscreen */
+  bottom: 0 !important;
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: space-between !important;
+  flex-direction: row !important;
+  width: 100% !important;
+  position: absolute !important;
 }
 
 .mobile-fullscreen .hit-zone {
-  height: 70px !important;
-  min-height: 70px !important;
+  height: 90px !important;
+  min-height: 90px !important;
+  max-height: 90px !important;
   border-radius: 10px !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 2px !important;
+  padding: 0 !important;
+  position: relative !important;
+  overflow: visible !important;
+  box-sizing: border-box !important;
 }
 
 .mobile-fullscreen .hit-zone:active {
@@ -671,11 +720,29 @@ body.mobile-fullscreen {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6) !important;
 }
 
+.mobile-fullscreen .hit-zone-glow {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  opacity: 0.3 !important;
+  pointer-events: none !important;
+}
+
 .mobile-fullscreen .hit-zone-key {
   font-size: 24px !important;
-  padding: 5px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  line-height: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   z-index: 1 !important;
   position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+  font-weight: bold !important;
 }
 
 .mobile-fullscreen .game-header {
@@ -683,9 +750,47 @@ body.mobile-fullscreen {
   padding: 5px 0 !important;
 }
 
-.mobile-fullscreen .game-header h3 {
-  font-size: 20px !important;
-  margin-bottom: 5px !important;
+/* iPhone specific optimizations */
+@media screen and (max-width: 430px) and (-webkit-min-device-pixel-ratio: 2) {
+  .mobile-fullscreen .hit-zones-container {
+    height: 100px !important;
+    min-height: 100px !important;
+  }
+
+  .mobile-fullscreen .hit-zone {
+    height: 100px !important;
+    min-height: 100px !important;
+    margin: 0 1px !important;
+  }
+
+  .mobile-fullscreen .hit-zone-key {
+    font-size: 26px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .mobile-fullscreen .lanes-container,
+  .mobile-fullscreen .notes-container {
+    bottom: 100px !important;
+  }
+
+  .mobile-fullscreen .lane-bg {
+    height: 100px !important;
+  }
+}
+
+/* Additional iOS Safari fullscreen fixes */
+.mobile-fullscreen .game-area {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .mobile-fullscreen .game-controls {
@@ -706,6 +811,11 @@ body.mobile-fullscreen {
   font-size: 13px !important;
   padding: 3px !important;
   line-height: 1.1 !important;
+  text-align: center !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
 }
 
 .mobile-fullscreen .game-btn {
@@ -769,6 +879,9 @@ body.mobile-fullscreen {
   .mobile-hint,
   .fullscreen-hint {
     font-size: 11px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
   }
 
   /* Button text */
@@ -803,6 +916,9 @@ body.mobile-fullscreen {
   .mobile-hint,
   .fullscreen-hint {
     font-size: 11px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
   }
 
   .game-btn {
@@ -832,6 +948,26 @@ body.mobile-fullscreen {
 
   .game-controls {
     gap: 6px !important;
+  }
+
+  /* Mobile fullscreen adjustments for small screens */
+  .mobile-fullscreen .hit-zones-container {
+    height: 95px !important;
+    min-height: 95px !important;
+  }
+
+  .mobile-fullscreen .hit-zone {
+    height: 95px !important;
+    min-height: 95px !important;
+  }
+
+  .mobile-fullscreen .lanes-container,
+  .mobile-fullscreen .notes-container {
+    bottom: 95px !important;
+  }
+
+  .mobile-fullscreen .lane-bg {
+    height: 95px !important;
   }
 }
 
@@ -891,5 +1027,10 @@ body.mobile-fullscreen {
     border-radius: 6px !important;
     background: rgba(0, 0, 0, 0.3) !important;
     margin: 10px 0 !important;
+    text-align: center !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
   }
 }
