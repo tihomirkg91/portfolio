@@ -149,6 +149,29 @@ export const FallingPlanet = () => {
     oscillator.stop(ctx.currentTime + duration / 1000);
   }, []);
 
+  // Haptic feedback for mobile devices
+  const triggerHapticFeedback = useCallback(
+    (type: 'light' | 'medium' | 'heavy' = 'light') => {
+      if (!isMobile) return;
+
+      try {
+        // Modern vibration API
+        if ('vibrate' in navigator) {
+          const patterns = {
+            light: 50,
+            medium: [50, 50, 50],
+            heavy: [100, 50, 100],
+          };
+          navigator.vibrate(patterns[type]);
+        }
+      } catch (error) {
+        // Silently fail if vibration is not supported
+        console.log('Haptic feedback not supported');
+      }
+    },
+    [isMobile]
+  );
+
   const hitNote = useCallback(
     (lane: number) => {
       const hitZoneY = 85;
@@ -196,6 +219,7 @@ export const FallingPlanet = () => {
         comboRef.current = newCombo;
 
         playSound(440 + lane * 110, 150);
+        triggerHapticFeedback('medium');
 
         // Remove the hit note efficiently
         setNotes((prev) => prev.filter((_, index) => index !== bestNoteIndex));
@@ -204,6 +228,7 @@ export const FallingPlanet = () => {
         setCombo(0);
         comboRef.current = 0;
         playSound(150, 100);
+        triggerHapticFeedback('light');
       }
 
       // Activate hit zone animation with shorter duration
@@ -213,12 +238,38 @@ export const FallingPlanet = () => {
         )
       );
     },
-    [playSound]
+    [playSound, triggerHapticFeedback]
   );
 
   // Handle touch events for mobile
   const handleTouchStart = useCallback(
-    (lane: number) => {
+    (lane: number, event?: React.TouchEvent) => {
+      // Prevent default to avoid unwanted behaviors
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      // Add visual feedback for touch
+      const target = event?.currentTarget as HTMLElement;
+      if (target && isMobile) {
+        target.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+          if (target) target.style.transform = '';
+        }, 150);
+      }
+
+      hitNote(lane);
+    },
+    [hitNote, isMobile]
+  );
+
+  // Handle mouse events for desktop
+  const handleMouseDown = useCallback(
+    (lane: number, event?: React.MouseEvent) => {
+      if (event) {
+        event.preventDefault();
+      }
       hitNote(lane);
     },
     [hitNote]
@@ -358,7 +409,7 @@ export const FallingPlanet = () => {
     console.log('Toggle fullscreen called. Current state:', {
       isFullscreen,
       documentFullscreen: !!document.fullscreenElement,
-      isMobile
+      isMobile,
     });
 
     if (!document.fullscreenElement && !isFullscreen) {
@@ -655,13 +706,15 @@ export const FallingPlanet = () => {
               key={i}
               className={`hit-zone hit-zone-${i} ${hz.active ? 'active' : ''}`}
               style={{ '--lane-color': LANE_COLORS[i] } as React.CSSProperties}
-              onTouchStart={(e) => {
-                e.preventDefault();
-                handleTouchStart(i);
+              onTouchStart={(e) => handleTouchStart(i, e)}
+              onMouseDown={(e) => handleMouseDown(i, e)}
+              onClick={() => {
+                // Fallback for devices that don't support touch/mouse events properly
+                if (!isMobile) hitNote(i);
               }}
-              onClick={() => handleTouchStart(i)}
             >
               <div className="hit-zone-key">{LANE_KEYS[i].toUpperCase()}</div>
+              <div className="hit-zone-glow"></div>
             </div>
           ))}
         </div>
@@ -695,7 +748,8 @@ export const FallingPlanet = () => {
                 Tap the colored zones to hit the falling notes!{' '}
                 <span className="mobile-hint">
                   <Smartphone size={14} /> Mobile Mode: Tap fullscreen button
-                  for immersive experience!
+                  for immersive experience! Use vibration feedback for better
+                  timing.
                 </span>
               </>
             ) : (
@@ -718,7 +772,7 @@ export const FallingPlanet = () => {
                 {isFullscreen && (
                   <span className="fullscreen-hint">
                     <Smartphone size={14} /> Mobile Fullscreen: Tap zones to
-                    play!
+                    play! Feel the vibration feedback!
                   </span>
                 )}
               </>
