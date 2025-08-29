@@ -102,51 +102,70 @@
   overflow: hidden;
   border: 1px solid rgba(0, 255, 255, 0.3);
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: stretch;
   visibility: visible !important;
 }
 
-.lane {
+.lanes-container,
+.notes-container {
   position: absolute;
-  width: 20%;
-  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 60px; /* Leave space for hit zones */
+  display: flex;
+  pointer-events: none;
+}
+
+.hit-zones-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  display: flex;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.lanes-container {
+  z-index: 1;
+}
+
+.notes-container {
+  z-index: 3;
+}
+
+.notes-container {
+  z-index: 3;
+}
+
+.lane {
+  flex: 1;
+  position: relative;
   border-right: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .lane:last-child {
   border-right: none;
 }
 
-/* Lane positioning */
-.lane-0 {
-  left: 0%;
-}
-.lane-1 {
-  left: 20%;
-}
-.lane-2 {
-  left: 40%;
-}
-.lane-3 {
-  left: 60%;
-}
-.lane-4 {
-  left: 80%;
-}
-
 .lane-bg {
   position: absolute;
   bottom: 0;
-  width: 100%;
+  left: 0;
+  right: 0;
   height: 60px;
   background: linear-gradient(to top, rgba(255, 255, 255, 0.1), transparent);
 }
 
 .hit-zone {
-  position: absolute;
-  bottom: 0;
-  width: 20%;
-  height: 60px;
+  flex: 1;
+  height: 100%;
   border: 2px solid rgba(255, 255, 255, 0.5);
   border-radius: 5px;
   display: flex !important;
@@ -160,23 +179,15 @@
   background-color: var(--lane-color);
   visibility: visible !important;
   pointer-events: auto !important;
+  margin: 0 1px;
 }
 
-/* Hit zone positioning */
-.hit-zone-0 {
-  left: 0%;
+.hit-zone:first-child {
+  margin-left: 0;
 }
-.hit-zone-1 {
-  left: 20%;
-}
-.hit-zone-2 {
-  left: 40%;
-}
-.hit-zone-3 {
-  left: 60%;
-}
-.hit-zone-4 {
-  left: 80%;
+
+.hit-zone:last-child {
+  margin-right: 0;
 }
 
 .hit-zone:hover {
@@ -223,31 +234,33 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: translateX(-50%);
   box-shadow: 0 0 10px var(--note-color);
   animation: notePulse 0.6s ease-in-out infinite alternate;
   background-color: var(--note-color);
   width: var(--note-size);
   height: var(--note-size);
   top: var(--note-y);
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-/* Note lane positioning */
-.note-lane-0 {
-  left: 10%;
-} /* 0 * 20 + 10 */
+/* Note lane positioning with flexbox */
 .note-lane-1 {
-  left: 30%;
-} /* 1 * 20 + 10 */
+  /* Second lane */
+  margin-left: 20%;
+}
 .note-lane-2 {
-  left: 50%;
-} /* 2 * 20 + 10 */
+  /* Third lane */
+  margin-left: 40%;
+}
 .note-lane-3 {
-  left: 70%;
-} /* 3 * 20 + 10 */
+  /* Fourth lane */
+  margin-left: 60%;
+}
 .note-lane-4 {
-  left: 90%;
-} /* 4 * 20 + 10 */
+  /* Fifth lane */
+  margin-left: 80%;
+}
 
 .note-glow {
   width: 80%;

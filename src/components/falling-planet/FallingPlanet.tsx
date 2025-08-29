@@ -541,10 +541,9 @@ export const FallingPlanet = () => {
     >
       <div className="game-header">
         <h3>
-          Falling Planet{' '}
           {isFullscreen && (
             <span className="fullscreen-indicator">
-              <Gamepad2 size={16} /> FULLSCREEN
+              <Gamepad2 size={16} />
             </span>
           )}
         </h3>
@@ -578,44 +577,50 @@ export const FallingPlanet = () => {
 
       <div className="game-area">
         {/* Lane backgrounds */}
-        {Array.from({ length: LANES }, (_, i) => (
-          <div key={i} className={`lane lane-${i}`}>
-            <div className="lane-bg"></div>
-          </div>
-        ))}
+        <div className="lanes-container">
+          {Array.from({ length: LANES }, (_, i) => (
+            <div key={i} className={`lane lane-${i}`}>
+              <div className="lane-bg"></div>
+            </div>
+          ))}
+        </div>
 
         {/* Hit zones */}
-        {hitZones.map((hz, i) => (
-          <div
-            key={i}
-            className={`hit-zone hit-zone-${i} ${hz.active ? 'active' : ''}`}
-            style={{ '--lane-color': LANE_COLORS[i] } as React.CSSProperties}
-            onTouchStart={(e) => {
-              e.preventDefault();
-              handleTouchStart(i);
-            }}
-            onClick={() => handleTouchStart(i)}
-          >
-            <div className="hit-zone-key">{LANE_KEYS[i].toUpperCase()}</div>
-          </div>
-        ))}
+        <div className="hit-zones-container">
+          {hitZones.map((hz, i) => (
+            <div
+              key={i}
+              className={`hit-zone hit-zone-${i} ${hz.active ? 'active' : ''}`}
+              style={{ '--lane-color': LANE_COLORS[i] } as React.CSSProperties}
+              onTouchStart={(e) => {
+                e.preventDefault();
+                handleTouchStart(i);
+              }}
+              onClick={() => handleTouchStart(i)}
+            >
+              <div className="hit-zone-key">{LANE_KEYS[i].toUpperCase()}</div>
+            </div>
+          ))}
+        </div>
 
         {/* Falling notes - optimized with CSS animations */}
-        {notes.map((note) => (
-          <div
-            key={note.id}
-            className={`note note-lane-${note.lane}`}
-            style={
-              {
-                '--note-color': note.color,
-                '--note-y': `${note.y}%`,
-                '--note-size': `${note.size}px`,
-              } as React.CSSProperties
-            }
-          >
-            <div className="note-glow"></div>
-          </div>
-        ))}
+        <div className="notes-container">
+          {notes.map((note) => (
+            <div
+              key={note.id}
+              className={`note note-lane-${note.lane}`}
+              style={
+                {
+                  '--note-color': note.color,
+                  '--note-y': `${note.y}%`,
+                  '--note-size': `${note.size}px`,
+                } as React.CSSProperties
+              }
+            >
+              <div className="note-glow"></div>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="game-instructions">
