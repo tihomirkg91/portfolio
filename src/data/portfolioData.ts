@@ -165,5 +165,5 @@ export const contactInfo: ContactInfo = {
   linkedin:
     'https://www.linkedin.com/in/tomovicfd?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app',
   github: 'https://github.com/tihomirkg91/portfolio',
-  portfolio: 'https://github.com/tihomirkg91/portfolio',
+  portfolio: 'https://portfolio-alpha-pearl-24.vercel.app',
 };
