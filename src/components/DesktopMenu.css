@@ -1,0 +1,203 @@
+.desktop-menu {
+  display: none;
+}
+
+@media (min-width: 1200px) {
+  .desktop-menu {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 1;
+  }
+
+  .desktop-menu__list {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: clamp(0.75rem, 2vw, 1.5rem);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+
+  .desktop-menu__item {
+    position: relative;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  .desktop-menu__link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: clamp(0.5rem, 1vw, 0.75rem) clamp(0.75rem, 1.5vw, 1.25rem);
+    background: rgba(20, 25, 40, 0.8);
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", monospace;
+    font-size: clamp(0.75rem, 1.2vw, 0.875rem);
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  .desktop-menu__link--active {
+    background: rgba(100, 255, 218, 0.1);
+    border-color: rgba(100, 255, 218, 0.6);
+    color: rgba(100, 255, 218, 1);
+    box-shadow: 0 4px 20px rgba(100, 255, 218, 0.15), inset 0 1px 0 rgba(100, 255, 218, 0.2);
+  }
+
+  .desktop-menu__number {
+    font-size: 0.75rem;
+    color: rgba(100, 255, 218, 0.7);
+    font-weight: 600;
+    min-width: 1.5rem;
+    text-align: center;
+  }
+
+  .desktop-menu__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(14px, 1.5vw, 16px);
+    height: clamp(14px, 1.5vw, 16px);
+    color: rgba(100, 255, 218, 0.8);
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .desktop-menu__icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .desktop-menu__link--active .desktop-menu__icon {
+    color: rgba(100, 255, 218, 1);
+  }
+
+  .desktop-menu__text {
+    font-weight: 600;
+    letter-spacing: clamp(0.2px, 0.5vw, 0.5px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    flex-shrink: 1;
+  }
+
+  .desktop-menu__glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(100, 255, 218, 0.1) 0%, rgba(100, 255, 218, 0.05) 50%, rgba(100, 255, 218, 0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: inherit;
+  }
+
+  .desktop-menu__link--active .desktop-menu__glow {
+    opacity: 0.7;
+  }
+
+  .desktop-menu__indicator {
+    position: relative;
+    width: 8px;
+    height: 8px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .desktop-menu__link--active .desktop-menu__indicator {
+    opacity: 1;
+  }
+
+  .indicator__core {
+    width: 8px;
+    height: 8px;
+    background: rgba(100, 255, 218, 1);
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .indicator__pulse {
+    width: 8px;
+    height: 8px;
+    background: rgba(100, 255, 218, 0.4);
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: desktop-pulse 2s infinite;
+  }
+
+  @keyframes desktop-pulse {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.5);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .desktop-menu__list {
+      gap: 1.5rem;
+    }
+
+    .desktop-menu__link {
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+    }
+
+    .desktop-menu__text {
+      font-size: 0.8rem;
+    }
+  }
+
+  .desktop-menu__link:focus,
+  .desktop-menu__link:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+
+  .desktop-menu__link,
+  .desktop-menu__number,
+  .desktop-menu__text {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1300px) {
+  .desktop-menu__list {
+    gap: clamp(0.5rem, 1.5vw, 1rem);
+  }
+
+  .desktop-menu__link {
+    padding: clamp(0.4rem, 0.8vw, 0.6rem) clamp(0.6rem, 1.2vw, 1rem);
+    font-size: clamp(0.7rem, 1vw, 0.8rem);
+  }
+
+  .desktop-menu__text {
+    max-width: 80px;
+  }
+}

@@ -1,0 +1,160 @@
+/* CVDownloadButton specific styles */
+.btn-loading {
+  opacity: 0.7;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn-loading:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* When multiple buttons are shown */
+.about-cta button + button {
+  margin-left: 1rem;
+}
+
+/* Responsive spacing for mobile */
+@media (max-width: 768px) {
+  .about-cta {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .about-cta button + button {
+    margin-left: 0;
+  }
+}
+
+.cv-download-button--outline:hover {
+  background: #2563eb;
+  color: white;
+}
+
+.cv-preview-button--outline {
+  background: transparent;
+  color: #059669;
+  border: 2px solid #059669;
+}
+
+.cv-preview-button--outline:hover {
+  background: #059669;
+  color: white;
+}
+
+/* Icon styles */
+.cv-download-button__icon,
+.cv-preview-button__icon {
+  font-size: 1.2em;
+  line-height: 1;
+}
+
+.cv-download-button__text,
+.cv-preview-button__text {
+  line-height: 1;
+}
+
+/* Loading and disabled states */
+.cv-download-button--loading,
+.cv-preview-button--loading,
+.cv-download-button:disabled,
+.cv-preview-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none !important;
+}
+
+.cv-download-button--loading::after,
+.cv-preview-button--loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1rem;
+  height: 1rem;
+  margin: -0.5rem 0 0 -0.5rem;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Focus styles for accessibility */
+.cv-download-button:focus,
+.cv-preview-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+}
+
+.cv-download-button--outline:focus {
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+}
+
+.cv-preview-button--outline:focus {
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.3);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .cv-download-container {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .cv-download-button,
+  .cv-preview-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .cv-download-button--small,
+  .cv-preview-button--small {
+    padding: 0.625rem 1.25rem;
+  }
+
+  .cv-download-button--medium,
+  .cv-preview-button--medium {
+    padding: 0.875rem 1.75rem;
+  }
+
+  .cv-download-button--large,
+  .cv-preview-button--large {
+    padding: 1.125rem 2.25rem;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .cv-download-button--outline {
+    color: #60a5fa;
+    border-color: #60a5fa;
+  }
+
+  .cv-download-button--outline:hover {
+    background: #60a5fa;
+    color: #1f2937;
+  }
+
+  .cv-preview-button--outline {
+    color: #34d399;
+    border-color: #34d399;
+  }
+
+  .cv-preview-button--outline:hover {
+    background: #34d399;
+    color: #1f2937;
+  }
+}

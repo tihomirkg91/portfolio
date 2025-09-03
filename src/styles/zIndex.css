@@ -1,0 +1,38 @@
+:root {
+  --z-background: -1;
+  --z-background-decoration: -1;
+
+  --z-base: 0;
+
+  --z-decoration: 1;
+  --z-content-overlay: 2;
+
+  --z-decoration: 1;
+  --z-content-overlay: 2;
+
+  --z-dropdown: 100;
+  --z-tooltip: 200;
+  --z-popover: 300;
+
+  --z-sticky-nav: 500;
+  --z-fixed-navigation: 1000;
+  --z-fixed-header: 1000;
+  --z-mobile-menu: 1100;
+  --z-mobile-menu-toggle: 1200;
+
+  --z-main-content: 400;
+  --z-hero-section: 410;
+  --z-about-section: 420;
+  --z-projects-section: 430;
+  --z-experience-section: 440;
+  --z-contact-section: 450;
+  --z-footer-section: 460;
+
+  --z-overlay: 2000;
+  --z-modal: 2100;
+  --z-toast: 2200;
+
+  --z-loading: 3000;
+  --z-error-boundary: 3100;
+  --z-debug: 9999;
+}
