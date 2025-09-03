@@ -146,10 +146,14 @@ The repository is optimized for Git with:
 
 ### Available Scripts
 
-- `npm run dev` - Start development server with hot reload
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build locally
-- `npm run lint` - Run ESLint for code quality checks
+The following scripts are available via `npm run <script>`:
+
+- `dev` — Start the Vite development server with hot reload
+- `build` — Type-check and build the app for production (output in `dist/`)
+- `preview` — Locally preview the production build
+- `lint` — Run ESLint for code quality and formatting
+- `check-circular` — Check for circular dependencies in the `src/` folder (requires Madge)
+- `reset` — Remove `node_modules`, clean npm cache, and reinstall dependencies
 
 ## 🔧 Git Optimization Features
 
