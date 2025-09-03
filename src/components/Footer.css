@@ -20,6 +20,9 @@
 .footer-section {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
 }
 
 .footer-heading {
@@ -36,6 +39,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  align-items: flex-start;
+  width: 100%;
 }
 
 .footer-links a {
@@ -53,7 +58,7 @@
 }
 
 .footer-links a::before {
-  content: "▸";
+  content: '▸';
   position: absolute;
   left: -15px;
   opacity: 0;
@@ -63,6 +68,17 @@
 
 .footer-links a:hover::before {
   opacity: 1;
+}
+
+@media (hover: none) {
+  .footer-links a:hover {
+    color: #bdc3c7;
+    transform: none;
+  }
+
+  .footer-links a:hover::before {
+    opacity: 0;
+  }
 }
 
 .footer-link-button {
@@ -86,7 +102,7 @@
 }
 
 .footer-link-button::before {
-  content: "▸";
+  content: '▸';
   position: absolute;
   left: -15px;
   opacity: 0;
@@ -98,21 +114,40 @@
   opacity: 1;
 }
 
+@media (hover: none) {
+  .footer-link-button:hover {
+    color: #bdc3c7;
+    transform: none;
+  }
+
+  .footer-link-button:hover::before {
+    opacity: 0;
+  }
+}
+
 .social-links {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  align-items: center;
+  width: 100%;
 }
 
 .social-link {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: center;
   color: #bdc3c7;
   text-decoration: none !important;
   font-size: 0.9rem;
   transition: all 0.3s ease;
   padding: 0.5rem 0;
   position: relative;
+  width: fit-content;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .social-link::after {
@@ -141,7 +176,7 @@
 }
 
 .social-link::before {
-  content: "▸";
+  content: '▸';
   position: absolute;
   left: -15px;
   opacity: 0;
@@ -151,6 +186,20 @@
 
 .social-link:hover::before {
   opacity: 1;
+}
+
+@media (hover: none) {
+  .social-link:hover {
+    color: #bdc3c7;
+    transform: none;
+    text-decoration: none !important;
+    border-bottom: none !important;
+    text-underline-offset: unset !important;
+  }
+
+  .social-link:hover::before {
+    opacity: 0;
+  }
 }
 
 .social-icon {
@@ -197,6 +246,15 @@
   display: none !important;
   content: none !important;
   width: 0 !important;
+}
+
+@media (hover: none) {
+  .footer-btn:hover {
+    transform: none;
+    box-shadow: none;
+    background: linear-gradient(45deg, #3498db, #2980b9);
+    text-decoration: none !important;
+  }
 }
 
 .footer-bottom {
@@ -246,6 +304,15 @@
   transform: translateY(-3px);
   box-shadow: 0 6px 15px rgba(52, 152, 219, 0.3);
 }
+
+@media (hover: none) {
+  .back-to-top:hover {
+    background: rgba(52, 152, 219, 0.2);
+    color: #3498db;
+    transform: none;
+    box-shadow: none;
+  }
+}
 @media (max-width: 768px) {
   .footer {
     padding: 2rem 0 0;
@@ -261,8 +328,13 @@
     text-align: center;
   }
 
+  .footer-section {
+    align-items: center;
+  }
+
   .footer-links {
     align-items: center;
+    justify-content: center;
   }
 
   .footer-links a::before {
@@ -271,6 +343,7 @@
 
   .social-links {
     align-items: center;
+    justify-content: center;
   }
 
   .footer-btn {
@@ -343,9 +416,11 @@
   }
 
   .social-link {
-    width: 40px;
-    height: 40px;
+    width: auto;
+    min-width: 40px;
+    height: auto;
     font-size: 1.2rem;
+    padding: 0.5rem;
   }
 
   .footer-bottom {
@@ -386,9 +461,11 @@
   }
 
   .social-link {
-    width: 36px;
-    height: 36px;
+    width: auto;
+    min-width: 36px;
+    height: auto;
     font-size: 1.1rem;
+    padding: 0.5rem;
   }
 
   .back-to-top {
@@ -411,9 +488,11 @@
 
   .footer-links {
     align-items: center;
+    justify-content: center;
   }
 
   .social-links {
+    align-items: center;
     justify-content: center;
   }
 
@@ -443,16 +522,21 @@
 
   .footer-section {
     gap: 0.5rem;
+    align-items: center;
   }
 
   .social-links {
     gap: 0.75rem;
+    align-items: center;
+    justify-content: center;
   }
 
   .social-link {
-    width: 32px;
-    height: 32px;
+    width: auto;
+    min-width: 32px;
+    height: auto;
     font-size: 1rem;
+    padding: 0.5rem;
   }
 }
 
@@ -464,5 +548,20 @@
 
   .footer-section:first-child {
     max-width: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-link-button:focus,
+  .footer-link-button:focus-visible,
+  .social-link:focus,
+  .social-link:focus-visible,
+  .footer-btn:focus,
+  .footer-btn:focus-visible,
+  .back-to-top:focus,
+  .back-to-top:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
   }
 }
