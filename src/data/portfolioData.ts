@@ -153,7 +153,7 @@ export const contactInfo: ContactInfo = {
     },
     {
       platform: 'GitHub',
-      url: 'https://github.com/tihomirkg91/portfolio.git',
+      url: 'https://github.com/tihomirkg91/portfolio',
       icon: 'github',
     },
     {
@@ -164,6 +164,6 @@ export const contactInfo: ContactInfo = {
   ],
   linkedin:
     'https://www.linkedin.com/in/tomovicfd?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app',
-  github: 'https://github.com/tihomirkg91',
-  portfolio: 'https://portfolio-alpha-pearl-24.vercel.app',
+  github: 'https://github.com/tihomirkg91/portfolio',
+  portfolio: 'https://github.com/tihomirkg91/portfolio',
 };
