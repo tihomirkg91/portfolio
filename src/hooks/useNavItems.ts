@@ -1,15 +1,15 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useActiveDetection } from './useActiveDetection';
-import { useNavigationScroll } from './useNavigationScroll';
-import { getHeaderOffset } from '../utils/headerOffset';
+import { useCallback, useEffect, useState } from 'react';
 import {
   FaBolt,
-  FaUser,
   FaBullseye,
-  FaTrophy,
   FaSatelliteDish,
+  FaTrophy,
+  FaUser,
 } from 'react-icons/fa';
 import type { NavItem } from '../types';
+import { getHeaderOffset } from '../utils/headerOffset';
+import { useActiveDetection } from './useActiveDetection';
+import { useNavigationScroll } from './useNavigationScroll';
 
 export interface UseNavItemsReturn {
   navItems: NavItem[];
@@ -18,6 +18,10 @@ export interface UseNavItemsReturn {
   activeSection: string;
 }
 
+/**
+ * Custom hook that manages navigation items, active section detection, and smooth scrolling
+ * between portfolio sections with dynamic header offset calculation.
+ */
 export const useNavItems = (): UseNavItemsReturn => {
   const [scrollOffset, setScrollOffset] = useState(() => getHeaderOffset());
 
@@ -25,7 +29,6 @@ export const useNavItems = (): UseNavItemsReturn => {
     setScrollOffset(getHeaderOffset());
   }, []);
 
-  // Update scroll offset when screen size changes
   useEffect(() => {
     window.addEventListener('resize', updateScrollOffset);
     return () => window.removeEventListener('resize', updateScrollOffset);

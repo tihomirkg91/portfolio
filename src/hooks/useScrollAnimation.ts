@@ -15,7 +15,6 @@ export const useScrollAnimation = () => {
       });
     }, observerOptions);
 
-    /** Find and observe all elements marked for scroll-based animations */
     const animateElements = document.querySelectorAll('.animate-on-scroll');
     animateElements.forEach(el => observer.observe(el));
 

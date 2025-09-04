@@ -1,11 +1,7 @@
-import { useState, useEffect, useContext, useCallback, useRef } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { ResponsiveContext } from '../context/ResponsiveContext';
 import type { ResponsiveContextType } from '../context/ResponsiveContextTypes';
 
-/**
- * Custom hook to consume ResponsiveContext
- * @returns ResponsiveContextType with isMobile and breakpoint info
- */
 export const useResponsive = (): ResponsiveContextType => {
   const context = useContext(ResponsiveContext);
   if (!context) {
@@ -14,11 +10,6 @@ export const useResponsive = (): ResponsiveContextType => {
   return context;
 };
 
-/**
- * Simplified hook that returns only mobile detection
- * @param mobileBreakpoint - Custom mobile breakpoint (default: 768px)
- * @returns boolean indicating if device is mobile
- */
 export const useIsMobile = (mobileBreakpoint: number = 768): boolean => {
   const [isMobile, setIsMobile] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {

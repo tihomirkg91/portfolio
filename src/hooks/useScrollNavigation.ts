@@ -1,4 +1,4 @@
-import { useCallback, useRef, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { getHeaderOffset } from '../utils/headerOffset';
 
 interface ScrollToOptions {
@@ -22,10 +22,6 @@ interface UseScrollNavigationReturn {
   selectedNavItem: string;
 }
 
-/**
- * Custom hook for smooth scroll navigation with enhanced features
- * Provides utilities for scrolling to elements and managing scroll state
- */
 export const useScrollNavigation = (
   options: UseScrollNavigationOptions = {}
 ): UseScrollNavigationReturn => {
@@ -37,10 +33,6 @@ export const useScrollNavigation = (
   const userNavigatedRef = useRef<boolean>(false);
   const pendingScrollTarget = useRef<string | null>(null);
 
-  /**
-   * Synchronize navigation selection with active section based on scroll position.
-   * Only updates when user hasn't manually navigated to prevent conflicts.
-   */
   useEffect(() => {
     if (
       activeSection &&
@@ -48,7 +40,6 @@ export const useScrollNavigation = (
       !userNavigatedRef.current &&
       !isScrolling.current
     ) {
-      /** Update navigation immediately for natural scroll-based section changes */
       setSelectedNavItem(activeSection);
     }
   }, [activeSection, selectedNavItem]);
@@ -58,14 +49,9 @@ export const useScrollNavigation = (
       const element = document.getElementById(elementId);
 
       if (!element) {
-        console.warn(`Element with id "${elementId}" not found`);
         return;
       }
 
-      /**
-       * Queue scroll requests when already scrolling to prevent conflicts.
-       * The pending target will be processed after current scroll completes.
-       */
       if (isScrolling.current) {
         pendingScrollTarget.current = elementId;
         return;
@@ -77,7 +63,6 @@ export const useScrollNavigation = (
       const { behavior = 'smooth', headerOffset = getHeaderOffset() } = options;
 
       try {
-        // Respect user's motion preferences
         const preferReducedMotion = window.matchMedia(
           '(prefers-reduced-motion: reduce)'
         ).matches;
@@ -85,7 +70,6 @@ export const useScrollNavigation = (
           ? 'auto'
           : behavior;
 
-        // Use precise scroll positioning with header offset
         const elementPosition = element.getBoundingClientRect().top;
         const offsetPosition =
           elementPosition + window.pageYOffset - headerOffset;
@@ -103,13 +87,12 @@ export const useScrollNavigation = (
         setTimeout(() => {
           isScrolling.current = false;
 
-          /** Process queued scroll request if one exists */
           if (pendingScrollTarget.current) {
             const targetId = pendingScrollTarget.current;
             pendingScrollTarget.current = null;
             scrollToElement(targetId, options);
           }
-        }, 1000); /** Approximate duration for smooth scroll animation */
+        }, 1000);
       } catch (error) {
         console.error('Error during scroll navigation:', error);
         isScrolling.current = false;
@@ -125,7 +108,6 @@ export const useScrollNavigation = (
     const element = document.getElementById(activeSection);
     if (!element) return;
 
-    // Check if element is already properly in view accounting for header
     const rect = element.getBoundingClientRect();
     const headerOffset = getHeaderOffset();
     const isInView =
@@ -139,11 +121,8 @@ export const useScrollNavigation = (
     }
   }, [activeSection, scrollToElement]);
 
-  // Auto-scroll to active section if autoScrollToActiveSection is enabled
   useEffect(() => {
-    if (autoScrollToActiveSection && activeSection) {
-      ensureActiveSectionInView();
-    }
+    if (autoScrollToActiveSection && activeSection) ensureActiveSectionInView();
   }, [activeSection, autoScrollToActiveSection, ensureActiveSectionInView]);
 
   const scrollToTop = useCallback(() => {
@@ -169,23 +148,18 @@ export const useScrollNavigation = (
     }
   }, []);
 
-  // Wrapper for setSelectedNavItem that marks user-initiated navigation
   const handleSetSelectedNavItem = useCallback(
     (value: React.SetStateAction<string>) => {
       userNavigatedRef.current = true;
       const currentValue =
         typeof value === 'function' ? value(selectedNavItem) : value;
 
-      // Always update the selected nav item immediately for UI responsiveness
       setSelectedNavItem(currentValue);
 
-      // Don't trigger automatic scroll if we're already scrolling
-      // This prevents double-scrolling when manual navigation is used
       if (currentValue !== activeSection && !isScrolling.current) {
         scrollToElement(currentValue);
       }
 
-      // Reset user navigation flag after a short delay to allow natural sync again
       setTimeout(() => {
         userNavigatedRef.current = false;
       }, 100);

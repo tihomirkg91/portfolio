@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 interface UseActiveSectionOptions {
   sections?: string[];
@@ -26,7 +26,6 @@ export const useActiveSection = (
   const [activeSection, setActiveSection] = useState(sections[0] || 'home');
 
   const handleScroll = useCallback(() => {
-    // Skip active section detection during programmatic scrolling
     if (isScrollingRef?.current) {
       return;
     }
