@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from 'react';
 
 interface UseActiveSectionOptions {
   sections?: string[];
@@ -12,11 +12,18 @@ interface UseActiveSectionReturn {
   activeSection: string;
 }
 
-export const useActiveSection = (options: UseActiveSectionOptions = {}): UseActiveSectionReturn => {
-  const { sections = ["home", "about", "projects", "experience", "contact"], scrollOffset = 100, scrollThreshold = 50, isScrollingRef } = options;
+export const useActiveSection = (
+  options: UseActiveSectionOptions = {}
+): UseActiveSectionReturn => {
+  const {
+    sections = ['home', 'about', 'projects', 'experience', 'contact'],
+    scrollOffset = 100,
+    scrollThreshold = 50,
+    isScrollingRef,
+  } = options;
 
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState(sections[0] || "home");
+  const [activeSection, setActiveSection] = useState(sections[0] || 'home');
 
   const handleScroll = useCallback(() => {
     // Skip active section detection during programmatic scrolling
@@ -57,8 +64,8 @@ export const useActiveSection = (options: UseActiveSectionOptions = {}): UseActi
   useEffect(() => {
     handleScroll();
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
   return {

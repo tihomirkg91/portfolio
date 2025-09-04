@@ -1,11 +1,25 @@
-import React, { createContext, useMemo, useState, useEffect, useCallback, useRef } from "react";
-import type { ResponsiveContextType, ResponsiveProviderProps } from "./ResponsiveContextTypes";
+import React, {
+  createContext,
+  useMemo,
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+} from 'react';
+import type {
+  ResponsiveContextType,
+  ResponsiveProviderProps,
+} from './ResponsiveContextTypes';
 
-const ResponsiveContext = createContext<ResponsiveContextType | undefined>(undefined);
+const ResponsiveContext = createContext<ResponsiveContextType | undefined>(
+  undefined
+);
 
-const ResponsiveProvider: React.FC<ResponsiveProviderProps> = ({ children }) => {
+const ResponsiveProvider: React.FC<ResponsiveProviderProps> = ({
+  children,
+}) => {
   const [isMobile, setIsMobile] = useState<boolean>(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       return window.innerWidth < 1200;
     }
     return false;
@@ -23,11 +37,11 @@ const ResponsiveProvider: React.FC<ResponsiveProviderProps> = ({ children }) => 
   }, []);
 
   useEffect(() => {
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
     handleResize();
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
@@ -41,7 +55,11 @@ const ResponsiveProvider: React.FC<ResponsiveProviderProps> = ({ children }) => 
     [isMobile]
   );
 
-  return <ResponsiveContext.Provider value={contextValue}>{children}</ResponsiveContext.Provider>;
+  return (
+    <ResponsiveContext.Provider value={contextValue}>
+      {children}
+    </ResponsiveContext.Provider>
+  );
 };
 
 export { ResponsiveContext };

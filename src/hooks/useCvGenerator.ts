@@ -1,6 +1,6 @@
-import type { PortfolioData } from "../types";
-import { useImageLoader } from "./useImageLoader";
-import { usePdfGenerator } from "./usePdfGenerator";
+import type { PortfolioData } from '../types';
+import { useImageLoader } from './useImageLoader';
+import { usePdfGenerator } from './usePdfGenerator';
 
 interface IProps {
   portfolioData: PortfolioData | null;
@@ -15,16 +15,18 @@ const useCvGenerator = ({ portfolioData, reset, preview = false }: IProps) => {
     isLoading: imageLoading,
     error: imageError,
   } = useImageLoader({
-    imageUrl: "/pic.jpg",
+    imageUrl: '/pic.jpg',
   });
 
-  const { generatePdf, isGenerating, error, retryGeneration } = usePdfGenerator({
-    portfolioData,
-    base64Img,
-    imageLoaded,
-    reset,
-    preview,
-  });
+  const { generatePdf, isGenerating, error, retryGeneration } = usePdfGenerator(
+    {
+      portfolioData,
+      base64Img,
+      imageLoaded,
+      reset,
+      preview,
+    }
+  );
 
   return {
     generatePdf,

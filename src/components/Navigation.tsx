@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { useActiveSection } from "../hooks/useActiveSection";
-import { useScrollNavigation } from "../hooks/useScrollNavigation";
-import { useResponsive } from "../hooks/useResponsive";
-import { useNavItems } from "../hooks/useNavItems";
-import { getScrollOffset } from "../utils/headerOffset";
-import MobileMenu from "./MobileMenu";
-import DesktopMenu from "./DesktopMenu";
-import "./Navigation.css";
+import React, { useState, useEffect, useCallback } from 'react';
+import { useActiveSection } from '../hooks/useActiveSection';
+import { useScrollNavigation } from '../hooks/useScrollNavigation';
+import { useResponsive } from '../hooks/useResponsive';
+import { useNavItems } from '../hooks/useNavItems';
+import { getScrollOffset } from '../utils/headerOffset';
+import MobileMenu from './MobileMenu';
+import DesktopMenu from './DesktopMenu';
+import './Navigation.css';
 
 const Navigation: React.FC = () => {
   const { isMobile } = useResponsive();
@@ -19,12 +19,12 @@ const Navigation: React.FC = () => {
       setScrollOffset(getScrollOffset());
     };
 
-    window.addEventListener("resize", updateScrollOffset);
-    return () => window.removeEventListener("resize", updateScrollOffset);
+    window.addEventListener('resize', updateScrollOffset);
+    return () => window.removeEventListener('resize', updateScrollOffset);
   }, []);
 
   const { isScrolled } = useActiveSection({
-    sections: ["home", "about", "projects", "experience", "contact"],
+    sections: ['home', 'about', 'projects', 'experience', 'contact'],
     scrollOffset,
     scrollThreshold: 50,
   });
@@ -34,17 +34,27 @@ const Navigation: React.FC = () => {
     autoScrollToActiveSection: false,
   });
 
-  const handleEnsureActiveSectionInView = useCallback(() => scrollToTop(), [scrollToTop]);
+  const handleEnsureActiveSectionInView = useCallback(
+    () => scrollToTop(),
+    [scrollToTop]
+  );
 
   return (
-    <header className={`navigation ${isScrolled ? "navigation--scrolled" : ""}`}>
+    <header
+      className={`navigation ${isScrolled ? 'navigation--scrolled' : ''}`}
+    >
       <div className="navigation__container">
         <div className="navigation__logo">
-          <div className="logo__container" onClick={handleEnsureActiveSectionInView} title="Ensure active section is in view" style={{ cursor: "pointer" }}>
+          <div
+            className="logo__container"
+            onClick={handleEnsureActiveSectionInView}
+            title="Ensure active section is in view"
+            style={{ cursor: 'pointer' }}
+          >
             <div className="logo__icon">
               <div className="logo__hexagon">
                 <div className="hexagon__inner">
-                  <span className="hexagon__symbol">{"{"}</span>
+                  <span className="hexagon__symbol">{'{'}</span>
                 </div>
               </div>
               <div className="logo__circuits">

@@ -1,48 +1,56 @@
-import type { FC } from "react";
-import { memo, useMemo, useCallback, startTransition } from "react";
-import { useScrollNavigation } from "../hooks/useScrollNavigation";
-import { useImageLoading } from "../hooks/useImageLoading";
-import { usePortfolio } from "../hooks/usePortfolio";
-import "./Hero.css";
+import type { FC } from 'react';
+import { memo, useMemo, useCallback, startTransition } from 'react';
+import { useScrollNavigation } from '../hooks/useScrollNavigation';
+import { useImageLoading } from '../hooks/useImageLoading';
+import { usePortfolio } from '../hooks/usePortfolio';
+import './Hero.css';
 
 interface HeroActionButtonProps {
   onClick: () => void;
-  variant: "primary" | "secondary";
+  variant: 'primary' | 'secondary';
   ariaLabel: string;
   children: React.ReactNode;
 }
 
-const HeroActionButton: FC<HeroActionButtonProps> = memo(({ onClick, variant, ariaLabel, children }) => {
-  const buttonRef = useCallback(
-    (node: HTMLButtonElement | null) => {
-      if (node) {
-        node.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            startTransition(() => {
-              onClick();
-            });
-          }
-        });
-      }
-    },
-    [onClick]
-  );
+const HeroActionButton: FC<HeroActionButtonProps> = memo(
+  ({ onClick, variant, ariaLabel, children }) => {
+    const buttonRef = useCallback(
+      (node: HTMLButtonElement | null) => {
+        if (node) {
+          node.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              startTransition(() => {
+                onClick();
+              });
+            }
+          });
+        }
+      },
+      [onClick]
+    );
 
-  const handleClick = () => {
-    startTransition(() => {
-      onClick();
-    });
-  };
+    const handleClick = () => {
+      startTransition(() => {
+        onClick();
+      });
+    };
 
-  return (
-    <button ref={buttonRef} onClick={handleClick} className={`btn btn-${variant}`} aria-label={ariaLabel} type="button">
-      {children}
-    </button>
-  );
-});
+    return (
+      <button
+        ref={buttonRef}
+        onClick={handleClick}
+        className={`btn btn-${variant}`}
+        aria-label={ariaLabel}
+        type="button"
+      >
+        {children}
+      </button>
+    );
+  }
+);
 
-HeroActionButton.displayName = "HeroActionButton";
+HeroActionButton.displayName = 'HeroActionButton';
 
 interface HeroAvatarProps {
   src: string;
@@ -60,8 +68,8 @@ const HeroAvatar: FC<HeroAvatarProps> = memo(({ src, alt, fallbackText }) => {
     imgRef,
   } = useImageLoading(src, {
     lazy: true,
-    onError: (error) => {
-      console.warn("Hero avatar failed to load:", error);
+    onError: error => {
+      console.warn('Hero avatar failed to load:', error);
     },
   });
 
@@ -80,20 +88,37 @@ const HeroAvatar: FC<HeroAvatarProps> = memo(({ src, alt, fallbackText }) => {
           <div className="loading-spinner" />
         </div>
       )}
-      <img ref={imgRef} src={imageSrc} alt={alt} onLoad={handleLoad} onError={handleError} className={isLoading ? "loading" : ""} loading="lazy" />
+      <img
+        ref={imgRef}
+        src={imageSrc}
+        alt={alt}
+        onLoad={handleLoad}
+        onError={handleError}
+        className={isLoading ? 'loading' : ''}
+        loading="lazy"
+      />
     </>
   );
 });
 
-HeroAvatar.displayName = "HeroAvatar";
+HeroAvatar.displayName = 'HeroAvatar';
 
 const Hero: FC = memo(() => {
   const { scrollToElement } = useScrollNavigation();
   const { personalInfo } = usePortfolio();
 
-  const handleViewWork = useMemo(() => () => scrollToElement("projects"), [scrollToElement]);
-  const handleGetInTouch = useMemo(() => () => scrollToElement("contact"), [scrollToElement]);
-  const avatarFallback = useMemo(() => `${personalInfo.firstName[0]}${personalInfo.lastName[0]}`, [personalInfo?.firstName, personalInfo?.lastName]);
+  const handleViewWork = useMemo(
+    () => () => scrollToElement('projects'),
+    [scrollToElement]
+  );
+  const handleGetInTouch = useMemo(
+    () => () => scrollToElement('contact'),
+    [scrollToElement]
+  );
+  const avatarFallback = useMemo(
+    () => `${personalInfo.firstName[0]}${personalInfo.lastName[0]}`,
+    [personalInfo?.firstName, personalInfo?.lastName]
+  );
 
   const heroData = useMemo(
     () => ({
@@ -107,7 +132,12 @@ const Hero: FC = memo(() => {
   );
 
   return (
-    <section id="home" className="hero" aria-labelledby="hero-title" role="banner">
+    <section
+      id="home"
+      className="hero"
+      aria-labelledby="hero-title"
+      role="banner"
+    >
       <div className="hero-container">
         <div className="hero-content">
           <div className="hero-text">
@@ -116,18 +146,34 @@ const Hero: FC = memo(() => {
             </h1>
             <h2 className="hero-subtitle">{heroData.title}</h2>
             <p className="hero-description">{heroData.bio}</p>
-            <div className="hero-buttons" role="group" aria-label="Hero actions">
-              <HeroActionButton onClick={handleViewWork} variant="primary" ariaLabel="Navigate to projects section to view my work">
+            <div
+              className="hero-buttons"
+              role="group"
+              aria-label="Hero actions"
+            >
+              <HeroActionButton
+                onClick={handleViewWork}
+                variant="primary"
+                ariaLabel="Navigate to projects section to view my work"
+              >
                 View My Work
               </HeroActionButton>
-              <HeroActionButton onClick={handleGetInTouch} variant="secondary" ariaLabel="Navigate to contact section to get in touch">
+              <HeroActionButton
+                onClick={handleGetInTouch}
+                variant="secondary"
+                ariaLabel="Navigate to contact section to get in touch"
+              >
                 Get In Touch
               </HeroActionButton>
             </div>
           </div>
           <div className="hero-image">
             <div className="hero-avatar">
-              <HeroAvatar src={heroData.avatar} alt={heroData.avatarAlt || "Avatar"} fallbackText={avatarFallback} />
+              <HeroAvatar
+                src={heroData.avatar}
+                alt={heroData.avatarAlt || 'Avatar'}
+                fallbackText={avatarFallback}
+              />
             </div>
           </div>
         </div>
@@ -136,6 +182,6 @@ const Hero: FC = memo(() => {
   );
 });
 
-Hero.displayName = "Hero";
+Hero.displayName = 'Hero';
 
 export default Hero;

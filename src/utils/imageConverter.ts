@@ -1,4 +1,6 @@
-export const convertImageToBase64 = async (imageUrl: string): Promise<string> => {
+export const convertImageToBase64 = async (
+  imageUrl: string
+): Promise<string> => {
   try {
     const response = await fetch(imageUrl);
     if (response.ok) {
@@ -12,8 +14,8 @@ export const convertImageToBase64 = async (imageUrl: string): Promise<string> =>
         };
 
         reader.onerror = () => {
-          console.error("FileReader failed");
-          reject(new Error("FileReader failed"));
+          console.error('FileReader failed');
+          reject(new Error('FileReader failed'));
         };
 
         reader.readAsDataURL(blob);
@@ -21,21 +23,26 @@ export const convertImageToBase64 = async (imageUrl: string): Promise<string> =>
     }
     throw new Error(`Failed to fetch image: ${response.status}`);
   } catch (error) {
-    console.error("Error converting image to base64:", error);
+    console.error('Error converting image to base64:', error);
     throw error;
   }
 };
 
-export const convertImageWithCanvas = (imageUrl: string, maxWidth: number = 300, maxHeight: number = 300, quality: number = 0.9): Promise<string> => {
+export const convertImageWithCanvas = (
+  imageUrl: string,
+  maxWidth: number = 300,
+  maxHeight: number = 300,
+  quality: number = 0.9
+): Promise<string> => {
   return new Promise((resolve, reject) => {
     const img = new Image();
 
     img.onload = () => {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
 
       if (!ctx) {
-        reject(new Error("Failed to get canvas context"));
+        reject(new Error('Failed to get canvas context'));
         return;
       }
 
@@ -52,15 +59,15 @@ export const convertImageWithCanvas = (imageUrl: string, maxWidth: number = 300,
       canvas.width = targetWidth;
       canvas.height = targetHeight;
 
-      ctx.fillStyle = "white";
+      ctx.fillStyle = 'white';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = "high";
+      ctx.imageSmoothingQuality = 'high';
 
       ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
 
-      const format = "image/jpeg";
+      const format = 'image/jpeg';
       const base64 = canvas.toDataURL(format, quality);
       resolve(base64);
     };
@@ -69,7 +76,7 @@ export const convertImageWithCanvas = (imageUrl: string, maxWidth: number = 300,
       reject(new Error(`Failed to load image: ${imageUrl}`));
     };
 
-    img.crossOrigin = "anonymous";
+    img.crossOrigin = 'anonymous';
     img.src = imageUrl;
   });
 };

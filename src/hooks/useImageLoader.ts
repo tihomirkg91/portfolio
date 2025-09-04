@@ -1,5 +1,8 @@
-import { useEffect, useState } from "react";
-import { convertImageToBase64, convertImageWithCanvas } from "../utils/imageConverter";
+import { useEffect, useState } from 'react';
+import {
+  convertImageToBase64,
+  convertImageWithCanvas,
+} from '../utils/imageConverter';
 
 interface UseImageLoaderProps {
   imageUrl: string;
@@ -12,8 +15,10 @@ interface UseImageLoaderReturn {
   error: string | null;
 }
 
-export const useImageLoader = ({ imageUrl }: UseImageLoaderProps): UseImageLoaderReturn => {
-  const [base64Img, setBase64Img] = useState("");
+export const useImageLoader = ({
+  imageUrl,
+}: UseImageLoaderProps): UseImageLoaderReturn => {
+  const [base64Img, setBase64Img] = useState('');
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -36,9 +41,10 @@ export const useImageLoader = ({ imageUrl }: UseImageLoaderProps): UseImageLoade
           setImageLoaded(true);
         }
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "Failed to load image";
+        const errorMessage =
+          err instanceof Error ? err.message : 'Failed to load image';
         setError(errorMessage);
-        console.error("Error loading image:", errorMessage);
+        console.error('Error loading image:', errorMessage);
       } finally {
         setIsLoading(false);
       }

@@ -1,11 +1,11 @@
-import { useContext } from "react";
-import { PortfolioContext } from "../context/PortfolioContextTypes";
-import type { PortfolioContextType } from "../context/PortfolioContextTypes";
+import { useContext } from 'react';
+import { PortfolioContext } from '../context/PortfolioContextTypes';
+import type { PortfolioContextType } from '../context/PortfolioContextTypes';
 
 export const usePortfolio = (): PortfolioContextType => {
   const context = useContext(PortfolioContext);
   if (context === undefined) {
-    throw new Error("usePortfolio must be used within a PortfolioProvider");
+    throw new Error('usePortfolio must be used within a PortfolioProvider');
   }
   return context;
 };

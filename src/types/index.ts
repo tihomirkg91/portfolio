@@ -17,7 +17,7 @@ export interface NavItem {
 export interface ProjectLink {
   url: URL;
   label: string;
-  type: "github" | "live" | "demo" | "docs";
+  type: 'github' | 'live' | 'demo' | 'docs';
 }
 
 export interface Project {
@@ -30,7 +30,7 @@ export interface Project {
   imageUrl: string;
   imageAlt?: string;
   featured?: boolean;
-  status: "completed" | "in-progress" | "archived";
+  status: 'completed' | 'in-progress' | 'archived';
   dateCreated: string;
   tags?: readonly string[];
   githubUrl?: string;
@@ -55,7 +55,7 @@ export interface Experience {
   technologies: readonly string[];
   companyUrl?: URL;
   companyLogo?: string;
-  type: "full-time" | "part-time" | "contract" | "freelance" | "internship";
+  type: 'full-time' | 'part-time' | 'contract' | 'freelance' | 'internship';
 }
 
 export interface SocialLink {
@@ -96,7 +96,7 @@ export interface PortfolioData {
   contactInfo: ContactInfo;
 }
 
-export type ProjectStatus = Project["status"];
-export type ExperienceType = Experience["type"];
+export type ProjectStatus = Project['status'];
+export type ExperienceType = Experience['type'];
 
-export { Z_INDEX, type ZIndexValue } from "../utils/zIndex";
+export { Z_INDEX, type ZIndexValue } from '../utils/zIndex';

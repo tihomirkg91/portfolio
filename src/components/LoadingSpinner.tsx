@@ -1,5 +1,5 @@
-import type { FC } from "react";
-import "./LoadingSpinner.css";
+import type { FC } from 'react';
+import './LoadingSpinner.css';
 
 const LoadingSpinner: FC = () => (
   <div className="loading-container" role="status" aria-label="Loading content">

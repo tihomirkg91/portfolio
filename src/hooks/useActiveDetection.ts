@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from 'react';
 
 interface UseActiveDetectionOptions {
   sections?: string[];
@@ -12,11 +12,18 @@ interface UseActiveDetectionReturn {
   activeSection: string;
 }
 
-export const useActiveDetection = (options: UseActiveDetectionOptions = {}): UseActiveDetectionReturn => {
-  const { sections = ["home", "about", "projects", "experience", "contact"], scrollOffset = 100, scrollThreshold = 50, isPaused = false } = options;
+export const useActiveDetection = (
+  options: UseActiveDetectionOptions = {}
+): UseActiveDetectionReturn => {
+  const {
+    sections = ['home', 'about', 'projects', 'experience', 'contact'],
+    scrollOffset = 100,
+    scrollThreshold = 50,
+    isPaused = false,
+  } = options;
 
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState(sections[0] || "home");
+  const [activeSection, setActiveSection] = useState(sections[0] || 'home');
 
   const handleScroll = useCallback(() => {
     const scrollY = window.scrollY;
@@ -55,8 +62,8 @@ export const useActiveDetection = (options: UseActiveDetectionOptions = {}): Use
   useEffect(() => {
     handleScroll();
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
   return {

@@ -1,5 +1,5 @@
-import { useState, useCallback, useRef, useEffect } from "react";
-import type { SyntheticEvent } from "react";
+import { useState, useCallback, useRef, useEffect } from 'react';
+import type { SyntheticEvent } from 'react';
 
 interface UseImageLoadingOptions {
   fallbackSrc?: string;
@@ -17,10 +17,15 @@ interface UseImageLoadingReturn {
   imgRef: React.RefObject<HTMLImageElement | null>;
 }
 
-export const useImageLoading = (initialSrc: string, options: UseImageLoadingOptions = {}): UseImageLoadingReturn => {
+export const useImageLoading = (
+  initialSrc: string,
+  options: UseImageLoadingOptions = {}
+): UseImageLoadingReturn => {
   const { fallbackSrc, onLoad, onError, lazy = false } = options;
 
-  const [src, setSrc] = useState<string | undefined>(lazy ? undefined : initialSrc);
+  const [src, setSrc] = useState<string | undefined>(
+    lazy ? undefined : initialSrc
+  );
   const [isLoading, setIsLoading] = useState<boolean>(!lazy);
   const [hasError, setHasError] = useState<boolean>(false);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -30,7 +35,7 @@ export const useImageLoading = (initialSrc: string, options: UseImageLoadingOpti
     if (!lazy || src) return;
 
     const observer = new IntersectionObserver(
-      (entries) => {
+      entries => {
         const [entry] = entries;
         if (entry.isIntersecting) {
           setSrc(initialSrc);
@@ -40,7 +45,7 @@ export const useImageLoading = (initialSrc: string, options: UseImageLoadingOpti
       },
       {
         threshold: 0.1,
-        rootMargin: "50px",
+        rootMargin: '50px',
       }
     );
 

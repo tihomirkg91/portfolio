@@ -1,6 +1,12 @@
-export { calculateDuration, calculateTotalExperience, formatDateRange, isValidDate, getCurrentDateString } from "./dateUtils";
+export {
+  calculateDuration,
+  calculateTotalExperience,
+  formatDateRange,
+  isValidDate,
+  getCurrentDateString,
+} from './dateUtils';
 
-export { isValidBase64Image } from "./imageConverter";
+export { isValidBase64Image } from './imageConverter';
 
 export {
   pdfStyles,
@@ -12,13 +18,13 @@ export {
   createFooterSection,
   createProjectsSection,
   createPdfDocumentDefinition,
-} from "./pdfDocumentBuilder";
+} from './pdfDocumentBuilder';
 
-export type { FeatureFlags } from "./featureFlags";
-export { getFeatureFlags } from "./featureFlags";
+export type { FeatureFlags } from './featureFlags';
+export { getFeatureFlags } from './featureFlags';
 
-export { generateUniqueId, generateShortId } from "./generateId";
+export { generateUniqueId, generateShortId } from './generateId';
 
-export { getHeaderOffset, getScrollOffset } from "./headerOffset";
+export { getHeaderOffset, getScrollOffset } from './headerOffset';
 
-export { Z_INDEX } from "./zIndex";
+export { Z_INDEX } from './zIndex';

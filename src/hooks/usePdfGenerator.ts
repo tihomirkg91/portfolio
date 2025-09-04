@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
-import type { PortfolioData } from "../types";
-import { createPdfDocumentDefinition } from "../utils/pdfDocumentBuilder";
-import { convertImageWithCanvas } from "../utils/imageConverter";
+import { useEffect, useState } from 'react';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+import type { PortfolioData } from '../types';
+import { createPdfDocumentDefinition } from '../utils/pdfDocumentBuilder';
+import { convertImageWithCanvas } from '../utils/imageConverter';
 
 interface UsePdfGeneratorProps {
   portfolioData: PortfolioData | null;
@@ -20,7 +20,13 @@ interface UsePdfGeneratorReturn {
   retryGeneration: () => Promise<void>;
 }
 
-export const usePdfGenerator = ({ portfolioData, base64Img, imageLoaded, reset, preview = false }: UsePdfGeneratorProps): UsePdfGeneratorReturn => {
+export const usePdfGenerator = ({
+  portfolioData,
+  base64Img,
+  imageLoaded,
+  reset,
+  preview = false,
+}: UsePdfGeneratorProps): UsePdfGeneratorReturn => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
@@ -36,17 +42,22 @@ export const usePdfGenerator = ({ portfolioData, base64Img, imageLoaded, reset, 
     }
 
     try {
-      const fallbackBase64 = await convertImageWithCanvas("/pic.jpg", 300, 300, 0.8);
+      const fallbackBase64 = await convertImageWithCanvas(
+        '/pic.jpg',
+        300,
+        300,
+        0.8
+      );
       return fallbackBase64;
     } catch (error) {
-      console.warn("Failed to load fallback image:", error);
-      return "";
+      console.warn('Failed to load fallback image:', error);
+      return '';
     }
   };
 
   const generatePdfInternal = async (): Promise<void> => {
     if (!portfolioData || Object.keys(portfolioData).length === 0) {
-      const errorMsg = "No portfolio data available for PDF generation";
+      const errorMsg = 'No portfolio data available for PDF generation';
       console.warn(errorMsg);
       setError(errorMsg);
       return;
@@ -58,9 +69,12 @@ export const usePdfGenerator = ({ portfolioData, base64Img, imageLoaded, reset, 
     try {
       const finalBase64Img = await ensureImageReady();
 
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 100));
 
-      const documentDefinition = createPdfDocumentDefinition(portfolioData, finalBase64Img);
+      const documentDefinition = createPdfDocumentDefinition(
+        portfolioData,
+        finalBase64Img
+      );
       const filename = `${portfolioData.personalInfo.firstName}_${portfolioData.personalInfo.lastName}_CV.pdf`;
 
       if (preview) {
@@ -72,13 +86,16 @@ export const usePdfGenerator = ({ portfolioData, base64Img, imageLoaded, reset, 
       setRetryCount(0);
       reset();
     } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : "Error generating PDF";
-      console.error("Error generating PDF:", error);
+      const errorMsg =
+        error instanceof Error ? error.message : 'Error generating PDF';
+      console.error('Error generating PDF:', error);
       setError(errorMsg);
 
       if (retryCount < maxRetries) {
-        console.log(`Retrying PDF generation (attempt ${retryCount + 1}/${maxRetries})`);
-        setRetryCount((prev) => prev + 1);
+        console.log(
+          `Retrying PDF generation (attempt ${retryCount + 1}/${maxRetries})`
+        );
+        setRetryCount(prev => prev + 1);
         setTimeout(() => generatePdfInternal(), 1000);
         return;
       }

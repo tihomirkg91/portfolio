@@ -1,5 +1,5 @@
-import { createContext } from "react";
-import type { Project, Experience, ContactInfo, PersonalInfo } from "../types";
+import { createContext } from 'react';
+import type { Project, Experience, ContactInfo, PersonalInfo } from '../types';
 
 export interface PortfolioContextType {
   projects: Project[];
@@ -8,4 +8,6 @@ export interface PortfolioContextType {
   personalInfo: PersonalInfo;
 }
 
-export const PortfolioContext = createContext<PortfolioContextType | undefined>(undefined);
+export const PortfolioContext = createContext<PortfolioContextType | undefined>(
+  undefined
+);

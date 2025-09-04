@@ -35,7 +35,19 @@
 }
 
 body {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    'Roboto',
+    'Oxygen',
+    'Ubuntu',
+    'Cantarell',
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--primary-bg);
@@ -76,20 +88,39 @@ body {
   margin-top: -20px;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 50%, var(--accent-bg) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary-bg) 0%,
+    var(--secondary-bg) 50%,
+    var(--accent-bg) 100%
+  );
   position: relative;
   overflow-x: hidden;
 }
 
 .App::before {
-  content: "";
+  content: '';
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: radial-gradient(circle at 20% 80%, rgba(0, 245, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(191, 0, 255, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(57, 255, 20, 0.05) 0%, transparent 50%);
+  background-image:
+    radial-gradient(
+      circle at 20% 80%,
+      rgba(0, 245, 255, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(191, 0, 255, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 40% 40%,
+      rgba(57, 255, 20, 0.05) 0%,
+      transparent 50%
+    );
   animation: float 20s ease-in-out infinite;
   pointer-events: none;
   z-index: var(--z-background);
@@ -147,7 +178,7 @@ a:hover {
   text-shadow: 0 0 10px currentColor;
 }
 a::after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: -2px;
   left: 0;
@@ -181,13 +212,18 @@ a:hover::after {
 }
 
 .btn::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
   transition: left 0.5s ease;
 }
 
@@ -291,7 +327,9 @@ a:hover::after {
     text-shadow: 0 0 10px currentColor;
   }
   50% {
-    text-shadow: 0 0 20px currentColor, 0 0 30px currentColor;
+    text-shadow:
+      0 0 20px currentColor,
+      0 0 30px currentColor;
   }
 }
 
@@ -301,7 +339,9 @@ a:hover::after {
     box-shadow: 0 0 15px rgba(0, 245, 255, 0.5);
   }
   50% {
-    box-shadow: 0 0 25px rgba(0, 245, 255, 0.8), 0 0 35px rgba(0, 245, 255, 0.6);
+    box-shadow:
+      0 0 25px rgba(0, 245, 255, 0.8),
+      0 0 35px rgba(0, 245, 255, 0.6);
   }
 }
 .glass-card {
@@ -330,14 +370,18 @@ a:hover::after {
   transform: translateY(0);
 }
 .gaming-title {
-  font-family: "Orbitron", monospace;
+  font-family: 'Orbitron', monospace;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 2px;
 
   color: var(--neon-blue, #00f5ff);
 
-  background: linear-gradient(45deg, var(--neon-blue, #00f5ff), var(--neon-purple, #bf00ff));
+  background: linear-gradient(
+    45deg,
+    var(--neon-blue, #00f5ff),
+    var(--neon-purple, #bf00ff)
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -357,7 +401,9 @@ a:hover::after {
     text-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
   }
   50% {
-    text-shadow: 0 0 20px rgba(0, 245, 255, 0.8), 0 0 30px rgba(0, 245, 255, 0.6);
+    text-shadow:
+      0 0 20px rgba(0, 245, 255, 0.8),
+      0 0 30px rgba(0, 245, 255, 0.6);
   }
 }
 .grid {

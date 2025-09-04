@@ -31,6 +31,7 @@ A modern, responsive portfolio website built with React 19, TypeScript, and Vite
 - **Styling**: CSS3 with custom properties
 - **State Management**: React Context API
 - **Linting**: ESLint 9 with React hooks plugin
+- **Code Formatting**: Prettier with custom configuration
 
 ### Vite Manual Chunks Implementation
 
@@ -92,7 +93,7 @@ src/
 1. **Clone the repository**
 
    ```bash
-   git clone "https://github.com/tihomirkg91/portfolio.git
+   git clone "https://github.com/tihomirkg91/portfolio.git"
    cd portfolio
    ```
 
@@ -152,6 +153,8 @@ The following scripts are available via `npm run <script>`:
 - `build` — Type-check and build the app for production (output in `dist/`)
 - `preview` — Locally preview the production build
 - `lint` — Run ESLint for code quality and formatting
+- `format` — Format all files using Prettier
+- `format:check` — Check if all files are properly formatted without making changes
 - `check-circular` — Check for circular dependencies in the `src/` folder (requires Madge)
 - `reset` — Remove `node_modules`, clean npm cache, and reinstall dependencies
 

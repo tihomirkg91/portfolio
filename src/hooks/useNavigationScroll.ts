@@ -1,5 +1,5 @@
-import { useCallback, useRef, useState } from "react";
-import { getHeaderOffset } from "../utils/headerOffset";
+import { useCallback, useRef, useState } from 'react';
+import { getHeaderOffset } from '../utils/headerOffset';
 
 interface UseNavigationScrollReturn {
   scrollToSection: (sectionId: string) => void;
@@ -8,8 +8,11 @@ interface UseNavigationScrollReturn {
   setSelectedSection: (sectionId: string) => void;
 }
 
-export const useNavigationScroll = (initialSection: string = "home"): UseNavigationScrollReturn => {
-  const [selectedSection, setSelectedSection] = useState<string>(initialSection);
+export const useNavigationScroll = (
+  initialSection: string = 'home'
+): UseNavigationScrollReturn => {
+  const [selectedSection, setSelectedSection] =
+    useState<string>(initialSection);
   const [isNavigating, setIsNavigating] = useState<boolean>(false);
   const navigationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -32,8 +35,10 @@ export const useNavigationScroll = (initialSection: string = "home"): UseNavigat
     const elementPosition = element.getBoundingClientRect().top;
     const scrollPosition = elementPosition + window.pageYOffset - headerOffset;
 
-    const preferReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const behavior: ScrollBehavior = preferReducedMotion ? "auto" : "smooth";
+    const preferReducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+    const behavior: ScrollBehavior = preferReducedMotion ? 'auto' : 'smooth';
 
     window.scrollTo({
       top: Math.max(0, scrollPosition),
@@ -45,7 +50,7 @@ export const useNavigationScroll = (initialSection: string = "home"): UseNavigat
       () => {
         setIsNavigating(false);
       },
-      behavior === "smooth" ? 1000 : 100
+      behavior === 'smooth' ? 1000 : 100
     );
   }, []);
 

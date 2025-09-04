@@ -1,5 +1,5 @@
 export const getHeaderOffset = (): number => {
-  if (typeof window === "undefined") return 80;
+  if (typeof window === 'undefined') return 80;
 
   const width = window.innerWidth;
   if (width <= 480) return 65;

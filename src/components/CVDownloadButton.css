@@ -70,7 +70,7 @@
 
 .cv-download-button--loading::after,
 .cv-preview-button--loading::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 50%;
   left: 50%;

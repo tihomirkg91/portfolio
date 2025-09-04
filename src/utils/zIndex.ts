@@ -38,38 +38,41 @@ export type ZIndexValue = (typeof Z_INDEX)[keyof typeof Z_INDEX];
 
 export const getZIndexVar = (layer: keyof typeof Z_INDEX): string => {
   const varMap: Record<keyof typeof Z_INDEX, string> = {
-    BACKGROUND: "--z-background",
-    BACKGROUND_DECORATION: "--z-background-decoration",
-    BASE: "--z-base",
-    DECORATION: "--z-decoration",
-    CONTENT_OVERLAY: "--z-content-overlay",
-    DROPDOWN: "--z-dropdown",
-    TOOLTIP: "--z-tooltip",
-    POPOVER: "--z-popover",
-    MAIN_CONTENT: "--z-main-content",
-    HERO_SECTION: "--z-hero-section",
-    ABOUT_SECTION: "--z-about-section",
-    PROJECTS_SECTION: "--z-projects-section",
-    EXPERIENCE_SECTION: "--z-experience-section",
-    CONTACT_SECTION: "--z-contact-section",
-    FOOTER_SECTION: "--z-footer-section",
-    STICKY_NAV: "--z-sticky-nav",
-    FIXED_NAVIGATION: "--z-fixed-navigation",
-    FIXED_HEADER: "--z-fixed-header",
-    MOBILE_MENU: "--z-mobile-menu",
-    MOBILE_MENU_TOGGLE: "--z-mobile-menu-toggle",
-    OVERLAY: "--z-overlay",
-    MODAL: "--z-modal",
-    TOAST: "--z-toast",
-    LOADING: "--z-loading",
-    ERROR_BOUNDARY: "--z-error-boundary",
-    DEBUG: "--z-debug",
+    BACKGROUND: '--z-background',
+    BACKGROUND_DECORATION: '--z-background-decoration',
+    BASE: '--z-base',
+    DECORATION: '--z-decoration',
+    CONTENT_OVERLAY: '--z-content-overlay',
+    DROPDOWN: '--z-dropdown',
+    TOOLTIP: '--z-tooltip',
+    POPOVER: '--z-popover',
+    MAIN_CONTENT: '--z-main-content',
+    HERO_SECTION: '--z-hero-section',
+    ABOUT_SECTION: '--z-about-section',
+    PROJECTS_SECTION: '--z-projects-section',
+    EXPERIENCE_SECTION: '--z-experience-section',
+    CONTACT_SECTION: '--z-contact-section',
+    FOOTER_SECTION: '--z-footer-section',
+    STICKY_NAV: '--z-sticky-nav',
+    FIXED_NAVIGATION: '--z-fixed-navigation',
+    FIXED_HEADER: '--z-fixed-header',
+    MOBILE_MENU: '--z-mobile-menu',
+    MOBILE_MENU_TOGGLE: '--z-mobile-menu-toggle',
+    OVERLAY: '--z-overlay',
+    MODAL: '--z-modal',
+    TOAST: '--z-toast',
+    LOADING: '--z-loading',
+    ERROR_BOUNDARY: '--z-error-boundary',
+    DEBUG: '--z-debug',
   };
 
   return varMap[layer];
 };
 
-export const applyZIndex = (element: HTMLElement, layer: keyof typeof Z_INDEX): void => {
+export const applyZIndex = (
+  element: HTMLElement,
+  layer: keyof typeof Z_INDEX
+): void => {
   const cssVar = getZIndexVar(layer);
   element.style.zIndex = `var(${cssVar})`;
 };

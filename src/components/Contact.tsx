@@ -1,8 +1,8 @@
-import type { FC } from "react";
-import { memo } from "react";
-import { usePortfolio } from "../hooks/usePortfolio";
-import { FaEnvelope, FaPhone, FaLinkedin, FaGithub } from "react-icons/fa";
-import "./Contact.css";
+import type { FC } from 'react';
+import { memo } from 'react';
+import { usePortfolio } from '../hooks/usePortfolio';
+import { FaEnvelope, FaPhone, FaLinkedin, FaGithub } from 'react-icons/fa';
+import './Contact.css';
 
 const Contact: FC = memo(() => {
   const { contactInfo } = usePortfolio();
@@ -11,7 +11,9 @@ const Contact: FC = memo(() => {
     <section id="contact" className="contact">
       <div className="contact-container container">
         <div className="section-header">
-          <h2 className="section-title gaming-title animate-on-scroll">Contact Protocol</h2>
+          <h2 className="section-title gaming-title animate-on-scroll">
+            Contact Protocol
+          </h2>
         </div>
 
         <div className="contact-content">
@@ -19,13 +21,18 @@ const Contact: FC = memo(() => {
             <div className="contact-intro">
               <h3 className="gaming-subtitle">Let's Start a Mission</h3>
               <p>
-                Ready to collaborate on cutting-edge projects? Whether you need a frontend warrior or want to discuss the latest tech innovations, I'm here to help bring your
-                digital visions to life.
+                Ready to collaborate on cutting-edge projects? Whether you need
+                a frontend warrior or want to discuss the latest tech
+                innovations, I'm here to help bring your digital visions to
+                life.
               </p>
             </div>
 
             <div className="contact-details">
-              <a href={`mailto:${contactInfo.email}`} className="contact-item contact-item-1">
+              <a
+                href={`mailto:${contactInfo.email}`}
+                className="contact-item contact-item-1"
+              >
                 <div className="contact-icon">
                   <FaEnvelope />
                 </div>
@@ -37,7 +44,10 @@ const Contact: FC = memo(() => {
               </a>
 
               {contactInfo.phone && (
-                <a href={`tel:${contactInfo.phone}`} className="contact-item contact-item-2">
+                <a
+                  href={`tel:${contactInfo.phone}`}
+                  className="contact-item contact-item-2"
+                >
                   <div className="contact-icon">
                     <FaPhone />
                   </div>
@@ -50,7 +60,12 @@ const Contact: FC = memo(() => {
               )}
 
               {contactInfo.linkedin && (
-                <a href={contactInfo.linkedin} target="_blank" rel="noopener noreferrer" className="contact-item contact-item-3">
+                <a
+                  href={contactInfo.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="contact-item contact-item-3"
+                >
                   <div className="contact-icon">
                     <FaLinkedin />
                   </div>
@@ -63,7 +78,12 @@ const Contact: FC = memo(() => {
               )}
 
               {contactInfo.github && (
-                <a href={contactInfo.github} target="_blank" rel="noopener noreferrer" className="contact-item contact-item-4">
+                <a
+                  href={contactInfo.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="contact-item contact-item-4"
+                >
                   <div className="contact-icon">
                     <FaGithub />
                   </div>
@@ -82,6 +102,6 @@ const Contact: FC = memo(() => {
   );
 });
 
-Contact.displayName = "Contact";
+Contact.displayName = 'Contact';
 
 export default Contact;

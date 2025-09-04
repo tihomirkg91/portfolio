@@ -1,8 +1,13 @@
-import { useMemo } from "react";
-import type { ReactNode } from "react";
-import { PortfolioContext } from "./PortfolioContextTypes";
-import type { PortfolioContextType } from "./PortfolioContextTypes";
-import { projects, experience, contactInfo, personalInfo } from "../data/portfolioData";
+import { useMemo } from 'react';
+import type { ReactNode } from 'react';
+import { PortfolioContext } from './PortfolioContextTypes';
+import type { PortfolioContextType } from './PortfolioContextTypes';
+import {
+  projects,
+  experience,
+  contactInfo,
+  personalInfo,
+} from '../data/portfolioData';
 
 interface PortfolioProviderProps {
   children: ReactNode;
@@ -19,5 +24,9 @@ export const PortfolioProvider = ({ children }: PortfolioProviderProps) => {
     []
   );
 
-  return <PortfolioContext.Provider value={value}>{children}</PortfolioContext.Provider>;
+  return (
+    <PortfolioContext.Provider value={value}>
+      {children}
+    </PortfolioContext.Provider>
+  );
 };

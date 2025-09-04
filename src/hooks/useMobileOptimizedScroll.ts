@@ -1,6 +1,6 @@
-import { useCallback, useRef } from "react";
-import { useResponsive } from "./useResponsive";
-import { getHeaderOffset } from "../utils/headerOffset";
+import { useCallback, useRef } from 'react';
+import { useResponsive } from './useResponsive';
+import { getHeaderOffset } from '../utils/headerOffset';
 
 interface MobileScrollOptions {
   headerOffset?: number;
@@ -23,7 +23,11 @@ export const useMobileOptimizedScroll = (): UseMobileOptimizedScrollReturn => {
 
   const scrollToSection = useCallback(
     (elementId: string, options: MobileScrollOptions = {}) => {
-      const { headerOffset = getHeaderOffset(), behavior = isMobile ? "auto" : "smooth", block = "start" } = options;
+      const {
+        headerOffset = getHeaderOffset(),
+        behavior = isMobile ? 'auto' : 'smooth',
+        block = 'start',
+      } = options;
 
       const element = document.getElementById(elementId);
 
@@ -41,13 +45,14 @@ export const useMobileOptimizedScroll = (): UseMobileOptimizedScrollReturn => {
       try {
         if (isMobile) {
           const elementPosition = element.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          const offsetPosition =
+            elementPosition + window.pageYOffset - headerOffset;
 
           requestAnimationFrame(() => {
             window.scrollTo({
               top: Math.max(0, offsetPosition),
               left: 0,
-              behavior: "auto",
+              behavior: 'auto',
             });
 
             setTimeout(() => {
@@ -58,7 +63,7 @@ export const useMobileOptimizedScroll = (): UseMobileOptimizedScrollReturn => {
           element.scrollIntoView({
             behavior,
             block,
-            inline: "nearest",
+            inline: 'nearest',
           });
 
           setTimeout(() => {
@@ -66,7 +71,7 @@ export const useMobileOptimizedScroll = (): UseMobileOptimizedScrollReturn => {
           }, 1000);
         }
       } catch (error) {
-        console.error("Error during mobile optimized scroll:", error);
+        console.error('Error during mobile optimized scroll:', error);
         isScrolling.current = false;
       }
     },

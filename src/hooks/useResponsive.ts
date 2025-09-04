@@ -1,6 +1,6 @@
-import { useState, useEffect, useContext, useCallback, useRef } from "react";
-import { ResponsiveContext } from "../context/ResponsiveContext";
-import type { ResponsiveContextType } from "../context/ResponsiveContextTypes";
+import { useState, useEffect, useContext, useCallback, useRef } from 'react';
+import { ResponsiveContext } from '../context/ResponsiveContext';
+import type { ResponsiveContextType } from '../context/ResponsiveContextTypes';
 
 /**
  * Custom hook to consume ResponsiveContext
@@ -9,7 +9,7 @@ import type { ResponsiveContextType } from "../context/ResponsiveContextTypes";
 export const useResponsive = (): ResponsiveContextType => {
   const context = useContext(ResponsiveContext);
   if (!context) {
-    throw new Error("useResponsive must be used within a ResponsiveProvider");
+    throw new Error('useResponsive must be used within a ResponsiveProvider');
   }
   return context;
 };
@@ -21,7 +21,7 @@ export const useResponsive = (): ResponsiveContextType => {
  */
 export const useIsMobile = (mobileBreakpoint: number = 768): boolean => {
   const [isMobile, setIsMobile] = useState<boolean>(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       return window.innerWidth < mobileBreakpoint;
     }
     return false;
@@ -39,11 +39,11 @@ export const useIsMobile = (mobileBreakpoint: number = 768): boolean => {
   }, [mobileBreakpoint]);
 
   useEffect(() => {
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
     handleResize();
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }

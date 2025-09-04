@@ -24,7 +24,7 @@
 }
 
 .section-title::after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: -10px;
   left: 50%;
@@ -163,7 +163,7 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
 }
 
-.experience-item[aria-expanded="true"] .experience-content {
+.experience-item[aria-expanded='true'] .experience-content {
   border-left-color: #2980b9;
   border-left-width: 5px;
 }
@@ -424,7 +424,7 @@
 }
 
 .tech-tag::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -438,7 +438,7 @@
 }
 
 .tech-tag::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 50%;
   left: 50%;
@@ -453,7 +453,9 @@
 
 .tech-tag:hover {
   transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4), 0 0 15px rgba(102, 126, 234, 0.2);
+  box-shadow:
+    0 6px 20px rgba(255, 107, 107, 0.4),
+    0 0 15px rgba(102, 126, 234, 0.2);
   border-color: rgba(255, 255, 255, 0.5);
 }
 
@@ -474,7 +476,9 @@
 
 .tech-tag:focus {
   outline: none;
-  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4), 0 0 0 3px rgba(102, 126, 234, 0.5);
+  box-shadow:
+    0 8px 25px rgba(255, 107, 107, 0.4),
+    0 0 0 3px rgba(102, 126, 234, 0.5);
 }
 
 .tech-tags:hover .tech-tag:not(:hover) {

@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { useNavItems } from "../hooks/useNavItems";
-import { useResponsive } from "../hooks/useResponsive";
-import { useMobileOptimizedScroll } from "../hooks/useMobileOptimizedScroll";
-import { getHeaderOffset } from "../utils/headerOffset";
-import "./MobileMenu.css";
+import React, { useEffect, useState, useCallback } from 'react';
+import { useNavItems } from '../hooks/useNavItems';
+import { useResponsive } from '../hooks/useResponsive';
+import { useMobileOptimizedScroll } from '../hooks/useMobileOptimizedScroll';
+import { getHeaderOffset } from '../utils/headerOffset';
+import './MobileMenu.css';
 
 const MobileMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,34 +41,36 @@ const MobileMenu: React.FC = () => {
 
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && isOpen) handleClose();
+      if (event.key === 'Escape' && isOpen) handleClose();
     };
 
     if (isOpen) {
-      document.addEventListener("keydown", handleEscape);
+      document.addEventListener('keydown', handleEscape);
 
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
 
       if (isMobile) {
-        document.body.style.overflow = "hidden";
-        document.body.style.height = "100vh";
+        document.body.style.overflow = 'hidden';
+        document.body.style.height = '100vh';
 
-        document.addEventListener("touchmove", preventTouchMove, { passive: false });
+        document.addEventListener('touchmove', preventTouchMove, {
+          passive: false,
+        });
       }
     } else {
-      document.body.style.overflow = "";
-      document.body.style.height = "";
+      document.body.style.overflow = '';
+      document.body.style.height = '';
       if (isMobile) {
-        document.removeEventListener("touchmove", preventTouchMove);
+        document.removeEventListener('touchmove', preventTouchMove);
       }
     }
 
     return () => {
-      document.removeEventListener("keydown", handleEscape);
-      document.body.style.overflow = "";
-      document.body.style.height = "";
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = '';
+      document.body.style.height = '';
       if (isMobile) {
-        document.removeEventListener("touchmove", preventTouchMove);
+        document.removeEventListener('touchmove', preventTouchMove);
       }
     };
   }, [isOpen, isMobile, handleClose, preventTouchMove]);
@@ -76,9 +78,9 @@ const MobileMenu: React.FC = () => {
   return (
     <>
       <button
-        className={`mobile-menu__toggle ${isOpen ? "mobile-menu__toggle--active" : ""}`}
+        className={`mobile-menu__toggle ${isOpen ? 'mobile-menu__toggle--active' : ''}`}
         onClick={handleToggle}
-        aria-label={isOpen ? "Close mobile menu" : "Open mobile menu"}
+        aria-label={isOpen ? 'Close mobile menu' : 'Open mobile menu'}
         aria-expanded={isOpen}
         aria-controls="mobile-menu"
       >
@@ -90,18 +92,32 @@ const MobileMenu: React.FC = () => {
         <div className="toggle__glow"></div>
       </button>
 
-      {isOpen && <div className="mobile-menu__overlay" onClick={handleClose} aria-hidden="true" />}
+      {isOpen && (
+        <div
+          className="mobile-menu__overlay"
+          onClick={handleClose}
+          aria-hidden="true"
+        />
+      )}
 
-      <nav className={`mobile-menu ${isOpen ? "mobile-menu--open" : ""}`} id="mobile-menu" aria-hidden={!isOpen}>
+      <nav
+        className={`mobile-menu ${isOpen ? 'mobile-menu--open' : ''}`}
+        id="mobile-menu"
+        aria-hidden={!isOpen}
+      >
         <div className="mobile-menu__container">
           <div className="mobile-menu__header">
-            <button className="mobile-menu__close" onClick={handleClose} aria-label="Close mobile menu">
+            <button
+              className="mobile-menu__close"
+              onClick={handleClose}
+              aria-label="Close mobile menu"
+            >
               ×
             </button>
             <div className="menu-header__logo">
               <div className="menu-logo__hexagon">
                 <div className="menu-hexagon__inner">
-                  <span className="menu-hexagon__symbol">{"{"}</span>
+                  <span className="menu-hexagon__symbol">{'{'}</span>
                 </div>
               </div>
               <div className="menu-header__text">
@@ -117,17 +133,27 @@ const MobileMenu: React.FC = () => {
 
           <div className="mobile-menu__nav">
             <ul className="mobile-nav__list">
-              {navItems.map((item) => (
+              {navItems.map(item => (
                 <li key={item.id} className="mobile-nav__item">
                   <button
                     onClick={() => handleNavigateToSection(item.id)}
-                    className={`mobile-nav__link ${menuActiveSection === item.id ? "mobile-nav__link--active" : ""}`}
+                    className={`mobile-nav__link ${menuActiveSection === item.id ? 'mobile-nav__link--active' : ''}`}
                     aria-label={`Navigate to ${item.label} section`}
                   >
                     <div className="mobile-nav__content">
                       <div className="mobile-nav__left">
-                        <span className="mobile-nav__number">{item.number}</span>
-                        {item.icon && <span className="mobile-nav__icon">{typeof item.icon === "string" ? item.icon : <item.icon />}</span>}
+                        <span className="mobile-nav__number">
+                          {item.number}
+                        </span>
+                        {item.icon && (
+                          <span className="mobile-nav__icon">
+                            {typeof item.icon === 'string' ? (
+                              item.icon
+                            ) : (
+                              <item.icon />
+                            )}
+                          </span>
+                        )}
                       </div>
                       <div className="mobile-nav__center">
                         <span className="mobile-nav__text">{item.label}</span>
