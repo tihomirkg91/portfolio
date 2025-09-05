@@ -67,7 +67,14 @@ export const convertImageWithCanvas = (
 
       ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
 
-      const format = 'image/jpeg';
+      const supportsWebP = (() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1;
+        canvas.height = 1;
+        return canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+      })();
+
+      const format = supportsWebP ? 'image/webp' : 'image/jpeg';
       const base64 = canvas.toDataURL(format, quality);
       resolve(base64);
     };

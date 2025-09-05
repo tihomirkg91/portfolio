@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
 import type { PortfolioData } from '../types';
-import { createPdfDocumentDefinition } from '../utils/pdfDocumentBuilder';
 import { convertImageWithCanvas } from '../utils/imageConverter';
+import { createPdfDocumentDefinition } from '../utils/pdfDocumentBuilder';
 
 interface UsePdfGeneratorProps {
   portfolioData: PortfolioData | null;
@@ -33,7 +31,12 @@ export const usePdfGenerator = ({
   const maxRetries = 2;
 
   useEffect(() => {
-    pdfMake.vfs = pdfFonts.vfs;
+    const loadPdfMake = async () => {
+      const pdfMakeModule = await import('pdfmake/build/pdfmake');
+      const pdfFontsModule = await import('pdfmake/build/vfs_fonts');
+      pdfMakeModule.vfs = pdfFontsModule.vfs;
+    };
+    loadPdfMake();
   }, []);
 
   const ensureImageReady = async (): Promise<string> => {
@@ -43,7 +46,7 @@ export const usePdfGenerator = ({
 
     try {
       const fallbackBase64 = await convertImageWithCanvas(
-        '/pic.jpg',
+        '/pic.webp',
         300,
         300,
         0.8
@@ -70,6 +73,8 @@ export const usePdfGenerator = ({
       const finalBase64Img = await ensureImageReady();
 
       await new Promise(resolve => setTimeout(resolve, 100));
+
+      const { default: pdfMake } = await import('pdfmake/build/pdfmake');
 
       const documentDefinition = createPdfDocumentDefinition(
         portfolioData,

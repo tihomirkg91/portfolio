@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -9,19 +9,16 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: false,
     minify: 'esbuild',
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 2500,
     rollupOptions: {
       output: {
         manualChunks: id => {
-          if (
-            id.includes('node_modules/react') ||
-            id.includes('node_modules/react-dom')
-          ) {
-            return 'vendor';
+          if (id.includes('node_modules/react')) {
+            return 'react';
           }
 
-          if (id.includes('node_modules/pdfmake') || id.includes('pdfmake')) {
-            return 'pdf-libs';
+          if (id.includes('node_modules/react-dom')) {
+            return 'react-dom';
           }
 
           if (id.includes('node_modules/react-icons')) {

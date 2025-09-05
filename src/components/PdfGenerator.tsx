@@ -59,7 +59,7 @@ const PdfGenerator: React.FC<PdfGeneratorProps> = ({
       // Load image
       let base64Img = '';
       try {
-        base64Img = await convertImageWithCanvas('/pic.jpg');
+        base64Img = await convertImageWithCanvas('/pic.webp');
       } catch (error) {
         console.warn('Failed to load image:', error);
       }

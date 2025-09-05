@@ -15,7 +15,7 @@ const useCvGenerator = ({ portfolioData, reset, preview = false }: IProps) => {
     isLoading: imageLoading,
     error: imageError,
   } = useImageLoader({
-    imageUrl: '/pic.jpg',
+    imageUrl: '/pic.webp',
   });
 
   const { generatePdf, isGenerating, error, retryGeneration } = usePdfGenerator(

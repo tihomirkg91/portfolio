@@ -1,7 +1,7 @@
 {
   "name": "portfolio",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Modern React TypeScript portfolio website",
   "type": "module",
   "repository": {
@@ -17,6 +17,15 @@
   ],
   "author": "Tihomir Tomovic",
   "license": "MIT",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -48,6 +57,7 @@
     "globals": "^16.3.0",
     "madge": "^8.0.0",
     "prettier": "^3.6.2",
+    "sharp": "^0.34.3",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.39.1",
     "vite": "^7.1.2"
