@@ -67,14 +67,7 @@ export const convertImageWithCanvas = (
 
       ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
 
-      const supportsWebP = (() => {
-        const canvas = document.createElement('canvas');
-        canvas.width = 1;
-        canvas.height = 1;
-        return canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0;
-      })();
-
-      const format = supportsWebP ? 'image/webp' : 'image/jpeg';
+      const format = 'image/jpeg';
       const base64 = canvas.toDataURL(format, quality);
       resolve(base64);
     };
@@ -93,7 +86,7 @@ export const isValidBase64Image = (base64String: string): boolean => {
     return false;
   }
 
-  const dataUrlRegex = /^data:image\/(png|jpg|jpeg|gif|webp);base64,/;
+  const dataUrlRegex = /^data:image\/(png|jpg|jpeg|gif);base64,/;
   const isValid = dataUrlRegex.test(base64String);
 
   if (isValid && base64String.length < 100) {
