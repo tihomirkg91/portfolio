@@ -6,7 +6,7 @@ export const personalInfo: PersonalInfo = {
   lastName: 'Tomovic',
   fullName: 'Tihomir Tomovic',
   title: 'Medior Frontend Developer',
-  bio: 'I am a passionate Frontend Developer dedicated to crafting modern, responsive, and accessible web experiences. I focus on clean code, intuitive design, and delivering solutions that delight users and drive business results.',
+  bio: 'Frontend Developer with 4+ years building user-focused web interfaces.',
   avatar: '/placeholder-avatar.jpg',
   avatarAlt: 'Tihomir - Medior Frontend Developer',
   tagline: 'Building digital experiences that matter',
@@ -35,6 +35,8 @@ export const personalInfo: PersonalInfo = {
     'Bootstrap',
     'Tailwind CSS',
   ],
+  aboutMe:
+    "Since 2019 I've focused on building production-ready interfaces with React, TypeScript and Next.js. I've modernized large codebases—converting 30k+ lines of class components to hooks—created reusable component libraries and internal npm packages, and improved delivery with automated UI workflows and Playwright tests. My work emphasizes scalable component architecture, accessibility, and performance optimizations. I presented at company events on the newest React features and helped integrate frontend solutions with Azure AI and Power Automate to solve practical business problems.",
 };
 
 export const projects: Project[] = [];

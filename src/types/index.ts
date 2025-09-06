@@ -87,6 +87,7 @@ export interface PersonalInfo {
   tagline?: string;
   yearsOfExperience: number;
   currentTechStack?: readonly string[];
+  aboutMe?: string;
 }
 
 export interface PortfolioData {
