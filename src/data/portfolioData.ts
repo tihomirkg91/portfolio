@@ -6,7 +6,7 @@ export const personalInfo: PersonalInfo = {
   lastName: 'Tomovic',
   fullName: 'Tihomir Tomovic',
   title: 'Medior Frontend Developer',
-  bio: 'Frontend Developer with 4+ years building user-focused web interfaces.',
+  bio: 'Frontend Developer with 4+ years building user-focused web interfaces',
   avatar: '/placeholder-avatar.jpg',
   avatarAlt: 'Tihomir - Medior Frontend Developer',
   tagline: 'Building digital experiences that matter',
