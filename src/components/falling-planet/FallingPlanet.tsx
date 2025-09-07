@@ -52,21 +52,16 @@ export const FallingPlanet = () => {
   const scoreRef = useRef(0);
   const gameActiveRef = useRef(false);
   const notesRef = useRef<Note[]>([]);
-  const hitZonesRef = useRef<HitZone[]>(
-    Array.from({ length: LANES }, (_, i) => ({
-      lane: i,
-      active: false,
-      timer: 0,
-    }))
-  );
-
   const gameRef = useRef<HTMLDivElement>(null);
+  const gameAreaRef = useRef<HTMLDivElement>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const animationFrameRef = useRef<number | null>(null);
   const lastNoteSpawnRef = useRef(0);
   const startTimeRef = useRef<number>(0);
   const timerIntervalRef = useRef<number | null>(null);
   const currentSpeedRef = useRef(1.5);
+  const hitZoneYRef = useRef(90);
+  const hitZoneCalculatedRef = useRef(false);
 
   useEffect(() => {
     comboRef.current = combo;
@@ -84,10 +79,6 @@ export const FallingPlanet = () => {
     notesRef.current = notes;
   }, [notes]);
 
-  useEffect(() => {
-    hitZonesRef.current = hitZones;
-  }, [hitZones]);
-
   const startGame = () => {
     setGameActive(true);
     setScore(0);
@@ -103,8 +94,61 @@ export const FallingPlanet = () => {
         timer: 0,
       }))
     );
+    hitZoneCalculatedRef.current = false;
+
+    if (isMobile && isFullscreen && gameAreaRef.current) {
+      const newHeight = window.innerHeight - 200;
+      gameAreaRef.current.style.height = `${newHeight}px`;
+    }
+
+    const calculateOnce = () => {
+      if (!hitZoneCalculatedRef.current) {
+        const result = calculateHitZoneY();
+        if (result !== 90) {
+          hitZoneCalculatedRef.current = true;
+        } else if (!hitZoneCalculatedRef.current) {
+          setTimeout(() => {
+            if (!hitZoneCalculatedRef.current) {
+              hitZoneCalculatedRef.current = true;
+            }
+          }, 200);
+        }
+      } else {
+      }
+    };
+
+    setTimeout(calculateOnce, 300);
     startTimeRef.current = Date.now();
   };
+
+  const calculateHitZoneY = useCallback(() => {
+    if (hitZoneCalculatedRef.current && gameActive) {
+      return hitZoneYRef.current;
+    }
+
+    if (gameAreaRef.current) {
+      const gameAreaRect = gameAreaRef.current.getBoundingClientRect();
+      const hitZoneElements = gameAreaRef.current.querySelectorAll('.hit-zone');
+      if (hitZoneElements.length > 0) {
+        const hitZoneRect = hitZoneElements[0].getBoundingClientRect();
+        const relativeY =
+          ((hitZoneRect.top - gameAreaRect.top) / gameAreaRect.height) * 100;
+
+        if (relativeY > 10 && relativeY < 95) {
+          const currentHitZoneY = hitZoneYRef.current;
+          const difference = Math.abs(relativeY - currentHitZoneY);
+
+          if (currentHitZoneY === 90 || difference < 2) {
+            hitZoneYRef.current = relativeY;
+            hitZoneCalculatedRef.current = true;
+          } else {
+          }
+          return relativeY;
+        }
+      }
+    }
+    return 90;
+  }, []);
 
   const endGame = () => {
     setGameActive(false);
@@ -116,11 +160,26 @@ export const FallingPlanet = () => {
         timer: 0,
       }))
     );
+    hitZoneCalculatedRef.current = false;
     if (timerIntervalRef.current) {
       clearInterval(timerIntervalRef.current);
       timerIntervalRef.current = null;
     }
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (gameActive) {
+        if (isMobile && isFullscreen && gameAreaRef.current) {
+          const newHeight = window.innerHeight - 200;
+          gameAreaRef.current.style.height = `${newHeight}px`;
+        }
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [gameActive, isMobile, isFullscreen]);
 
   const playSound = useCallback((frequency: number, duration: number = 200) => {
     if (!audioContextRef.current) {
@@ -150,17 +209,20 @@ export const FallingPlanet = () => {
 
   const hitNote = useCallback(
     (lane: number) => {
-      const hitZoneY = 90;
-      const tolerance = 20;
+      const hitZoneY = hitZoneYRef.current;
       const currentNotes = notesRef.current;
       const currentCombo = comboRef.current;
 
       let bestNoteIndex = -1;
-      let bestAccuracy = tolerance + 1;
+      let bestAccuracy = 999;
 
       for (let i = 0; i < currentNotes.length; i++) {
         const note = currentNotes[i];
         if (note.lane === lane) {
+          const baseTolerance = 25;
+          const speedTolerance = note.speed * 25;
+          const tolerance = Math.max(baseTolerance, speedTolerance);
+
           const accuracy = Math.abs(note.y - hitZoneY);
           if (accuracy <= tolerance) {
             if (accuracy < bestAccuracy) {
@@ -298,6 +360,7 @@ export const FallingPlanet = () => {
     try {
       if (isMobile) {
         setIsExitingFullscreen(true);
+        setIsFullscreen(false);
 
         if (gameRef.current) {
           gameRef.current.style.position = '';
@@ -308,13 +371,17 @@ export const FallingPlanet = () => {
           gameRef.current.style.zIndex = '';
         }
 
+        document.body.classList.remove(
+          'fullscreen-active',
+          'mobile-fullscreen'
+        );
+
         setTimeout(() => {
-          setIsFullscreen(false);
           setIsExitingFullscreen(false);
-          document.body.classList.remove(
-            'fullscreen-active',
-            'mobile-fullscreen'
-          );
+
+          if (gameAreaRef.current) {
+            gameAreaRef.current.style.height = '';
+          }
         }, 50);
 
         const viewport = document.querySelector('meta[name=viewport]');
@@ -351,6 +418,15 @@ export const FallingPlanet = () => {
 
       if (isNowFullscreen) document.body.classList.add('fullscreen-active');
       else document.body.classList.remove('fullscreen-active');
+
+      if (!gameActive && isMobile && gameAreaRef.current) {
+        if (isNowFullscreen) {
+          const newHeight = window.innerHeight - 200;
+          gameAreaRef.current.style.height = `${newHeight}px`;
+        } else {
+          gameAreaRef.current.style.height = '';
+        }
+      }
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -473,12 +549,19 @@ export const FallingPlanet = () => {
               y: note.y + note.speed,
             }))
             .filter(note => {
-              if (note.y > 100) {
+              const hitZoneY = hitZoneYRef.current;
+
+              const baseTolerance = 25;
+              const speedTolerance = note.speed * 25;
+              const tolerance = Math.max(baseTolerance, speedTolerance);
+
+              if (note.y > hitZoneY + tolerance) {
                 setCombo(0);
                 comboRef.current = 0;
                 playSound(150, 100);
                 return false;
               }
+
               return true;
             });
 
@@ -557,9 +640,8 @@ export const FallingPlanet = () => {
             className={`game-btn fullscreen-btn ${
               isFullscreen ? 'active' : ''
             } ${isExitingFullscreen ? 'exiting' : ''}`}
-            onClick={() => {
-              toggleFullscreen();
-            }}
+            onClick={!isMobile ? () => toggleFullscreen() : undefined}
+            onTouchStart={isMobile ? () => toggleFullscreen() : undefined}
             title={
               isFullscreen
                 ? 'Exit Fullscreen (F11 or Ctrl+F)'
@@ -575,8 +657,7 @@ export const FallingPlanet = () => {
         </div>
       </div>
 
-      <div className="game-area">
-        {/* Lane backgrounds */}
+      <div className="game-area" ref={gameAreaRef}>
         <div className="lanes-container">
           {Array.from({ length: LANES }, (_, i) => (
             <div key={i} className={`lane lane-${i}`}>
@@ -585,7 +666,6 @@ export const FallingPlanet = () => {
           ))}
         </div>
 
-        {/* Hit zones */}
         <div className="hit-zones-container">
           {hitZones.map((hz, i) => (
             <div
@@ -604,7 +684,6 @@ export const FallingPlanet = () => {
           ))}
         </div>
 
-        {/* Falling notes - optimized with CSS animations */}
         <div className="notes-container">
           {notes.map(note => {
             const lanePositions = ['10%', '30%', '50%', '70%', '90%'];
