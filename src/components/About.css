@@ -20,6 +20,7 @@
   color: #3498db;
   margin-bottom: 1rem;
   position: relative;
+  display: inline-block;
 }
 .about .section-title::after {
   content: '';
@@ -27,9 +28,10 @@
   bottom: -10px;
   left: 50%;
   transform: translateX(-50%);
-  width: 80px;
+  width: 0;
   height: 4px;
   background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple), var(--neon-green));
+  animation: titleUnderline 1.5s ease-out 0.5s forwards;
   border-radius: 2px;
 }
 
@@ -310,5 +312,14 @@
   .about-intro,
   .about-details {
     max-width: none;
+  }
+}
+
+@keyframes titleUnderline {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 80%;
   }
 }
