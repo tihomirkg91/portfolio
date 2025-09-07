@@ -88,6 +88,10 @@
   font-family: 'Orbitron', monospace;
   text-transform: uppercase;
   letter-spacing: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .hero-name {
@@ -102,17 +106,20 @@
   background-clip: text;
   animation: glow 2s ease-in-out infinite alternate;
   position: relative;
+  display: inline-block;
 }
 
 .hero-name::after {
   content: '';
   position: absolute;
   bottom: -5px;
-  left: 0;
-  width: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
   height: 3px;
   background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
-  animation: borderGlow 2s ease-in-out infinite alternate;
+  animation: titleUnderline 1.5s ease-out 0.5s forwards;
+  border-radius: 2px;
 }
 
 .hero-subtitle {
@@ -565,6 +572,15 @@
   }
   50% {
     opacity: 0.7;
+  }
+}
+
+@keyframes titleUnderline {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 80%;
   }
 }
 

@@ -1,8 +1,8 @@
 import type { FC } from 'react';
-import { memo, useMemo, useCallback, startTransition } from 'react';
-import { useScrollNavigation } from '../hooks/useScrollNavigation';
+import { memo, startTransition, useCallback, useMemo } from 'react';
 import { useImageLoading } from '../hooks/useImageLoading';
 import { usePortfolio } from '../hooks/usePortfolio';
+import { useScrollNavigation } from '../hooks/useScrollNavigation';
 import './Hero.css';
 
 interface HeroActionButtonProps {
@@ -142,7 +142,7 @@ const Hero: FC = memo(() => {
         <div className="hero-content">
           <div className="hero-text">
             <h1 id="hero-title" className="hero-title">
-              Hi, I'm <span className="hero-name">{heroData.name}</span>
+              <span className="hero-name">Hi, I'm {heroData.name}</span>
             </h1>
             <h2 className="hero-subtitle">{heroData.title}</h2>
             <p className="hero-description">{heroData.bio}</p>
