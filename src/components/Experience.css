@@ -15,7 +15,7 @@
   margin-bottom: clamp(2rem, 6vh, 4rem);
 }
 
-.section-title {
+.experience .section-title {
   font-size: clamp(2rem, 5vw, 2.5rem);
   font-weight: 700;
   color: #2c3e50;
@@ -23,7 +23,7 @@
   position: relative;
 }
 
-.section-title::after {
+.experience .section-title::after {
   content: '';
   position: absolute;
   bottom: -10px;
@@ -31,7 +31,7 @@
   transform: translateX(-50%);
   width: 80px;
   height: 4px;
-  background: linear-gradient(45deg, #3498db, #2980b9);
+  background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple), var(--neon-green));
   border-radius: 2px;
 }
 
@@ -530,7 +530,7 @@
     padding: 0 1rem;
   }
 
-  .section-title {
+  .experience .section-title {
     font-size: 2rem;
   }
 
@@ -625,7 +625,7 @@
     padding: 0 0.75rem;
   }
 
-  .section-title {
+  .experience .section-title {
     font-size: 1.8rem;
     margin-bottom: 0.75rem;
   }

@@ -14,14 +14,14 @@
   margin-bottom: clamp(2rem, 6vh, 4rem);
 }
 
-.section-title {
+.about .section-title {
   font-size: clamp(2rem, 5vw, 2.5rem);
   font-weight: 700;
   color: #3498db;
   margin-bottom: 1rem;
   position: relative;
 }
-.section-title::after {
+.about .section-title::after {
   content: '';
   position: absolute;
   bottom: -10px;
@@ -29,7 +29,7 @@
   transform: translateX(-50%);
   width: 80px;
   height: 4px;
-  background: linear-gradient(45deg, #3498db, #2980b9);
+  background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple), var(--neon-green));
   border-radius: 2px;
 }
 
@@ -148,7 +148,7 @@
     margin-bottom: 3rem;
   }
 
-  .section-title {
+  .about .section-title {
     font-size: 2rem;
   }
 
@@ -183,7 +183,7 @@
     margin-bottom: 2rem;
   }
 
-  .section-title {
+  .about .section-title {
     font-size: 1.8rem;
     margin-bottom: 0.75rem;
   }
@@ -234,7 +234,7 @@
     padding: 0 0.75rem;
   }
 
-  .section-title {
+  .about .section-title {
     font-size: 1.6rem;
   }
 

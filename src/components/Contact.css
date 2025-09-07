@@ -102,13 +102,13 @@
   margin-bottom: clamp(2rem, 6vh, 4rem);
 }
 
-.section-header .section-title,
-.section-header .section-subtitle {
+.contact .section-header .section-title,
+.contact .section-header .section-subtitle {
   opacity: 1 !important;
   transform: translateY(0) !important;
 }
 
-.section-title {
+.contact .section-title {
   font-size: clamp(2.5rem, 6vw, 3.5rem);
   margin-bottom: 1rem;
   color: var(--text-primary);
@@ -116,7 +116,7 @@
   display: inline-block;
 }
 
-.section-title::after {
+.contact .section-title::after {
   content: '';
   position: absolute;
   bottom: -10px;
@@ -468,7 +468,7 @@
     padding: 0 1rem;
   }
 
-  .section-title {
+  .contact .section-title {
     font-size: 2rem;
   }
 
@@ -532,7 +532,7 @@
     padding: 0 0.75rem;
   }
 
-  .section-title {
+  .contact .section-title {
     font-size: 1.8rem;
     margin-bottom: 0.75rem;
   }
