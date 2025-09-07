@@ -32,11 +32,11 @@ export const useImageLoader = ({
 
       try {
         try {
-          const base64 = await convertImageToBase64(imageUrl);
+          const base64 = await convertImageWithCanvas(imageUrl);
           setBase64Img(base64);
           setImageLoaded(true);
         } catch {
-          const base64 = await convertImageWithCanvas(imageUrl);
+          const base64 = await convertImageToBase64(imageUrl);
           setBase64Img(base64);
           setImageLoaded(true);
         }

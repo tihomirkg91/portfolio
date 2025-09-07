@@ -33,7 +33,6 @@
   color: #ecf0f1;
 }
 
-/* Desktop redesign for footer-heading */
 @media (min-width: 768px) {
   .footer-heading {
     font-size: 1.3rem;
@@ -484,7 +483,6 @@
   }
 }
 
-/* Desktop layout (screens >= 768px) */
 @media (min-width: 768px) {
   .footer-content {
     flex-direction: row;

@@ -39,7 +39,33 @@ export const personalInfo: PersonalInfo = {
     "Since 2019 I've focused on building production-ready interfaces with React, TypeScript and Next.js. I've modernized large codebases—converting 30k+ lines of class components to hooks—created reusable component libraries and internal npm packages, and improved delivery with automated UI workflows and Playwright tests. My work emphasizes scalable component architecture, accessibility, and performance optimizations. I presented at company events on the newest React features and helped integrate frontend solutions with Azure AI and Power Automate to solve practical business problems.",
 };
 
-export const projects: Project[] = [];
+export const projects: Project[] = [
+  {
+    id: generateShortId('project'),
+    title: 'Falling Planet Rhythm Game',
+    description:
+      'An interactive rhythm game component built with React and TypeScript, featuring falling notes, scoring system, and fullscreen support.',
+    technologies: [
+      'React',
+      'TypeScript',
+      'HTML5 Audio API',
+      'Responsive Design',
+    ],
+    links: [
+      {
+        url: '/falling-planet-rhythm',
+        label: 'Play Game',
+        type: 'demo',
+      },
+    ],
+    imageUrl: '/game.webp',
+    imageAlt: 'Falling Planet Rhythm Game Screenshot',
+    featured: true,
+    status: 'completed',
+    dateCreated: '2024-09-06',
+    tags: ['Game', 'Interactive', 'React Component', 'TypeScript'],
+  },
+];
 
 export const experience: Experience[] = [
   {
@@ -80,6 +106,7 @@ export const experience: Experience[] = [
       'Built and deployed modern web applications using Next.js and TypeScript, leveraging server-side rendering and static site generation for improved SEO and performance.',
       'Integrated Strapi as a headless CMS for dynamic content management and flexible API connectivity.',
       'Architected NX Monorepos for efficient code sharing and streamlined development across projects.',
+      'Implemented Zustand for lightweight, scalable state management with minimal boilerplate and excellent TypeScript support.',
       'Implemented Prisma ORM for robust data modeling and optimized database interactions.',
       'Styled responsive UIs with Tailwind CSS, ensuring mobile-first design and accessibility.',
       'Integrated Stripe for secure payment processing and e-commerce functionality.',

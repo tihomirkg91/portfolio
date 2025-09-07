@@ -1,16 +1,20 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { LuArrowLeft } from 'react-icons/lu';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useActiveSection } from '../hooks/useActiveSection';
-import { useScrollNavigation } from '../hooks/useScrollNavigation';
-import { useResponsive } from '../hooks/useResponsive';
 import { useNavItems } from '../hooks/useNavItems';
+import { useResponsive } from '../hooks/useResponsive';
+import { useScrollNavigation } from '../hooks/useScrollNavigation';
 import { getScrollOffset } from '../utils/headerOffset';
-import MobileMenu from './MobileMenu';
 import DesktopMenu from './DesktopMenu';
+import MobileMenu from './MobileMenu';
 import './Navigation.css';
 
 const Navigation: React.FC = () => {
   const { isMobile } = useResponsive();
   const { selectedNavItem } = useNavItems();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const [scrollOffset, setScrollOffset] = useState(() => getScrollOffset());
 
@@ -29,14 +33,14 @@ const Navigation: React.FC = () => {
     scrollThreshold: 50,
   });
 
-  const { scrollToTop } = useScrollNavigation({
+  const { scrollToElement } = useScrollNavigation({
     activeSection: selectedNavItem,
     autoScrollToActiveSection: false,
   });
 
   const handleEnsureActiveSectionInView = useCallback(
-    () => scrollToTop(),
-    [scrollToTop]
+    () => scrollToElement('home'),
+    [scrollToElement]
   );
 
   return (
@@ -44,6 +48,14 @@ const Navigation: React.FC = () => {
       className={`navigation ${isScrolled ? 'navigation--scrolled' : ''}`}
     >
       <div className="navigation__container">
+        {location.pathname === '/falling-planet-rhythm' && (
+          <button
+            onClick={() => navigate('/')}
+            className="navigation__back-arrow"
+          >
+            <LuArrowLeft size={20} />
+          </button>
+        )}
         <div className="navigation__logo">
           <div
             className="logo__container"
@@ -78,13 +90,14 @@ const Navigation: React.FC = () => {
           </div>
         </div>
 
-        {isMobile ? (
-          <MobileMenu />
-        ) : (
-          <nav className="navigation__nav">
-            <DesktopMenu />
-          </nav>
-        )}
+        {location.pathname !== '/falling-planet-rhythm' &&
+          (isMobile ? (
+            <MobileMenu />
+          ) : (
+            <nav className="navigation__nav">
+              <DesktopMenu />
+            </nav>
+          ))}
       </div>
 
       <div className="navigation__grid"></div>

@@ -1,14 +1,14 @@
 import type {
-  TDocumentDefinitions,
   Content,
   ContentCanvas,
+  TDocumentDefinitions,
 } from 'pdfmake/interfaces';
 import type { PortfolioData } from '../types';
-import { isValidBase64Image } from '../utils/imageConverter';
 import {
   calculateDuration,
   calculateTotalExperience,
 } from '../utils/dateUtils';
+import { isValidBase64Image } from '../utils/imageConverter';
 
 export const pdfStyles = {
   name: {
@@ -398,13 +398,13 @@ export const createProjectsSection = (
   }
 
   // Show only the most important projects (limit to 3-4 for PDF space)
-  const topProjects = projects.slice(0, 4);
+  // Exclude "Falling Planet Rhythm Game" from PDF
+  const filteredProjects = projects.filter(
+    project => project.title !== 'Falling Planet Rhythm Game'
+  );
+  const topProjects = filteredProjects.slice(0, 4);
 
   return [
-    {
-      text: 'KEY PROJECTS',
-      style: 'sectionHeader',
-    },
     ...topProjects.map((project, index) => ({
       stack: [
         {

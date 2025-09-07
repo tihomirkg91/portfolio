@@ -86,7 +86,7 @@ export const isValidBase64Image = (base64String: string): boolean => {
     return false;
   }
 
-  const dataUrlRegex = /^data:image\/(png|jpg|jpeg|gif);base64,/;
+  const dataUrlRegex = /^data:image\/(png|jpg|jpeg|gif|webp);base64,/;
   const isValid = dataUrlRegex.test(base64String);
 
   if (isValid && base64String.length < 100) {

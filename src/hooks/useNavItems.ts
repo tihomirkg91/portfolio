@@ -18,10 +18,6 @@ export interface UseNavItemsReturn {
   activeSection: string;
 }
 
-/**
- * Custom hook that manages navigation items, active section detection, and smooth scrolling
- * between portfolio sections with dynamic header offset calculation.
- */
 export const useNavItems = (): UseNavItemsReturn => {
   const [scrollOffset, setScrollOffset] = useState(() => getHeaderOffset());
 

@@ -1,168 +1,115 @@
 # Frontend Developer Portfolio
 
-A modern, responsive portfolio website built with React 19, TypeScript, and Vite. Features a clean architecture with Context API for state management, comprehensive TypeScript interfaces, and advanced React patterns.
+A modern portfolio built with React 19, TypeScript, and Vite.
 
-## ✨ Features
+## Features
 
-- **Modern Tech Stack**: React 19, TypeScript 5.8, Vite 7
-- **Responsive Design**: Mobile-first approach with CSS Grid and Flexbox
-- **Context-Based Architecture**: React Context for data management (no prop drilling)
-- **Advanced React Patterns**: Custom hooks, error boundaries, responsive contexts
-- **Professional Sections**:
-  - Dynamic hero section with smooth animations
-  - Interactive about section with skills showcase
-  - Featured projects with live demos and GitHub links
-  - Work experience timeline with detailed descriptions
-  - Contact form with validation and PDF generation
-  - Mobile-optimized navigation with active section detection
-- **Clean Code**: Separate CSS files, TypeScript interfaces, modular architecture
-- **Performance Optimized**:
-  - Lazy loading and image optimization
-  - Memoized context values and callbacks
-  - Efficient scroll handling and animation
-  - Mobile-optimized interactions
-- **Accessibility**: WCAG compliant with proper ARIA labels and keyboard navigation
-- **Developer Experience**: ESLint 9, comprehensive tooling, VS Code workspace configuration
+- Responsive design with mobile-first approach
+- Context API for state management
+- Custom hooks and error boundaries
+- PDF generation with pdfMake
+- Performance optimized with lazy loading
 
-## 🚀 Tech Stack & Performance Optimization
+## Tech Stack
 
-- **Frontend**: React 19, TypeScript 5.8
-- **Build Tool**: Vite 7
-- **Styling**: CSS3 with custom properties
-- **State Management**: React Context API
-- **Linting**: ESLint 9 with React hooks plugin
-- **Code Formatting**: Prettier with custom configuration
+- React 19, TypeScript 5.8, Vite 7
+- ESLint 9, Prettier
 
-### Vite Manual Chunks Implementation
+## Installation
 
-To optimize bundle size and improve performance, this portfolio uses Vite's manual chunks feature. This allows splitting large dependencies into separate chunks, enabling better caching and faster initial load times.
+```bash
+git clone https://github.com/tihomirkg91/portfolio.git
+cd portfolio
+npm install
+npm run dev
+```
 
-- **pdfMake Optimization**: The `pdfMake` library, used for PDF generation, is loaded as a separate chunk using Vite's manualChunks configuration. This ensures that heavy libraries like `pdfMake` do not bloat the main bundle and are only loaded when needed (e.g., when generating a PDF from the contact form).This approach keeps the main bundle lightweight and ensures optimal loading for users, especially on mobile devices.
-
-## 📁 Project Structure
+## Project Structure
 
 ```
 src/
-├── components/          # React components with CSS
-│   ├── Navigation.tsx   # Navigation header with mobile menu
-│   ├── Hero.tsx        # Landing section with animations
-│   ├── About.tsx       # About section with skills
-│   ├── Projects.tsx    # Featured projects showcase
-│   ├── Experience.tsx  # Work experience timeline
-│   ├── Contact.tsx     # Contact form with validation
-│   ├── Footer.tsx      # Site footer
-│   ├── ErrorBoundary.tsx # Error boundary wrapper
-│   ├── LoadingSpinner.tsx # Loading component
-│   ├── PdfGenerator.tsx # PDF generation utilities
-│   └── *.css          # Component-specific styles
-├── context/            # React Context providers
-│   ├── PortfolioContext.tsx # Main portfolio data context
-│   ├── PortfolioContextTypes.ts # Portfolio context types
-│   ├── ResponsiveContext.tsx # Responsive breakpoint context
-│   └── ResponsiveContextTypes.ts # Responsive context types
-├── hooks/              # Custom React hooks
-│   ├── usePortfolio.ts # Portfolio data consumption
-│   ├── useResponsive.ts # Responsive breakpoint detection
-│   ├── useActiveSection.ts # Active section detection
-│   ├── useScrollAnimation.ts # Scroll-based animations
-│   ├── useNavigationScroll.ts # Navigation scroll handling
-│   ├── usePdfGenerator.ts # PDF generation logic
-│   └── useImageLoader.ts # Image loading optimization
-├── data/               # Static data and content
-│   └── portfolioData.ts # Portfolio content and configuration
-├── types/              # TypeScript definitions
-│   └── index.ts        # Shared type interfaces
-├── utils/              # Utility functions
-│   ├── dateUtils.ts    # Date formatting utilities
-│   ├── generateId.ts   # ID generation helpers
-│   ├── imageConverter.ts # Image processing utilities
-│   ├── pdfDocumentBuilder.ts # PDF document creation
-│   ├── headerOffset.ts # Header offset calculations
-│   ├── featureFlags.ts # Feature flag management
-│   └── zIndex.ts       # Z-index management
-├── styles/             # Global styles
-│   └── zIndex.css      # Z-index layer definitions
-├── App.tsx            # Main app component
-├── App.css            # Global app styles
-├── index.css          # Base styles and CSS variables
-└── main.tsx           # Application entry point
+├── App.css
+├── App.tsx
+├── index.css
+├── main.tsx
+├── vite-env.d.ts
+├── assets/
+│   └── react.svg
+├── components/
+│   ├── About.css
+│   ├── About.tsx
+│   ├── Contact.css
+│   ├── Contact.tsx
+│   ├── CVDownloadButton.css
+│   ├── CVDownloadButton.tsx
+│   ├── DesktopMenu.css
+│   ├── DesktopMenu.tsx
+│   ├── ErrorBoundary.css
+│   ├── ErrorBoundary.tsx
+│   ├── Experience.css
+│   ├── Experience.tsx
+│   ├── falling-planet/
+│   │   ├── FallingPlanet.css
+│   │   └── FallingPlanet.tsx
+│   ├── Footer.css
+│   ├── Footer.tsx
+│   ├── GamePage.css
+│   ├── GamePage.tsx
+│   ├── Hero.css
+│   ├── Hero.tsx
+│   ├── LoadingSpinner.css
+│   ├── LoadingSpinner.tsx
+│   ├── MobileMenu.css
+│   ├── MobileMenu.tsx
+│   ├── Navigation.css
+│   ├── Navigation.tsx
+│   ├── PdfGenerator.tsx
+│   ├── Projects.css
+│   └── Projects.tsx
+├── context/
+│   ├── PortfolioContext.tsx
+│   ├── PortfolioContextTypes.ts
+│   ├── ResponsiveContext.tsx
+│   └── ResponsiveContextTypes.ts
+├── data/
+│   └── portfolioData.ts
+├── hooks/
+│   ├── useActiveDetection.ts
+│   ├── useActiveSection.ts
+│   ├── useCvGenerator.ts
+│   ├── useImageLoader.ts
+│   ├── useImageLoading.ts
+│   ├── useMobileOptimizedScroll.ts
+│   ├── useNavigationScroll.ts
+│   ├── useNavItems.ts
+│   ├── usePdfGenerator.ts
+│   ├── usePortfolio.ts
+│   ├── useResponsive.ts
+│   ├── useScrollAnimation.ts
+│   └── useScrollNavigation.ts
+├── styles/
+│   └── zIndex.css
+├── types/
+│   └── index.ts
+└── utils/
+    ├── dateUtils.ts
+    ├── generateId.ts
+    ├── headerOffset.ts
+    ├── imageConverter.ts
+    ├── index.ts
+    ├── pdfDocumentBuilder.ts
+    └── zIndex.ts
 ```
 
-## 🛠️ Installation & Setup
+## Scripts
 
-1. **Clone the repository**
+- `npm run dev` - Start dev server
+- `npm run build` - Build for production
+- `npm run lint` - Lint code
 
-   ```bash
-   git clone "https://github.com/tihomirkg91/portfolio.git"
-   cd portfolio
-   ```
+## Git Optimizations
 
-2. **Install dependencies**
+- .gitattributes for line endings
+- .gitignore for exclusions
+- VS Code workspace config
 
-   ```bash
-   npm install
-   ```
-
-3. **Start development server**
-
-   ```bash
-   npm run dev
-   ```
-
-4. **Build for production**
-
-   ```bash
-   npm run build
-   ```
-
-5. **Preview production build**
-   ```bash
-   npm run preview
-   ```
-
-## 🔧 Development Workflow
-
-### VS Code Workspace
-
-This project includes a VS Code workspace configuration (`portfolio.code-workspace`) with:
-
-- Recommended extensions for React/TypeScript development
-- Optimized settings for auto-formatting and import organization
-- File nesting patterns for better project organization
-- ESLint and Prettier integration
-
-**To use:**
-
-```bash
-code portfolio.code-workspace
-```
-
-### Git Configuration
-
-The repository is optimized for Git with:
-
-- **`.gitignore`**: Comprehensive ignore patterns for Node.js, TypeScript, and VS Code
-- **`.gitattributes`**: Line ending normalization and binary file handling
-- **File organization**: Clean separation of source code and build artifacts
-
-### Available Scripts
-
-The following scripts are available via `npm run <script>`:
-
-- `dev` — Start the Vite development server with hot reload
-- `build` — Type-check and build the app for production (output in `dist/`)
-- `preview` — Locally preview the production build
-- `lint` — Run ESLint for code quality and formatting
-- `format` — Format all files using Prettier
-- `format:check` — Check if all files are properly formatted without making changes
-- `check-circular` — Check for circular dependencies in the `src/` folder (requires Madge)
-- `reset` — Remove `node_modules`, clean npm cache, and reinstall dependencies
-
-## 🔧 Git Optimization Features
-
-This repository includes several Git optimizations:
-
-- **Line ending normalization**: `.gitattributes` ensures consistent line endings across platforms
-- **Binary file handling**: Proper handling of images, fonts, and other binary assets
-- **Comprehensive .gitignore**: Excludes build artifacts, dependencies, and OS-specific files
-- **VS Code integration**: Workspace settings for consistent development experience

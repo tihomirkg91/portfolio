@@ -1,11 +1,13 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useMobileOptimizedScroll } from '../hooks/useMobileOptimizedScroll';
 import { useNavItems } from '../hooks/useNavItems';
 import { useResponsive } from '../hooks/useResponsive';
-import { useMobileOptimizedScroll } from '../hooks/useMobileOptimizedScroll';
 import { getHeaderOffset } from '../utils/headerOffset';
 import './MobileMenu.css';
 
 const MobileMenu: React.FC = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const { navItems, activeSection } = useNavItems();
   const { isMobile } = useResponsive();
@@ -30,13 +32,17 @@ const MobileMenu: React.FC = () => {
     (sectionId: string) => {
       handleClose();
 
-      requestAnimationFrame(() => {
-        scrollToSection(sectionId, {
-          headerOffset: getHeaderOffset(),
+      if (sectionId === 'game') {
+        navigate('/falling-planet-rhythm');
+      } else {
+        requestAnimationFrame(() => {
+          scrollToSection(sectionId, {
+            headerOffset: getHeaderOffset(),
+          });
         });
-      });
+      }
     },
-    [scrollToSection, handleClose]
+    [scrollToSection, handleClose, navigate]
   );
 
   useEffect(() => {

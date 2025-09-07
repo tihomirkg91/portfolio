@@ -1,0 +1,62 @@
+.game-page {
+  color: white;
+}
+
+.game-page__header {
+  position: relative;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.game-page__title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  background: linear-gradient(135deg, #00f5ff, #ff00aa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+.game-page__subtitle {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.game-page__instructions {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.instructions-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #00f5ff;
+  text-align: center;
+}
+
+.instruction-item {
+  padding: 1rem;
+  border-left: 3px solid #00f5ff;
+}
+
+.instruction-item strong {
+  color: #ff00aa;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .game-page__back-button {
+    position: static;
+    transform: none;
+    margin-bottom: 1rem;
+    justify-content: center;
+  }
+
+  .instruction-item {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+}

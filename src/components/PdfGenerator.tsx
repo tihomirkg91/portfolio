@@ -61,7 +61,9 @@ const PdfGenerator: React.FC<PdfGeneratorProps> = ({
       try {
         base64Img = await convertImageWithCanvas('/pic.webp');
       } catch (error) {
-        console.warn('Failed to load image:', error);
+        console.warn('Failed to convert image with canvas:', error);
+        // Don't use convertImageToBase64 as fallback since it might produce WebP
+        // which pdfmake doesn't support
       }
 
       // Create PDF document
