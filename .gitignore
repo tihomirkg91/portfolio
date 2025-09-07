@@ -9,16 +9,14 @@ dist-ssr
 build
 *.local
 
-# Environment variables
-.env
+# Environment variables (but allow .env for feature flags)
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-# Allow feature flags to be committed
-!.env.features
-!.env.example
+# Feature flags are stored in .env and committed to git
+# Local overrides can be placed in .env.local
 
 # Logs
 logs

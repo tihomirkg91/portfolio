@@ -4,6 +4,8 @@ import { defineConfig } from 'vite';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  // Vite will automatically load .env.features since it's in the allowed list in .gitignore
+  envPrefix: 'VITE_',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',

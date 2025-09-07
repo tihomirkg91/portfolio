@@ -5,24 +5,43 @@ import { useNavigate } from 'react-router-dom';
 import { useImageLoading } from '../hooks/useImageLoading';
 import { usePortfolio } from '../hooks/usePortfolio';
 import type { ProjectLink } from '../types';
+import { useFeatureFlags } from '../utils/featureFlags';
+import ComingSoonModal from './ComingSoonModal';
 import './Projects.css';
 
 interface ProjectLinkButtonProps {
   link: ProjectLink;
   projectTitle: string;
+  onGameClick?: () => void;
+  gameEnabled: boolean;
 }
 
 const ProjectLinkButton: FC<ProjectLinkButtonProps> = memo(
-  ({ link, projectTitle }) => {
+  ({ link, projectTitle, onGameClick, gameEnabled }) => {
     const navigate = useNavigate();
 
     const handleClick = useCallback(
       (e: React.MouseEvent) => {
         e.preventDefault();
+
+        // Check if it's a game link and handle based on feature flag
+        if (link.label === 'Play Game') {
+          if (gameEnabled) {
+            // Game is enabled, navigate to the game
+            if (link.url.startsWith('/')) navigate(link.url);
+            else window.open(link.url, '_blank', 'noopener,noreferrer');
+          } else {
+            // Game is disabled, show modal
+            if (onGameClick) onGameClick();
+          }
+          return;
+        }
+
+        // Handle other links normally
         if (link.url.startsWith('/')) navigate(link.url);
         else window.open(link.url, '_blank', 'noopener,noreferrer');
       },
-      [link.url, navigate]
+      [link.url, link.label, navigate, onGameClick, gameEnabled]
     );
 
     return (
@@ -45,10 +64,12 @@ ProjectLinkButton.displayName = 'ProjectLinkButton';
 
 const Projects: FC = memo(() => {
   const { projects } = usePortfolio();
+  const { gameEnabled } = useFeatureFlags();
   const project = projects[0];
   const { src, isLoading, hasError, handleLoad, handleError, imgRef } =
     useImageLoading(project?.imageUrl || '');
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [isGameModalOpen, setIsGameModalOpen] = useState(false);
 
   const handleImageLoad = useCallback(() => {
     setIsImageLoaded(true);
@@ -59,6 +80,14 @@ const Projects: FC = memo(() => {
     (event: React.SyntheticEvent<HTMLImageElement>) => handleError(event),
     [handleError]
   );
+
+  const handleGameClick = useCallback(() => {
+    setIsGameModalOpen(true);
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setIsGameModalOpen(false);
+  }, []);
 
   if (!project) {
     return (
@@ -124,6 +153,8 @@ const Projects: FC = memo(() => {
                         key={`${link.type}-${linkIndex}`}
                         link={link}
                         projectTitle={project.title}
+                        onGameClick={handleGameClick}
+                        gameEnabled={gameEnabled}
                       />
                     ))}
                   </div>
@@ -161,6 +192,13 @@ const Projects: FC = memo(() => {
           </article>
         </div>
       </div>
+
+      <ComingSoonModal
+        isOpen={isGameModalOpen}
+        onClose={handleCloseModal}
+        title="Game Coming Soon!"
+        message="The Falling Planet Rhythm Game will be available soon. Stay tuned for updates!"
+      />
     </section>
   );
 });
