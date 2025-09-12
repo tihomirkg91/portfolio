@@ -1,10 +1,10 @@
 import React, {
   createContext,
-  useMemo,
-  useState,
-  useEffect,
   useCallback,
+  useEffect,
+  useMemo,
   useRef,
+  useState,
 } from 'react';
 import type {
   ResponsiveContextType,
@@ -55,11 +55,7 @@ const ResponsiveProvider: React.FC<ResponsiveProviderProps> = ({
     [isMobile]
   );
 
-  return (
-    <ResponsiveContext.Provider value={contextValue}>
-      {children}
-    </ResponsiveContext.Provider>
-  );
+  return <ResponsiveContext value={contextValue}>{children}</ResponsiveContext>;
 };
 
 export { ResponsiveContext };

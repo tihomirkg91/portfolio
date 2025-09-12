@@ -33,8 +33,7 @@ const GamePage: FC = () => {
               points
             </div>
             <div className="instruction-item">
-              <strong>Features:</strong> Combo system, dynamic difficulty,
-              fullscreen mode
+              <strong>Features:</strong> Dynamic difficulty, fullscreen mode
             </div>
           </div>
         </div>

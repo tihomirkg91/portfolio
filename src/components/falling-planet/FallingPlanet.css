@@ -9,6 +9,11 @@
   min-height: 300px;
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
   z-index: 100;
+
+  will-change: auto;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .game-header {
@@ -52,8 +57,14 @@
   flex-wrap: wrap;
 }
 
+.game-stats {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
 .score,
-.combo,
 .time,
 .level {
   color: #00ffff !important;
@@ -67,6 +78,22 @@
 .level {
   color: #ff6b35;
   text-shadow: 0 0 5px #ff6b35;
+}
+
+.stat-label {
+  color: #00ffff;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  font-weight: normal;
+  margin-right: 5px;
+}
+
+.stat-value {
+  color: #ffffff;
+  font-family: 'Courier New', monospace;
+  font-size: 18px;
+  font-weight: bold;
+  text-shadow: 0 0 5px #00ffff;
 }
 
 .fullscreen-controls {
@@ -170,6 +197,9 @@
   flex-direction: column;
   align-items: stretch;
   visibility: visible !important;
+
+  contain: layout style paint;
+  transform: translateZ(0);
 }
 
 .lanes-container,
@@ -298,6 +328,11 @@
   animation: hitZonePulse 0.2s ease-out;
 }
 
+.hit-zone-pressed {
+  transform: scale(0.95) !important;
+  transition: transform 0.1s ease-out !important;
+}
+
 @keyframes hitZonePulse {
   0% {
     box-shadow: 0 0 20px var(--lane-color);
@@ -334,7 +369,11 @@
   height: var(--note-size);
   top: var(--note-y);
   left: var(--note-left, 50%);
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateZ(0);
+
+  will-change: top, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .note-lane-0 {
@@ -437,6 +476,8 @@
     touch-action: manipulation;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 10;
   }
 
   .hit-zone:active {
@@ -476,14 +517,15 @@
   .game-area {
     height: 350px;
     border-radius: 8px;
+    position: relative;
+    overflow: hidden;
   }
 
   .game-header h3 {
     font-size: 24px;
   }
 
-  .score,
-  .combo {
+  .score {
     font-size: 20px;
   }
 
@@ -577,7 +619,6 @@
   }
 
   .game-controls .score,
-  .game-controls .combo,
   .game-controls .time,
   .game-controls .level {
     font-size: 14px !important;
@@ -750,6 +791,8 @@ body.mobile-fullscreen {
   flex-direction: row !important;
   width: 100% !important;
   position: absolute !important;
+  z-index: 10 !important;
+  pointer-events: auto !important;
 }
 
 .mobile-fullscreen .hit-zone {
@@ -767,6 +810,10 @@ body.mobile-fullscreen {
   position: relative !important;
   overflow: visible !important;
   box-sizing: border-box !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1) !important;
+  touch-action: manipulation !important;
 }
 
 .mobile-fullscreen .hit-zone:active {
@@ -814,6 +861,10 @@ body.mobile-fullscreen {
     height: 100px !important;
     min-height: 100px !important;
     margin: 0 1px !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1) !important;
+    touch-action: manipulation !important;
   }
 
   .mobile-fullscreen .hit-zone-key {
@@ -851,7 +902,6 @@ body.mobile-fullscreen {
 }
 
 .mobile-fullscreen .score,
-.mobile-fullscreen .combo,
 .mobile-fullscreen .time,
 .mobile-fullscreen .level {
   font-size: 16px !important;
@@ -906,7 +956,6 @@ body.mobile-fullscreen {
   }
 
   .score,
-  .combo,
   .time,
   .level {
     font-size: 12px !important;
@@ -940,7 +989,6 @@ body.mobile-fullscreen {
   }
 
   .score,
-  .combo,
   .time,
   .level {
     font-size: 12px !important;
@@ -1039,9 +1087,8 @@ body.mobile-fullscreen {
   .hit-zone {
     min-height: 60px !important;
     touch-action: manipulation !important;
-  }
-
-  .hit-zone {
+    cursor: pointer !important;
+    user-select: none !important;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1) !important;
   }
 
