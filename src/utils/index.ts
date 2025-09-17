@@ -15,6 +15,8 @@ export {
   createDividerLine,
   createSkillsSection,
   createExperienceSection,
+  createPrimaryExperienceSection,
+  createSecondaryExperienceSection,
   createFooterSection,
   createProjectsSection,
   createPdfDocumentDefinition,

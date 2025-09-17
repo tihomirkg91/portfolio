@@ -1,3 +1,4 @@
+import { memo, useMemo } from 'react';
 import { useResponsive } from '../../hooks/useResponsive';
 import './FallingPlanet.css';
 import { GameArea } from './GameArea';
@@ -5,8 +6,14 @@ import { GameControls } from './GameControls';
 import { GameInstructions } from './GameInstructions';
 import { useGameLogic } from './useGameLogic';
 
-export const FallingPlanet = () => {
+const MemoizedGameArea = memo(GameArea);
+const MemoizedGameControls = memo(GameControls);
+const MemoizedGameInstructions = memo(GameInstructions);
+
+export const FallingPlanet = memo(() => {
   const { isMobile } = useResponsive();
+  const gameLogic = useGameLogic();
+
   const {
     notes,
     score,
@@ -23,38 +30,67 @@ export const FallingPlanet = () => {
     toggleFullscreen,
     handleTouchStart,
     handleMouseDown,
-  } = useGameLogic();
+  } = gameLogic;
+
+  const containerClassName = useMemo(() => {
+    const classes = ['falling-planet'];
+
+    if (isFullscreen) classes.push('fullscreen-active');
+
+    return classes.join(' ');
+  }, [isFullscreen]);
+
+  const controlProps = useMemo(
+    () => ({
+      gameActive,
+      isFullscreen,
+      isExitingFullscreen,
+      score,
+      playingTime,
+      currentLevel,
+      onStartGame: startGame,
+      onEndGame: endGame,
+      onToggleFullscreen: toggleFullscreen,
+    }),
+    [
+      gameActive,
+      isFullscreen,
+      isExitingFullscreen,
+      score,
+      playingTime,
+      currentLevel,
+      startGame,
+      endGame,
+      toggleFullscreen,
+    ]
+  );
+
+  const gameAreaProps = useMemo(
+    () => ({
+      notes,
+      hitZones,
+      gameAreaRef,
+      onTouchStart: handleTouchStart,
+      onMouseDown: handleMouseDown,
+      onHitNote: () => {},
+      isMobile,
+    }),
+    [notes, hitZones, gameAreaRef, handleTouchStart, handleMouseDown, isMobile]
+  );
+
+  const instructionProps = useMemo(
+    () => ({
+      gameActive,
+      isMobile,
+    }),
+    [gameActive, isMobile]
+  );
 
   return (
-    <div
-      className={`falling-planet ${isFullscreen ? 'fullscreen-active' : ''} ${
-        isMobile && isFullscreen ? 'mobile-fullscreen' : ''
-      }`}
-      ref={gameRef}
-    >
-      <GameControls
-        gameActive={gameActive}
-        isFullscreen={isFullscreen}
-        isExitingFullscreen={isExitingFullscreen}
-        score={score}
-        playingTime={playingTime}
-        currentLevel={currentLevel}
-        onStartGame={startGame}
-        onEndGame={endGame}
-        onToggleFullscreen={toggleFullscreen}
-      />
-
-      <GameArea
-        notes={notes}
-        hitZones={hitZones}
-        gameAreaRef={gameAreaRef}
-        onTouchStart={handleTouchStart}
-        onMouseDown={handleMouseDown}
-        onHitNote={() => {}}
-        isMobile={isMobile}
-      />
-
-      <GameInstructions gameActive={gameActive} isMobile={isMobile} />
+    <div className={containerClassName} ref={gameRef}>
+      <MemoizedGameControls {...controlProps} />
+      <MemoizedGameArea {...gameAreaProps} />
+      <MemoizedGameInstructions {...instructionProps} />
     </div>
   );
-};
+});

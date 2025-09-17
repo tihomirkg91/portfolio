@@ -1,10 +1,10 @@
-import type { FC } from 'react';
-import { memo, useMemo, useState, useCallback } from 'react';
 import moment from 'moment';
-import { FaCode, FaCheckCircle } from 'react-icons/fa';
+import type { FC } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
+import { FaCheckCircle, FaCode } from 'react-icons/fa';
 import { usePortfolio } from '../hooks/usePortfolio';
-import { calculateTotalExperience } from '../utils/dateUtils';
 import type { Experience } from '../types';
+import { calculateTotalExperience } from '../utils/dateUtils';
 import './Experience.css';
 
 interface ExperienceItemProps {
@@ -78,7 +78,7 @@ const ExperienceItem: FC<ExperienceItemProps> = memo(
             aria-hidden={!isExpanded}
           >
             <ul className="experience-achievements" role="list">
-              {descriptionArray.map((achievement, index) => {
+              {descriptionArray.map(achievement => {
                 // Ensure we're only rendering strings
                 const achievementText =
                   typeof achievement === 'string'
@@ -86,10 +86,7 @@ const ExperienceItem: FC<ExperienceItemProps> = memo(
                     : String(achievement);
 
                 return (
-                  <li
-                    key={`${exp.id}-achievement-${index}-${achievementText.slice(0, 20)}`}
-                    role="listitem"
-                  >
+                  <li key={`${exp.id}-${achievementText}`} role="listitem">
                     <FaCheckCircle className="achievement-icon" />
                     {achievementText}
                   </li>
@@ -107,9 +104,9 @@ const ExperienceItem: FC<ExperienceItemProps> = memo(
                 role="list"
                 aria-label="Technologies used"
               >
-                {exp.technologies.map((tech, index) => (
+                {exp.technologies.map(tech => (
                   <span
-                    key={`${exp.id}-tech-${tech}-${index}`}
+                    key={`${exp.id}-${tech}`}
                     className="tech-tag"
                     role="listitem"
                   >

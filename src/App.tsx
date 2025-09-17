@@ -1,11 +1,6 @@
 import type { FC } from 'react';
-import { lazy, Suspense } from 'react';
-import {
-  Route,
-  BrowserRouter as Router,
-  Routes,
-  useLocation,
-} from 'react-router-dom';
+import { lazy, Suspense, memo } from 'react';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
 import ErrorBoundary from './components/ErrorBoundary';
 import LoadingSpinner from './components/LoadingSpinner';
@@ -21,7 +16,7 @@ const Contact = lazy(() => import('./components/Contact'));
 const Footer = lazy(() => import('./components/Footer'));
 const GamePage = lazy(() => import('./components/GamePage'));
 
-const AppContent: FC = () => (
+const AppContent: FC = memo(() => (
   <div className="App">
     <ErrorBoundary>
       <Suspense fallback={<LoadingSpinner />}>
@@ -67,11 +62,9 @@ const AppContent: FC = () => (
       </Suspense>
     </ErrorBoundary>
   </div>
-);
+));
 
-const AppRoutes: FC = () => {
-  const location = useLocation();
-
+const AppRoutes: FC = memo(() => {
   return (
     <Routes>
       <Route path="/" element={<AppContent />} />
@@ -83,16 +76,16 @@ const AppRoutes: FC = () => {
               <ErrorBoundary>
                 <Navigation />
               </ErrorBoundary>
-              <div key={location.search}>
+              <ErrorBoundary>
                 <GamePage />
-              </div>
+              </ErrorBoundary>
             </div>
           </Suspense>
         }
       />
     </Routes>
   );
-};
+});
 
 const App: FC = () => (
   <ErrorBoundary

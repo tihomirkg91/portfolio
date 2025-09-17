@@ -1,7 +1,9 @@
+import type { ReactNode } from 'react';
+
 export interface ResponsiveContextType {
-  isMobile: boolean;
+  readonly isMobile: boolean;
 }
 
 export interface ResponsiveProviderProps {
-  children: React.ReactNode;
+  readonly children: ReactNode;
 }

@@ -5,6 +5,7 @@ import React, {
   useMemo,
   useRef,
   useState,
+  memo,
 } from 'react';
 import type {
   ResponsiveContextType,
@@ -15,48 +16,53 @@ const ResponsiveContext = createContext<ResponsiveContextType | undefined>(
   undefined
 );
 
-const ResponsiveProvider: React.FC<ResponsiveProviderProps> = ({
-  children,
-}) => {
-  const [isMobile, setIsMobile] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      return window.innerWidth < 1200;
-    }
-    return false;
-  });
+const MOBILE_BREAKPOINT = 1200;
+const RESIZE_DEBOUNCE_MS = 150;
 
-  const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
+const ResponsiveProvider: React.FC<ResponsiveProviderProps> = memo(
+  ({ children }) => {
+    const [isMobile, setIsMobile] = useState<boolean>(() => {
+      if (typeof window !== 'undefined') {
+        return window.innerWidth < MOBILE_BREAKPOINT;
+      }
+      return false;
+    });
 
-  const handleResize = useCallback(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    timeoutRef.current = setTimeout(() => {
-      setIsMobile(window.innerWidth < 1200);
-    }, 150);
-  }, []);
+    const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-    handleResize();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
+    const handleResize = useCallback(() => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
-    };
-  }, [handleResize]);
+      timeoutRef.current = setTimeout(() => {
+        setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+      }, RESIZE_DEBOUNCE_MS);
+    }, []);
 
-  const contextValue = useMemo<ResponsiveContextType>(
-    () => ({
-      isMobile,
-    }),
-    [isMobile]
-  );
+    useEffect(() => {
+      window.addEventListener('resize', handleResize);
+      handleResize();
 
-  return <ResponsiveContext value={contextValue}>{children}</ResponsiveContext>;
-};
+      return () => {
+        window.removeEventListener('resize', handleResize);
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+        }
+      };
+    }, [handleResize]);
+
+    const contextValue = useMemo<ResponsiveContextType>(
+      () => ({
+        isMobile,
+      }),
+      [isMobile]
+    );
+
+    return (
+      <ResponsiveContext value={contextValue}>{children}</ResponsiveContext>
+    );
+  }
+);
 
 export { ResponsiveContext };
 export default ResponsiveProvider;

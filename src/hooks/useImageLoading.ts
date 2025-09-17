@@ -37,7 +37,7 @@ export const useImageLoading = (
     const observer = new IntersectionObserver(
       entries => {
         const [entry] = entries;
-        if (entry.isIntersecting) {
+        if (entry?.isIntersecting) {
           setSrc(initialSrc);
           setIsLoading(true);
           observer.disconnect();

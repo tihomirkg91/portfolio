@@ -50,7 +50,8 @@ export const useGameLogic = () => {
   const playSound = useCallback((frequency: number, duration: number) => {
     if (!audioContextRef.current) {
       audioContextRef.current = new (window.AudioContext ||
-        (window as any).webkitAudioContext)();
+        (window as typeof window & { webkitAudioContext?: typeof AudioContext })
+          .webkitAudioContext)();
     }
 
     const context = audioContextRef.current;
@@ -144,27 +145,30 @@ export const useGameLogic = () => {
             gameAreaRef.current.querySelectorAll('.hit-zone');
 
           if (hitZoneElements.length > 0) {
-            const hitZoneRect = hitZoneElements[0].getBoundingClientRect();
-            const relativeY =
-              ((hitZoneRect.top - gameAreaRect.top) / gameAreaRect.height) *
-              100;
+            const firstHitZone = hitZoneElements[0];
+            if (firstHitZone) {
+              const hitZoneRect = firstHitZone.getBoundingClientRect();
+              const relativeY =
+                ((hitZoneRect.top - gameAreaRect.top) / gameAreaRect.height) *
+                100;
 
-            const minY = isMobile ? 70 : 10;
-            const maxY = isMobile ? 95 : 95;
+              const minY = isMobile ? 70 : 10;
+              const maxY = isMobile ? 95 : 95;
 
-            if (relativeY > minY && relativeY < maxY) {
-              const currentHitZoneY = hitZoneYRef.current;
-              const difference = Math.abs(relativeY - currentHitZoneY);
-              const maxDifference = isMobile ? 5 : 2;
+              if (relativeY > minY && relativeY < maxY) {
+                const currentHitZoneY = hitZoneYRef.current;
+                const difference = Math.abs(relativeY - currentHitZoneY);
+                const maxDifference = isMobile ? 5 : 2;
 
-              if (
-                currentHitZoneY === 90 ||
-                difference < maxDifference ||
-                isMobile
-              ) {
-                hitZoneYRef.current = relativeY;
-                hitZoneCalculatedRef.current = true;
-                return relativeY;
+                if (
+                  currentHitZoneY === 90 ||
+                  difference < maxDifference ||
+                  isMobile
+                ) {
+                  hitZoneYRef.current = relativeY;
+                  hitZoneCalculatedRef.current = true;
+                  return relativeY;
+                }
               }
             }
           }
@@ -220,7 +224,6 @@ export const useGameLogic = () => {
             }
           }, 200);
         }
-      } else {
       }
     };
 
@@ -399,12 +402,12 @@ export const useGameLogic = () => {
     } catch (error) {
       console.error('Error exiting fullscreen:', error);
     }
-  }, [isMobile]);
+  }, [isMobile, calculateHitZoneY]);
 
   const toggleFullscreen = useCallback(() => {
     if (!document.fullscreenElement && !isFullscreen) enterFullscreen();
     else exitFullscreen();
-  }, [enterFullscreen, exitFullscreen, isFullscreen, isMobile]);
+  }, [enterFullscreen, exitFullscreen, isFullscreen]);
 
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -458,7 +461,14 @@ export const useGameLogic = () => {
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [toggleFullscreen, exitFullscreen]);
+  }, [
+    toggleFullscreen,
+    exitFullscreen,
+    gameActive,
+    hitNote,
+    isFullscreen,
+    isMobile,
+  ]);
 
   useEffect(() => {
     if (gameActive) {
@@ -504,6 +514,8 @@ export const useGameLogic = () => {
   }, [gameActive, hitNote]);
 
   useEffect(() => {
+    const gameElement = gameRef.current;
+
     return () => {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
@@ -528,8 +540,8 @@ export const useGameLogic = () => {
           'fullscreen-active',
           'mobile-fullscreen'
         );
-        if (gameRef.current) {
-          const style = gameRef.current.style;
+        if (gameElement) {
+          const style = gameElement.style;
           style.position = '';
           style.top = '';
           style.left = '';
@@ -571,7 +583,7 @@ export const useGameLogic = () => {
             y: -10,
             speed: currentSpeedRef.current,
             size: 30,
-            color: LANE_COLORS[lane],
+            color: LANE_COLORS[lane] || '#ffffff',
           };
 
           setNotes(prev => [...prev, newNote]);

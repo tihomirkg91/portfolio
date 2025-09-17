@@ -31,11 +31,14 @@ export const calculateTotalExperience = (
 ): number => {
   if (experience.length === 0) return 0;
 
+  const firstExperience = experience[0];
+  if (!firstExperience) return 0;
+
   const earliestStartDate = experience.reduce((earliest, exp) => {
     const currentStart = new Date(exp.startDate + '-01');
     const earliestStart = new Date(earliest + '-01');
     return currentStart < earliestStart ? exp.startDate : earliest;
-  }, experience[0].startDate);
+  }, firstExperience.startDate);
 
   const start = new Date(earliestStartDate + '-01');
   const now = new Date();

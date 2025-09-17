@@ -1,29 +1,41 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useMemo } from 'react';
 
 interface UseActiveSectionOptions {
-  sections?: string[];
-  scrollOffset?: number;
-  scrollThreshold?: number;
-  isScrollingRef?: React.MutableRefObject<boolean>;
+  readonly sections?: readonly string[];
+  readonly scrollOffset?: number;
+  readonly scrollThreshold?: number;
+  readonly isScrollingRef?: React.MutableRefObject<boolean>;
 }
 
 interface UseActiveSectionReturn {
-  isScrolled: boolean;
-  activeSection: string;
+  readonly isScrolled: boolean;
+  readonly activeSection: string;
 }
+
+const DEFAULT_SECTIONS = [
+  'home',
+  'about',
+  'projects',
+  'experience',
+  'contact',
+] as const;
 
 export const useActiveSection = (
   options: UseActiveSectionOptions = {}
 ): UseActiveSectionReturn => {
   const {
-    sections = ['home', 'about', 'projects', 'experience', 'contact'],
+    sections = DEFAULT_SECTIONS,
     scrollOffset = 100,
     scrollThreshold = 50,
     isScrollingRef,
   } = options;
 
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState(sections[0] || 'home');
+  const [activeSection, setActiveSection] = useState<string>(
+    () => sections[0] || 'home'
+  );
+
+  const sectionsArray = useMemo(() => [...sections], [sections]);
 
   const handleScroll = useCallback(() => {
     if (isScrollingRef?.current) {
@@ -35,10 +47,11 @@ export const useActiveSection = (
     setIsScrolled(scrollY > scrollThreshold);
 
     const scrollPosition = scrollY + scrollOffset;
-    let foundActiveSection = sections[0];
+    let foundActiveSection = sectionsArray[0];
 
-    for (let i = 0; i < sections.length; i++) {
-      const section = sections[i];
+    for (const section of sectionsArray) {
+      if (!section) continue;
+
       const element = document.getElementById(section);
 
       if (element) {
@@ -57,8 +70,8 @@ export const useActiveSection = (
       }
     }
 
-    setActiveSection(foundActiveSection);
-  }, [sections, scrollOffset, scrollThreshold, isScrollingRef]);
+    if (foundActiveSection) setActiveSection(foundActiveSection);
+  }, [sectionsArray, scrollOffset, scrollThreshold, isScrollingRef]);
 
   useEffect(() => {
     handleScroll();

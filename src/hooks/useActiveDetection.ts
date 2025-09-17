@@ -38,6 +38,8 @@ export const useActiveDetection = (
 
     for (let i = 0; i < sections.length; i++) {
       const section = sections[i];
+      if (!section) continue;
+
       const element = document.getElementById(section);
 
       if (element) {
@@ -56,7 +58,7 @@ export const useActiveDetection = (
       }
     }
 
-    setActiveSection(foundActiveSection);
+    if (foundActiveSection) setActiveSection(foundActiveSection);
   }, [sections, scrollOffset, scrollThreshold, isPaused]);
 
   useEffect(() => {

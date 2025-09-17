@@ -1,4 +1,5 @@
 import { LuMaximize2, LuMinimize2, LuPlay, LuSquare } from 'react-icons/lu';
+import { useResponsive } from '../../hooks/useResponsive';
 
 interface GameControlsProps {
   gameActive: boolean;
@@ -23,6 +24,8 @@ export const GameControls = ({
   onEndGame,
   onToggleFullscreen,
 }: GameControlsProps) => {
+  const { isMobile } = useResponsive();
+
   return (
     <div className="game-header">
       <div className="game-stats">
@@ -43,21 +46,26 @@ export const GameControls = ({
       <div className="game-controls">
         {!gameActive ? (
           <button className="game-btn start-btn" onClick={onStartGame}>
-            <LuPlay size={14} />
-            Start Game
+            <LuPlay size={isMobile ? 16 : 14} />
+            {isMobile && !isFullscreen ? 'Start' : 'Start Game'}
           </button>
         ) : (
           <button className="game-btn end-btn" onClick={onEndGame}>
-            <LuSquare size={14} />
-            End Game
+            <LuSquare size={isMobile ? 16 : 14} />
+            {isMobile && !isFullscreen ? 'End' : 'End Game'}
           </button>
         )}
 
         <button
           className={`game-btn fullscreen-btn ${isFullscreen ? 'active' : ''} ${isExitingFullscreen ? 'exiting' : ''}`}
           onClick={onToggleFullscreen}
+          title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
         >
-          {isFullscreen ? <LuMinimize2 size={14} /> : <LuMaximize2 size={14} />}
+          {isFullscreen ? (
+            <LuMinimize2 size={isMobile ? 18 : 14} />
+          ) : (
+            <LuMaximize2 size={isMobile ? 18 : 14} />
+          )}
         </button>
       </div>
     </div>

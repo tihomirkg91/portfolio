@@ -27,78 +27,104 @@ npm run dev
 ## Project Structure
 
 ```
-src/
-├── App.css
-├── App.tsx
-├── index.css
-├── main.tsx
-├── vite-env.d.ts
-├── assets/
-│   └── react.svg
-├── components/
-│   ├── About.css
-│   ├── About.tsx
-│   ├── Contact.css
-│   ├── Contact.tsx
-│   ├── CVDownloadButton.css
-│   ├── CVDownloadButton.tsx
-│   ├── DesktopMenu.css
-│   ├── DesktopMenu.tsx
-│   ├── ErrorBoundary.css
-│   ├── ErrorBoundary.tsx
-│   ├── Experience.css
-│   ├── Experience.tsx
-│   ├── falling-planet/
-│   │   ├── FallingPlanet.css
-│   │   └── FallingPlanet.tsx
-│   ├── Footer.css
-│   ├── Footer.tsx
-│   ├── GamePage.css
-│   ├── GamePage.tsx
-│   ├── Hero.css
-│   ├── Hero.tsx
-│   ├── LoadingSpinner.css
-│   ├── LoadingSpinner.tsx
-│   ├── MobileMenu.css
-│   ├── MobileMenu.tsx
-│   ├── Navigation.css
-│   ├── Navigation.tsx
-│   ├── PdfGenerator.tsx
-│   ├── Projects.css
-│   └── Projects.tsx
-├── context/
-│   ├── PortfolioContext.tsx
-│   ├── PortfolioContextTypes.ts
-│   ├── ResponsiveContext.tsx
-│   └── ResponsiveContextTypes.ts
-├── data/
-│   └── portfolioData.ts
-├── hooks/
-│   ├── useActiveDetection.ts
-│   ├── useActiveSection.ts
-│   ├── useCvGenerator.ts
-│   ├── useImageLoader.ts
-│   ├── useImageLoading.ts
-│   ├── useMobileOptimizedScroll.ts
-│   ├── useNavigationScroll.ts
-│   ├── useNavItems.ts
-│   ├── usePdfGenerator.ts
-│   ├── usePortfolio.ts
-│   ├── useResponsive.ts
-│   ├── useScrollAnimation.ts
-│   └── useScrollNavigation.ts
-├── styles/
-│   └── zIndex.css
-├── types/
-│   └── index.ts
-└── utils/
-    ├── dateUtils.ts
-    ├── generateId.ts
-    ├── headerOffset.ts
-    ├── imageConverter.ts
-    ├── index.ts
-    ├── pdfDocumentBuilder.ts
-    └── zIndex.ts
+portfolio/
+├── eslint.config.js
+├── index.html
+├── LICENSE
+├── package.json
+├── portfolio.code-workspace
+├── README.md
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+├── vite.config.ts
+├── public/
+│   ├── favicon-placeholder.txt
+│   ├── favicon.svg
+│   ├── game.webp
+│   ├── pic.webp
+│   └── prot-pic.webp
+└── src/
+    ├── App.css
+    ├── App.tsx
+    ├── index.css
+    ├── main.tsx
+    ├── vite-env.d.ts
+    ├── assets/
+    │   └── react.svg
+    ├── components/
+    │   ├── About.css
+    │   ├── About.tsx
+    │   ├── ComingSoonModal.css
+    │   ├── ComingSoonModal.tsx
+    │   ├── Contact.css
+    │   ├── Contact.tsx
+    │   ├── CVDownloadButton.css
+    │   ├── CVDownloadButton.tsx
+    │   ├── DesktopMenu.css
+    │   ├── DesktopMenu.tsx
+    │   ├── ErrorBoundary.css
+    │   ├── ErrorBoundary.tsx
+    │   ├── Experience.css
+    │   ├── Experience.tsx
+    │   ├── Footer.css
+    │   ├── Footer.tsx
+    │   ├── GamePage.css
+    │   ├── GamePage.tsx
+    │   ├── Hero.css
+    │   ├── Hero.tsx
+    │   ├── LoadingSpinner.css
+    │   ├── LoadingSpinner.tsx
+    │   ├── MobileMenu.css
+    │   ├── MobileMenu.tsx
+    │   ├── Navigation.css
+    │   ├── Navigation.tsx
+    │   ├── PdfGenerator.tsx
+    │   ├── Projects.css
+    │   ├── Projects.tsx
+    │   └── falling-planet/
+    │       ├── constants.ts
+    │       ├── FallingPlanet.css
+    │       ├── FallingPlanet.tsx
+    │       ├── GameArea.tsx
+    │       ├── GameControls.tsx
+    │       ├── GameInstructions.tsx
+    │       ├── types.ts
+    │       └── useGameLogic.ts
+    ├── context/
+    │   ├── PortfolioContext.tsx
+    │   ├── PortfolioContextTypes.ts
+    │   ├── ResponsiveContext.tsx
+    │   └── ResponsiveContextTypes.ts
+    ├── data/
+    │   └── portfolioData.ts
+    ├── hooks/
+    │   ├── useActiveDetection.ts
+    │   ├── useActiveSection.ts
+    │   ├── useCvGenerator.ts
+    │   ├── useImageLoader.ts
+    │   ├── useImageLoading.ts
+    │   ├── useMobileOptimizedScroll.ts
+    │   ├── useNavigationScroll.ts
+    │   ├── useNavItems.ts
+    │   ├── usePdfGenerator.ts
+    │   ├── usePortfolio.ts
+    │   ├── useResponsive.ts
+    │   ├── useScrollAnimation.ts
+    │   └── useScrollNavigation.ts
+    ├── styles/
+    │   └── zIndex.css
+    ├── types/
+    │   └── index.ts
+    └── utils/
+        ├── dateUtils.ts
+        ├── featureFlags.ts
+        ├── generateId.ts
+        ├── headerOffset.ts
+        ├── imageConverter.ts
+        ├── index.ts
+        ├── pdfDocumentBuilder.ts
+        └── zIndex.ts
 ```
 
 ## Scripts

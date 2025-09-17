@@ -2,99 +2,103 @@ export type ID = string | number;
 
 export type URL = string;
 
-// Feature Flags
 export interface FeatureFlags {
-  featuredProjectsEnabled: boolean;
+  readonly featuredProjectsEnabled: boolean;
 }
 
 export interface NavItem {
-  id: string;
-  label: string;
-  number: string;
-  icon?: React.ComponentType | string;
+  readonly id: string;
+  readonly label: string;
+  readonly number: string;
+  readonly icon?: React.ComponentType | string;
 }
 
 export interface ProjectLink {
-  url: URL;
-  label: string;
-  type: 'github' | 'live' | 'demo' | 'docs';
+  readonly url: string;
+  readonly label: string;
+  readonly type: 'github' | 'live' | 'demo' | 'docs';
 }
 
 export interface Project {
   readonly id: ID;
-  title: string;
-  description: string;
-  longDescription?: string;
-  technologies: readonly string[];
-  links: readonly ProjectLink[];
-  imageUrl: string;
-  imageAlt?: string;
-  featured?: boolean;
-  status: 'completed' | 'in-progress' | 'archived';
-  dateCreated: string;
-  tags?: readonly string[];
-  githubUrl?: string;
-  liveUrl?: string;
+  readonly title: string;
+  readonly description: string;
+  readonly longDescription?: string;
+  readonly technologies: readonly string[];
+  readonly links: readonly ProjectLink[];
+  readonly imageUrl: string;
+  readonly imageAlt?: string;
+  readonly featured?: boolean;
+  readonly status: 'completed' | 'in-progress' | 'archived';
+  readonly dateCreated: string;
+  readonly tags?: readonly string[];
+  readonly githubUrl?: string;
+  readonly liveUrl?: string;
 }
 
 export interface ExperienceAchievement {
-  description: string;
-  impact?: string;
+  readonly description: string;
+  readonly impact?: string;
 }
 
 export interface Experience {
   readonly id: ID;
-  company: string;
-  position: string;
-  location?: string;
-  startDate: string;
-  endDate?: string;
-  duration: string;
-  description: string | string[];
-  achievements?: readonly ExperienceAchievement[];
-  technologies: readonly string[];
-  companyUrl?: URL;
-  companyLogo?: string;
-  type: 'full-time' | 'part-time' | 'contract' | 'freelance' | 'internship';
+  readonly company: string;
+  readonly position: string;
+  readonly location?: string;
+  readonly startDate: string;
+  readonly endDate?: string;
+  readonly duration: string;
+  readonly description: string | string[];
+  readonly achievements?: readonly ExperienceAchievement[];
+  readonly technologies: readonly string[];
+  readonly companyUrl?: string;
+  readonly companyLogo?: string;
+  readonly type:
+    | 'full-time'
+    | 'part-time'
+    | 'contract'
+    | 'freelance'
+    | 'internship';
 }
 
 export interface SocialLink {
-  platform: string;
-  url: URL;
-  username?: string;
-  icon?: string;
+  readonly platform: string;
+  readonly url: string;
+  readonly username?: string;
+  readonly icon?: string;
 }
 
 export interface ContactInfo {
-  email: string;
-  phone?: string;
-  location?: string;
-  timezone?: string;
-  socialLinks: readonly SocialLink[];
-  linkedin?: string;
-  github?: string;
-  portfolio?: string;
+  readonly email: string;
+  readonly phone?: string;
+  readonly location?: string;
+  readonly timezone?: string;
+  readonly socialLinks: readonly SocialLink[];
+  readonly linkedin?: string;
+  readonly github?: string;
+  readonly portfolio?: string;
 }
 
 export interface PersonalInfo {
-  firstName: string;
-  lastName: string;
-  fullName: string;
-  title: string;
-  bio: string;
-  avatar: string;
-  avatarAlt?: string;
-  tagline?: string;
-  yearsOfExperience: number;
-  currentTechStack?: readonly string[];
-  aboutMe?: string;
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly fullName: string;
+  readonly title: string;
+  readonly bio: string;
+  readonly avatar: string;
+  readonly avatarAlt?: string;
+  readonly tagline?: string;
+  readonly yearsOfExperience: number;
+  readonly currentTechStack?: readonly string[];
+  readonly aboutMe?: string;
 }
 
 export interface PortfolioData {
-  personalInfo: PersonalInfo;
-  projects: readonly Project[];
-  experience: readonly Experience[];
-  contactInfo: ContactInfo;
+  readonly personalInfo: PersonalInfo;
+  readonly projects: readonly Project[];
+  readonly experience: readonly Experience[];
+  readonly contactInfo: ContactInfo;
 }
 
 export type ProjectStatus = Project['status'];

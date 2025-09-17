@@ -4,7 +4,7 @@ import type { PortfolioContextType } from '../context/PortfolioContextTypes';
 
 export const usePortfolio = (): PortfolioContextType => {
   const context = useContext(PortfolioContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('usePortfolio must be used within a PortfolioProvider');
   }
   return context;

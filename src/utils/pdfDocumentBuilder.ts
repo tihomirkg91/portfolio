@@ -204,6 +204,163 @@ export const createSkillsSection = (
   ];
 };
 
+export const createPrimaryExperienceSection = (
+  portfolioData: PortfolioData
+): Content[] => {
+  const { experience } = portfolioData;
+
+  const primaryExperience = experience.find(
+    exp => exp.company === 'Greco Tech Hub'
+  );
+
+  if (!primaryExperience) {
+    return [];
+  }
+
+  return [
+    {
+      text: 'PROFESSIONAL EXPERIENCE',
+      style: 'sectionHeader',
+    },
+    {
+      stack: [
+        {
+          columns: [
+            {
+              width: '*',
+              stack: [
+                {
+                  text: primaryExperience.position,
+                  style: 'jobTitle',
+                },
+                {
+                  text: primaryExperience.company,
+                  style: 'company',
+                },
+              ],
+            },
+            {
+              width: 'auto',
+              stack: [
+                {
+                  text: `${primaryExperience.startDate} - ${primaryExperience.endDate && primaryExperience.endDate.trim() ? primaryExperience.endDate : 'Present'}`,
+                  style: 'duration',
+                  alignment: 'right' as const,
+                },
+                {
+                  text: calculateDuration(
+                    primaryExperience.startDate,
+                    primaryExperience.endDate
+                  ),
+                  style: 'location',
+                  alignment: 'right' as const,
+                },
+                {
+                  text: primaryExperience.location || '',
+                  style: 'location',
+                  alignment: 'right' as const,
+                },
+              ],
+            },
+          ],
+        },
+        {
+          ul: Array.isArray(primaryExperience.description)
+            ? primaryExperience.description
+            : [primaryExperience.description],
+          style: 'description',
+          margin: [0, 6, 0, 6] as [number, number, number, number],
+        },
+        {
+          text: `Technologies: ${primaryExperience.technologies.join(', ')}`,
+          style: 'technologies',
+          margin: [0, 0, 0, 6] as [number, number, number, number],
+        },
+      ],
+    },
+  ];
+};
+
+export const createSecondaryExperienceSection = (
+  portfolioData: PortfolioData
+): Content[] => {
+  const { experience } = portfolioData;
+
+  // Get all experiences except Greco Tech Hub
+  const secondaryExperiences = experience.filter(
+    exp => exp.company !== 'Greco Tech Hub'
+  );
+
+  if (secondaryExperiences.length === 0) {
+    return [];
+  }
+
+  return [
+    {
+      text: 'ADDITIONAL EXPERIENCE',
+      style: 'sectionHeader',
+    },
+    ...secondaryExperiences.map((exp, index) => ({
+      stack: [
+        {
+          columns: [
+            {
+              width: '*',
+              stack: [
+                {
+                  text: exp.position,
+                  style: 'jobTitle',
+                },
+                {
+                  text: exp.company,
+                  style: 'company',
+                },
+              ],
+            },
+            {
+              width: 'auto',
+              stack: [
+                {
+                  text: `${exp.startDate} - ${exp.endDate && exp.endDate.trim() ? exp.endDate : 'Present'}`,
+                  style: 'duration',
+                  alignment: 'right' as const,
+                },
+                {
+                  text: calculateDuration(exp.startDate, exp.endDate),
+                  style: 'location',
+                  alignment: 'right' as const,
+                },
+                {
+                  text: exp.location || '',
+                  style: 'location',
+                  alignment: 'right' as const,
+                },
+              ],
+            },
+          ],
+        },
+        {
+          ul: Array.isArray(exp.description)
+            ? exp.description
+            : [exp.description],
+          style: 'description',
+          margin: [0, 6, 0, 6] as [number, number, number, number],
+        },
+        {
+          text: `Technologies: ${exp.technologies.join(', ')}`,
+          style: 'technologies',
+          margin: [
+            0,
+            0,
+            0,
+            index < secondaryExperiences.length - 1 ? 14 : 6,
+          ] as [number, number, number, number],
+        },
+      ],
+    })),
+  ];
+};
+
 export const createExperienceSection = (
   portfolioData: PortfolioData
 ): Content[] => {
@@ -443,7 +600,8 @@ export const createPdfDocumentDefinition = (
       createDividerLine(),
       ...createSkillsSection(portfolioData),
       ...createProjectsSection(portfolioData),
-      ...createExperienceSection(portfolioData),
+      ...createPrimaryExperienceSection(portfolioData),
+      ...createSecondaryExperienceSection(portfolioData),
       ...createFooterSection(portfolioData),
     ],
     styles: pdfStyles,

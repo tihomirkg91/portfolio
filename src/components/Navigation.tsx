@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, memo, useMemo } from 'react';
 import { LuArrowLeft } from 'react-icons/lu';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useActiveSection } from '../hooks/useActiveSection';
@@ -10,7 +10,15 @@ import DesktopMenu from './DesktopMenu';
 import MobileMenu from './MobileMenu';
 import './Navigation.css';
 
-const Navigation: React.FC = () => {
+const SECTIONS = [
+  'home',
+  'about',
+  'projects',
+  'experience',
+  'contact',
+] as const;
+
+const Navigation: React.FC = memo(() => {
   const { isMobile } = useResponsive();
   const { selectedNavItem } = useNavItems();
   const location = useLocation();
@@ -28,7 +36,7 @@ const Navigation: React.FC = () => {
   }, []);
 
   const { isScrolled } = useActiveSection({
-    sections: ['home', 'about', 'projects', 'experience', 'contact'],
+    sections: SECTIONS,
     scrollOffset,
     scrollThreshold: 50,
   });
@@ -43,16 +51,20 @@ const Navigation: React.FC = () => {
     [scrollToElement]
   );
 
+  const handleBackToHome = useCallback(() => navigate('/'), [navigate]);
+
+  const isGamePage = useMemo(
+    () => location.pathname === '/falling-planet-rhythm',
+    [location.pathname]
+  );
+
   return (
     <header
       className={`navigation ${isScrolled ? 'navigation--scrolled' : ''}`}
     >
       <div className="navigation__container">
-        {location.pathname === '/falling-planet-rhythm' && (
-          <button
-            onClick={() => navigate('/')}
-            className="navigation__back-arrow"
-          >
+        {isGamePage && (
+          <button onClick={handleBackToHome} className="navigation__back-arrow">
             <LuArrowLeft size={20} />
           </button>
         )}
@@ -108,6 +120,6 @@ const Navigation: React.FC = () => {
       </div>
     </header>
   );
-};
+});
 
 export default Navigation;

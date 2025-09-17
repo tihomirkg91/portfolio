@@ -2,25 +2,30 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { getHeaderOffset } from '../utils/headerOffset';
 
 interface ScrollToOptions {
-  behavior?: ScrollBehavior;
-  block?: ScrollLogicalPosition;
-  inline?: ScrollLogicalPosition;
-  headerOffset?: number;
+  readonly behavior?: ScrollBehavior;
+  readonly block?: ScrollLogicalPosition;
+  readonly inline?: ScrollLogicalPosition;
+  readonly headerOffset?: number;
 }
 
 interface UseScrollNavigationOptions {
-  activeSection?: string;
-  autoScrollToActiveSection?: boolean;
+  readonly activeSection?: string;
+  readonly autoScrollToActiveSection?: boolean;
 }
 
 interface UseScrollNavigationReturn {
-  scrollToElement: (elementId: string, options?: ScrollToOptions) => void;
-  scrollToTop: () => void;
-  ensureActiveSectionInView: () => void;
-  isScrolling: React.MutableRefObject<boolean>;
-  setSelectedNavItem: React.Dispatch<React.SetStateAction<string>>;
-  selectedNavItem: string;
+  readonly scrollToElement: (
+    elementId: string,
+    options?: ScrollToOptions
+  ) => void;
+  readonly scrollToTop: () => void;
+  readonly ensureActiveSectionInView: () => void;
+  readonly isScrolling: React.MutableRefObject<boolean>;
+  readonly setSelectedNavItem: React.Dispatch<React.SetStateAction<string>>;
+  readonly selectedNavItem: string;
 }
+
+const SCROLL_TIMEOUT_MS = 1000;
 
 export const useScrollNavigation = (
   options: UseScrollNavigationOptions = {}
@@ -92,7 +97,7 @@ export const useScrollNavigation = (
             pendingScrollTarget.current = null;
             scrollToElement(targetId, options);
           }
-        }, 1000);
+        }, SCROLL_TIMEOUT_MS);
       } catch (error) {
         console.error('Error during scroll navigation:', error);
         isScrolling.current = false;
@@ -141,7 +146,7 @@ export const useScrollNavigation = (
 
       setTimeout(() => {
         isScrolling.current = false;
-      }, 1000);
+      }, SCROLL_TIMEOUT_MS);
     } catch (error) {
       console.error('Error during scroll to top:', error);
       isScrolling.current = false;

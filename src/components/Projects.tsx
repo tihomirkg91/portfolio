@@ -148,9 +148,9 @@ const Projects: FC = memo(() => {
                 )}
                 <div className="project-overlay">
                   <div className="project-links">
-                    {project.links.map((link, linkIndex) => (
+                    {project.links.map(link => (
                       <ProjectLinkButton
-                        key={`${link.type}-${linkIndex}`}
+                        key={link.url}
                         link={link}
                         projectTitle={project.title}
                         onGameClick={handleGameClick}
@@ -171,8 +171,8 @@ const Projects: FC = memo(() => {
                 </p>
 
                 <div className="project-tech">
-                  {project.technologies.map((tech, techIndex) => (
-                    <span key={`${tech}-${techIndex}`} className="tech-chip">
+                  {project.technologies.map(tech => (
+                    <span key={tech} className="tech-chip">
                       {tech}
                     </span>
                   ))}
@@ -180,8 +180,8 @@ const Projects: FC = memo(() => {
 
                 {project.tags && project.tags.length > 0 && (
                   <div className="project-tags">
-                    {project.tags.map((tag, tagIndex) => (
-                      <span key={`${tag}-${tagIndex}`} className="project-tag">
+                    {project.tags.map(tag => (
+                      <span key={tag} className="project-tag">
                         #{tag}
                       </span>
                     ))}

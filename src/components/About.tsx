@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { memo, useMemo } from 'react';
 import { usePortfolio } from '../hooks/usePortfolio';
 import './About.css';
 import { CVDownloadButton } from './CVDownloadButton';
 
-const About: React.FC = () => {
+const About: React.FC = memo(() => {
   const { personalInfo } = usePortfolio();
+
+  const techStackItems = useMemo(
+    () =>
+      personalInfo.currentTechStack?.map(tech => (
+        <span key={tech} className="tech-item">
+          {tech}
+        </span>
+      )),
+    [personalInfo.currentTechStack]
+  );
 
   return (
     <section id="about" className="about">
@@ -29,19 +39,13 @@ const About: React.FC = () => {
           <div className="about-image">
             <div className="about-tech-stack">
               <h4>Current Tech Stack</h4>
-              <div className="tech-icons">
-                {personalInfo.currentTechStack?.map(tech => (
-                  <span key={tech} className="tech-item">
-                    {tech}
-                  </span>
-                ))}
-              </div>
+              <div className="tech-icons">{techStackItems}</div>
             </div>
           </div>
         </div>
       </div>
     </section>
   );
-};
+});
 
 export default About;

@@ -2,6 +2,8 @@ import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { ResponsiveContext } from '../context/ResponsiveContext';
 import type { ResponsiveContextType } from '../context/ResponsiveContextTypes';
 
+const RESIZE_DEBOUNCE_MS = 150;
+
 export const useResponsive = (): ResponsiveContextType => {
   const context = useContext(ResponsiveContext);
   if (!context) {
@@ -12,10 +14,8 @@ export const useResponsive = (): ResponsiveContextType => {
 
 export const useIsMobile = (mobileBreakpoint: number = 768): boolean => {
   const [isMobile, setIsMobile] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      return window.innerWidth < mobileBreakpoint;
-    }
-    return false;
+    if (typeof window === 'undefined') return false;
+    return window.innerWidth < mobileBreakpoint;
   });
 
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
@@ -26,7 +26,7 @@ export const useIsMobile = (mobileBreakpoint: number = 768): boolean => {
     }
     timeoutRef.current = setTimeout(() => {
       setIsMobile(window.innerWidth < mobileBreakpoint);
-    }, 150);
+    }, RESIZE_DEBOUNCE_MS);
   }, [mobileBreakpoint]);
 
   useEffect(() => {
