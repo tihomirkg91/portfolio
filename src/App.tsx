@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { lazy, Suspense, memo } from 'react';
+import { lazy, memo, Suspense } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -64,6 +64,8 @@ const AppContent: FC = memo(() => (
   </div>
 ));
 
+AppContent.displayName = 'AppContent';
+
 const AppRoutes: FC = memo(() => {
   return (
     <Routes>
@@ -86,6 +88,8 @@ const AppRoutes: FC = memo(() => {
     </Routes>
   );
 });
+
+AppRoutes.displayName = 'AppRoutes';
 
 const App: FC = () => (
   <ErrorBoundary

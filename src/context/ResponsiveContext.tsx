@@ -1,11 +1,11 @@
 import React, {
   createContext,
+  memo,
   useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
-  memo,
 } from 'react';
 import type {
   ResponsiveContextType,
@@ -63,6 +63,8 @@ const ResponsiveProvider: React.FC<ResponsiveProviderProps> = memo(
     );
   }
 );
+
+ResponsiveProvider.displayName = 'ResponsiveProvider';
 
 export { ResponsiveContext };
 export default ResponsiveProvider;

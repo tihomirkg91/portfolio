@@ -18,6 +18,8 @@ const Lane = memo(({ index }: { index: number }) => (
   </div>
 ));
 
+Lane.displayName = 'Lane';
+
 const HitZoneComponent = memo(
   ({
     hitZone,
@@ -79,6 +81,8 @@ const HitZoneComponent = memo(
   }
 );
 
+HitZoneComponent.displayName = 'HitZoneComponent';
+
 const NoteComponent = memo(({ note }: { note: Note }) => {
   const lanePosition = useMemo(() => `${10 + note.lane * 20}%`, [note.lane]);
 
@@ -99,6 +103,8 @@ const NoteComponent = memo(({ note }: { note: Note }) => {
     </div>
   );
 });
+
+NoteComponent.displayName = 'NoteComponent';
 
 export const GameArea = memo<GameAreaProps>(
   ({
@@ -150,3 +156,5 @@ export const GameArea = memo<GameAreaProps>(
     );
   }
 );
+
+GameArea.displayName = 'GameArea';

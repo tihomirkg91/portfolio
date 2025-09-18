@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { useMemo, memo } from 'react';
+import { memo, useMemo } from 'react';
 import {
   contactInfo,
   experience,
@@ -28,3 +28,5 @@ export const PortfolioProvider = memo(
     return <PortfolioContext value={value}>{children}</PortfolioContext>;
   }
 );
+
+PortfolioProvider.displayName = 'PortfolioProvider';

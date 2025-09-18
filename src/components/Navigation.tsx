@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, memo, useMemo } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { LuArrowLeft } from 'react-icons/lu';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useActiveSection } from '../hooks/useActiveSection';
@@ -121,5 +121,7 @@ const Navigation: React.FC = memo(() => {
     </header>
   );
 });
+
+Navigation.displayName = 'Navigation';
 
 export default Navigation;
