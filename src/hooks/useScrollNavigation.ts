@@ -44,18 +44,15 @@ export const useScrollNavigation = (
       activeSection !== selectedNavItem &&
       !userNavigatedRef.current &&
       !isScrolling.current
-    ) {
+    )
       setSelectedNavItem(activeSection);
-    }
   }, [activeSection, selectedNavItem]);
 
   const scrollToElement = useCallback(
     (elementId: string, options: ScrollToOptions = {}) => {
       const element = document.getElementById(elementId);
 
-      if (!element) {
-        return;
-      }
+      if (!element) return;
 
       if (isScrolling.current) {
         pendingScrollTarget.current = elementId;
@@ -131,10 +128,7 @@ export const useScrollNavigation = (
   }, [activeSection, autoScrollToActiveSection, ensureActiveSectionInView]);
 
   const scrollToTop = useCallback(() => {
-    if (isScrolling.current) {
-      return;
-    }
-
+    if (isScrolling.current) return;
     isScrolling.current = true;
 
     try {
@@ -161,15 +155,14 @@ export const useScrollNavigation = (
 
       setSelectedNavItem(currentValue);
 
-      if (currentValue !== activeSection && !isScrolling.current) {
+      if (currentValue !== activeSection && !isScrolling.current)
         scrollToElement(currentValue);
-      }
 
       setTimeout(() => {
         userNavigatedRef.current = false;
       }, 100);
     },
-    [selectedNavItem, activeSection, scrollToElement]
+    [selectedNavItem, activeSection]
   );
 
   return {

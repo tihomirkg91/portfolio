@@ -1,8 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  convertImageToBase64,
-  convertImageWithCanvas,
-} from '../utils/imageConverter';
+import { convertImageToDataURL } from '../utils/imageConverter';
 
 interface UseImageLoaderProps {
   imageUrl: string;
@@ -31,15 +28,9 @@ export const useImageLoader = ({
       setError(null);
 
       try {
-        try {
-          const base64 = await convertImageWithCanvas(imageUrl);
-          setBase64Img(base64);
-          setImageLoaded(true);
-        } catch {
-          const base64 = await convertImageToBase64(imageUrl);
-          setBase64Img(base64);
-          setImageLoaded(true);
-        }
+        const base64 = await convertImageToDataURL(imageUrl);
+        setBase64Img(base64);
+        setImageLoaded(true);
       } catch (err) {
         const errorMessage =
           err instanceof Error ? err.message : 'Failed to load image';

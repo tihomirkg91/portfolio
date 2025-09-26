@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { memo, startTransition, useCallback, useMemo } from 'react';
+import { memo, startTransition, useMemo } from 'react';
 import { useImageLoading } from '../hooks/useImageLoading';
 import { usePortfolio } from '../hooks/usePortfolio';
 import { useScrollNavigation } from '../hooks/useScrollNavigation';
@@ -14,31 +14,10 @@ interface HeroActionButtonProps {
 
 const HeroActionButton: FC<HeroActionButtonProps> = memo(
   ({ onClick, variant, ariaLabel, children }) => {
-    const buttonRef = useCallback(
-      (node: HTMLButtonElement | null) => {
-        if (node) {
-          node.addEventListener('keydown', e => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              startTransition(() => {
-                onClick();
-              });
-            }
-          });
-        }
-      },
-      [onClick]
-    );
-
-    const handleClick = () => {
-      startTransition(() => {
-        onClick();
-      });
-    };
+    const handleClick = () => startTransition(() => onClick());
 
     return (
       <button
-        ref={buttonRef}
         onClick={handleClick}
         className={`btn btn-${variant}`}
         aria-label={ariaLabel}

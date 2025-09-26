@@ -28,7 +28,7 @@ export const useNavItems = (): UseNavItemsReturn => {
   useEffect(() => {
     window.addEventListener('resize', updateScrollOffset);
     return () => window.removeEventListener('resize', updateScrollOffset);
-  }, [updateScrollOffset]);
+  }, []);
 
   const { scrollToSection, isNavigating, selectedSection, setSelectedSection } =
     useNavigationScroll('home');
@@ -41,10 +41,9 @@ export const useNavItems = (): UseNavItemsReturn => {
   });
 
   useEffect(() => {
-    if (!isNavigating && activeSection && activeSection !== selectedSection) {
+    if (!isNavigating && activeSection && activeSection !== selectedSection)
       setSelectedSection(activeSection);
-    }
-  }, [activeSection, selectedSection, isNavigating, setSelectedSection]);
+  }, [activeSection, selectedSection, isNavigating]);
 
   const navItems: NavItem[] = [
     { id: 'home', label: 'INITIALIZE', number: '01', icon: FaBolt },
@@ -54,12 +53,9 @@ export const useNavItems = (): UseNavItemsReturn => {
     { id: 'contact', label: 'CONNECT', number: '05', icon: FaSatelliteDish },
   ];
 
-  const handleNavigateToSection = useCallback(
-    (sectionId: string) => {
-      scrollToSection(sectionId);
-    },
-    [scrollToSection]
-  );
+  const handleNavigateToSection = useCallback((sectionId: string) => {
+    scrollToSection(sectionId);
+  }, []);
 
   return {
     navItems,

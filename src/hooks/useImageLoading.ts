@@ -49,10 +49,7 @@ export const useImageLoading = (
       }
     );
 
-    if (imgRef.current) {
-      observer.observe(imgRef.current);
-    }
-
+    if (imgRef.current) observer.observe(imgRef.current);
     observerRef.current = observer;
 
     return () => {
@@ -64,7 +61,7 @@ export const useImageLoading = (
     setIsLoading(false);
     setHasError(false);
     onLoad?.();
-  }, [onLoad]);
+  }, []);
 
   const handleError = useCallback(
     (event: SyntheticEvent<HTMLImageElement>) => {
@@ -80,7 +77,7 @@ export const useImageLoading = (
 
       onError?.(event);
     },
-    [fallbackSrc, src, onError]
+    [fallbackSrc, src]
   );
 
   return {

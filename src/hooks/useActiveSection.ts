@@ -38,9 +38,7 @@ export const useActiveSection = (
   const sectionsArray = useMemo(() => [...sections], [sections]);
 
   const handleScroll = useCallback(() => {
-    if (isScrollingRef?.current) {
-      return;
-    }
+    if (isScrollingRef?.current) return;
 
     const scrollY = window.scrollY;
 
@@ -59,9 +57,7 @@ export const useActiveSection = (
         const sectionStart = offsetTop;
         const sectionEnd = offsetTop + offsetHeight;
 
-        if (scrollPosition >= sectionStart) {
-          foundActiveSection = section;
-        }
+        if (scrollPosition >= sectionStart) foundActiveSection = section;
 
         if (scrollPosition >= sectionStart && scrollPosition < sectionEnd) {
           foundActiveSection = section;

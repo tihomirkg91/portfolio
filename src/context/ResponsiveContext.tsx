@@ -31,12 +31,12 @@ const ResponsiveProvider: React.FC<ResponsiveProviderProps> = memo(
     const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
     const handleResize = useCallback(() => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      timeoutRef.current = setTimeout(() => {
-        setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
-      }, RESIZE_DEBOUNCE_MS);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+      timeoutRef.current = setTimeout(
+        () => setIsMobile(window.innerWidth < MOBILE_BREAKPOINT),
+        RESIZE_DEBOUNCE_MS
+      );
     }, []);
 
     useEffect(() => {
@@ -45,9 +45,7 @@ const ResponsiveProvider: React.FC<ResponsiveProviderProps> = memo(
 
       return () => {
         window.removeEventListener('resize', handleResize);
-        if (timeoutRef.current) {
-          clearTimeout(timeoutRef.current);
-        }
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
       };
     }, [handleResize]);
 

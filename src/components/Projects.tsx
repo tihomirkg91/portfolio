@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { memo, useCallback, useState } from 'react';
-import { FaGamepad, FaImage, FaTools } from 'react-icons/fa';
+import { FaGamepad, FaImage } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useImageLoading } from '../hooks/useImageLoading';
 import { usePortfolio } from '../hooks/usePortfolio';
@@ -20,28 +20,28 @@ const ProjectLinkButton: FC<ProjectLinkButtonProps> = memo(
   ({ link, projectTitle, onGameClick, gameEnabled }) => {
     const navigate = useNavigate();
 
+    const navigateToLink = useCallback((url: string, isInternal: boolean) => {
+      if (isInternal) navigate(url);
+      else window.open(url, '_blank', 'noopener,noreferrer');
+    }, []);
+
     const handleClick = useCallback(
       (e: React.MouseEvent) => {
         e.preventDefault();
 
-        // Check if it's a game link and handle based on feature flag
-        if (link.label === 'Play Game') {
-          if (gameEnabled) {
-            // Game is enabled, navigate to the game
-            if (link.url.startsWith('/')) navigate(link.url);
-            else window.open(link.url, '_blank', 'noopener,noreferrer');
-          } else {
-            // Game is disabled, show modal
-            if (onGameClick) onGameClick();
-          }
+        const isGameLink = link.label === 'Play Game';
+        const isInternalLink = link.url.startsWith('/');
+
+        // Handle game links with feature flag logic
+        if (isGameLink) {
+          if (gameEnabled) navigateToLink(link.url, isInternalLink);
+          else onGameClick?.();
           return;
         }
 
-        // Handle other links normally
-        if (link.url.startsWith('/')) navigate(link.url);
-        else window.open(link.url, '_blank', 'noopener,noreferrer');
+        navigateToLink(link.url, isInternalLink);
       },
-      [link.url, link.label, navigate, onGameClick, gameEnabled]
+      [link.url, link.label, gameEnabled]
     );
 
     return (
@@ -74,41 +74,16 @@ const Projects: FC = memo(() => {
   const handleImageLoad = useCallback(() => {
     setIsImageLoaded(true);
     handleLoad();
-  }, [handleLoad]);
+  }, []);
 
   const handleImageError = useCallback(
     (event: React.SyntheticEvent<HTMLImageElement>) => handleError(event),
-    [handleError]
+    []
   );
+  const handleGameClick = useCallback(() => setIsGameModalOpen(true), []);
+  const handleCloseModal = useCallback(() => setIsGameModalOpen(false), []);
 
-  const handleGameClick = useCallback(() => {
-    setIsGameModalOpen(true);
-  }, []);
-
-  const handleCloseModal = useCallback(() => {
-    setIsGameModalOpen(false);
-  }, []);
-
-  if (!project) {
-    return (
-      <section id="projects" className="projects">
-        <div className="projects-container">
-          <header className="projects-header">
-            <h2 className="projects-title">
-              <span className="title-accent">02.</span> Projects
-            </h2>
-            <p className="projects-subtitle">Coming Soon</p>
-          </header>
-          <div className="empty-state">
-            <div className="empty-state-icon">
-              <FaTools />
-            </div>
-            <p>Projects are being prepared. Check back soon!</p>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  if (!project) return null;
 
   return (
     <section id="projects" className="projects">

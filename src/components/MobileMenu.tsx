@@ -1,26 +1,22 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMobileOptimizedScroll } from '../hooks/useMobileOptimizedScroll';
 import { useNavItems } from '../hooks/useNavItems';
 import { useResponsive } from '../hooks/useResponsive';
-import { getHeaderOffset } from '../utils/headerOffset';
 import './MobileMenu.css';
 
 const MobileMenu: React.FC = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const { navItems, activeSection } = useNavItems();
+  const {
+    navItems,
+    selectedNavItem,
+    handleNavigateToSection: navHandleNavigateToSection,
+  } = useNavItems();
   const { isMobile } = useResponsive();
-  const { scrollToSection } = useMobileOptimizedScroll();
-
-  const [menuActiveSection, setMenuActiveSection] = useState(activeSection);
 
   const handleToggle = useCallback(() => {
-    if (!isOpen) {
-      setMenuActiveSection(activeSection);
-    }
     setIsOpen(!isOpen);
-  }, [isOpen, activeSection]);
+  }, [isOpen]);
 
   const handleClose = useCallback(() => setIsOpen(false), []);
 
@@ -28,31 +24,19 @@ const MobileMenu: React.FC = () => {
     e.preventDefault();
   }, []);
 
-  const handleNavigateToSection = useCallback(
-    (sectionId: string) => {
+  const handleNavigateToSection = useCallback((sectionId: string) => {
+    if (sectionId === 'game') {
       handleClose();
-
-      if (sectionId === 'game') {
-        navigate('/falling-planet-rhythm');
-      } else {
-        requestAnimationFrame(() => {
-          scrollToSection(sectionId, {
-            headerOffset: getHeaderOffset(),
-          });
-        });
-      }
-    },
-    [scrollToSection, handleClose, navigate]
-  );
+      navigate('/falling-planet-rhythm');
+    } else {
+      // Trigger navigation and close menu
+      navHandleNavigateToSection(sectionId);
+      handleClose();
+    }
+  }, []);
 
   useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && isOpen) handleClose();
-    };
-
     if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-
       document.body.style.overflow = 'hidden';
 
       if (isMobile) {
@@ -66,20 +50,15 @@ const MobileMenu: React.FC = () => {
     } else {
       document.body.style.overflow = '';
       document.body.style.height = '';
-      if (isMobile) {
-        document.removeEventListener('touchmove', preventTouchMove);
-      }
+      if (isMobile) document.removeEventListener('touchmove', preventTouchMove);
     }
 
     return () => {
-      document.removeEventListener('keydown', handleEscape);
       document.body.style.overflow = '';
       document.body.style.height = '';
-      if (isMobile) {
-        document.removeEventListener('touchmove', preventTouchMove);
-      }
+      if (isMobile) document.removeEventListener('touchmove', preventTouchMove);
     };
-  }, [isOpen, isMobile, handleClose, preventTouchMove]);
+  }, [isOpen, isMobile]);
 
   return (
     <>
@@ -109,7 +88,7 @@ const MobileMenu: React.FC = () => {
       <nav
         className={`mobile-menu ${isOpen ? 'mobile-menu--open' : ''}`}
         id="mobile-menu"
-        aria-hidden={!isOpen}
+        inert={!isOpen}
       >
         <div className="mobile-menu__container">
           <div className="mobile-menu__header">
@@ -143,7 +122,7 @@ const MobileMenu: React.FC = () => {
                 <li key={item.id} className="mobile-nav__item">
                   <button
                     onClick={() => handleNavigateToSection(item.id)}
-                    className={`mobile-nav__link ${menuActiveSection === item.id ? 'mobile-nav__link--active' : ''}`}
+                    className={`mobile-nav__link ${selectedNavItem === item.id ? 'mobile-nav__link--active' : ''}`}
                     aria-label={`Navigate to ${item.label} section`}
                   >
                     <div className="mobile-nav__content">

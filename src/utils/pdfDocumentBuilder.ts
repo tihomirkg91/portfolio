@@ -291,9 +291,7 @@ export const createSecondaryExperienceSection = (
     exp => exp.company !== 'Greco Tech Hub'
   );
 
-  if (secondaryExperiences.length === 0) {
-    return [];
-  }
+  if (secondaryExperiences.length === 0) return [];
 
   return [
     {

@@ -8,11 +8,8 @@ const DesktopMenu: React.FC = () => {
   const { navItems, handleNavigateToSection, selectedNavItem } = useNavItems();
 
   const handleNavigation = (itemId: string) => {
-    if (itemId === 'game') {
-      navigate('/falling-planet-rhythm');
-    } else {
-      handleNavigateToSection(itemId);
-    }
+    if (itemId === 'game') navigate('/falling-planet-rhythm');
+    else handleNavigateToSection(itemId);
   };
 
   return (

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { PortfolioData } from '../types';
-import { convertImageWithCanvas } from '../utils/imageConverter';
+import { convertImageToDataURL } from '../utils/imageConverter';
 import { createPdfDocumentDefinition } from '../utils/pdfDocumentBuilder';
 
 interface UsePdfGeneratorProps {
@@ -45,12 +45,7 @@ export const usePdfGenerator = ({
     }
 
     try {
-      const fallbackBase64 = await convertImageWithCanvas(
-        '/pic.webp',
-        300,
-        300,
-        0.8
-      );
+      const fallbackBase64 = await convertImageToDataURL('/pic.webp');
       return fallbackBase64;
     } catch (error) {
       console.warn('Failed to load fallback image:', error);

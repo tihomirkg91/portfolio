@@ -29,9 +29,7 @@ export const useActiveDetection = (
     const scrollY = window.scrollY;
     setIsScrolled(scrollY > scrollThreshold);
 
-    if (isPaused) {
-      return;
-    }
+    if (isPaused) return;
 
     const scrollPosition = scrollY + scrollOffset;
     let foundActiveSection = sections[0];
@@ -47,9 +45,7 @@ export const useActiveDetection = (
         const sectionStart = offsetTop;
         const sectionEnd = offsetTop + offsetHeight;
 
-        if (scrollPosition >= sectionStart) {
-          foundActiveSection = section;
-        }
+        if (scrollPosition >= sectionStart) foundActiveSection = section;
 
         if (scrollPosition >= sectionStart && scrollPosition < sectionEnd) {
           foundActiveSection = section;

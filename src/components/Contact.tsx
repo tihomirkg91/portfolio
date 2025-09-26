@@ -111,4 +111,6 @@ const Contact: FC = memo(() => {
   );
 });
 
+Contact.displayName = 'Contact';
+
 export default Contact;

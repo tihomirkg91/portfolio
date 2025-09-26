@@ -1,9 +1,7 @@
-import type { FC } from 'react';
-import { lazy, memo, Suspense } from 'react';
+import { lazy } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
-import ErrorBoundary from './components/ErrorBoundary';
-import LoadingSpinner from './components/LoadingSpinner';
+import LazyWrapper from './components/LazyWrapper';
 import { PortfolioProvider } from './context/PortfolioContext';
 import ResponsiveProvider from './context/ResponsiveContext';
 
@@ -16,95 +14,76 @@ const Contact = lazy(() => import('./components/Contact'));
 const Footer = lazy(() => import('./components/Footer'));
 const GamePage = lazy(() => import('./components/GamePage'));
 
-const AppContent: FC = memo(() => (
+const LazyNavigation = LazyWrapper('LazyNavigation');
+const LazyHero = LazyWrapper('LazyHero');
+const LazyAbout = LazyWrapper('LazyAbout');
+const LazyProjects = LazyWrapper('LazyProjects');
+const LazyExperience = LazyWrapper('LazyExperience');
+const LazyContact = LazyWrapper('LazyContact');
+const LazyFooter = LazyWrapper('LazyFooter');
+const LazyGamePage = LazyWrapper('LazyGamePage');
+
+const AppContent = () => (
   <div className="App">
-    <ErrorBoundary>
-      <Suspense fallback={<LoadingSpinner />}>
-        <Navigation />
-      </Suspense>
-    </ErrorBoundary>
+    <LazyNavigation>
+      <Navigation />
+    </LazyNavigation>
 
     <main role="main">
-      <ErrorBoundary>
-        <Suspense fallback={<LoadingSpinner />}>
-          <Hero />
-        </Suspense>
-      </ErrorBoundary>
+      <LazyHero>
+        <Hero />
+      </LazyHero>
 
-      <ErrorBoundary>
-        <Suspense fallback={<LoadingSpinner />}>
-          <About />
-        </Suspense>
-      </ErrorBoundary>
+      <LazyAbout>
+        <About />
+      </LazyAbout>
 
-      <ErrorBoundary>
-        <Suspense fallback={<LoadingSpinner />}>
-          <Projects />
-        </Suspense>
-      </ErrorBoundary>
+      <LazyProjects>
+        <Projects />
+      </LazyProjects>
 
-      <ErrorBoundary>
-        <Suspense fallback={<LoadingSpinner />}>
-          <ExperienceComponent />
-        </Suspense>
-      </ErrorBoundary>
+      <LazyExperience>
+        <ExperienceComponent />
+      </LazyExperience>
 
-      <ErrorBoundary>
-        <Suspense fallback={<LoadingSpinner />}>
-          <Contact />
-        </Suspense>
-      </ErrorBoundary>
+      <LazyContact>
+        <Contact />
+      </LazyContact>
     </main>
 
-    <ErrorBoundary>
-      <Suspense fallback={<LoadingSpinner />}>
-        <Footer />
-      </Suspense>
-    </ErrorBoundary>
+    <LazyFooter>
+      <Footer />
+    </LazyFooter>
   </div>
-));
+);
 
-AppContent.displayName = 'AppContent';
+const AppRoutes = () => (
+  <Routes>
+    <Route path="/" element={<AppContent />} />
+    <Route
+      path="/falling-planet-rhythm"
+      element={
+        <div className="game-page">
+          <LazyNavigation>
+            <Navigation />
+          </LazyNavigation>
+          <LazyGamePage>
+            <GamePage />
+          </LazyGamePage>
+        </div>
+      }
+    />
+  </Routes>
+);
 
-const AppRoutes: FC = memo(() => {
-  return (
-    <Routes>
-      <Route path="/" element={<AppContent />} />
-      <Route
-        path="/falling-planet-rhythm"
-        element={
-          <Suspense fallback={<LoadingSpinner />}>
-            <div className="game-page">
-              <ErrorBoundary>
-                <Navigation />
-              </ErrorBoundary>
-              <ErrorBoundary>
-                <GamePage />
-              </ErrorBoundary>
-            </div>
-          </Suspense>
-        }
-      />
-    </Routes>
-  );
-});
-
-AppRoutes.displayName = 'AppRoutes';
-
-const App: FC = () => (
-  <ErrorBoundary
-    onError={(error, errorInfo) =>
-      console.error('Application Error:', error, errorInfo)
-    }
-  >
-    <Router>
-      <ResponsiveProvider>
-        <PortfolioProvider>
-          <AppRoutes />
-        </PortfolioProvider>
-      </ResponsiveProvider>
-    </Router>
-  </ErrorBoundary>
+const App = () => (
+  <Router>
+    <ResponsiveProvider>
+      <PortfolioProvider>
+        <AppRoutes />
+      </PortfolioProvider>
+    </ResponsiveProvider>
+  </Router>
 );
 
 export default App;

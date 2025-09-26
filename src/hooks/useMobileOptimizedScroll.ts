@@ -13,10 +13,6 @@ interface UseMobileOptimizedScrollReturn {
   isScrolling: React.MutableRefObject<boolean>;
 }
 
-/**
- * Custom hook for mobile-optimized scrolling
- * Provides instant scrolling on mobile for better performance and UX
- */
 export const useMobileOptimizedScroll = (): UseMobileOptimizedScrollReturn => {
   const { isMobile } = useResponsive();
   const isScrolling = useRef<boolean>(false);
@@ -36,10 +32,7 @@ export const useMobileOptimizedScroll = (): UseMobileOptimizedScrollReturn => {
         return;
       }
 
-      if (isScrolling.current) {
-        return;
-      }
-
+      if (isScrolling.current) return;
       isScrolling.current = true;
 
       try {

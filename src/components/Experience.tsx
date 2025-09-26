@@ -25,9 +25,7 @@ const ExperienceItem: FC<ExperienceItemProps> = memo(
       return moment().format('YYYY-MM-DD');
     }, []);
 
-    const handleToggle = useCallback(() => {
-      onToggle();
-    }, [onToggle]);
+    const handleToggle = useCallback(() => onToggle(), []);
 
     const descriptionArray = useMemo(() => {
       const descriptions = Array.isArray(exp?.description)
@@ -79,7 +77,6 @@ const ExperienceItem: FC<ExperienceItemProps> = memo(
           >
             <ul className="experience-achievements" role="list">
               {descriptionArray.map(achievement => {
-                // Ensure we're only rendering strings
                 const achievementText =
                   typeof achievement === 'string'
                     ? achievement
@@ -137,11 +134,9 @@ const ExperienceComponent: FC = memo(() => {
   const toggleExpanded = useCallback((id: string | number) => {
     setExpandedItems(prev => {
       const newSet = new Set(prev);
-      if (newSet.has(id)) {
-        newSet.delete(id);
-      } else {
-        newSet.add(id);
-      }
+      if (newSet.has(id)) newSet.delete(id);
+      else newSet.add(id);
+
       return newSet;
     });
   }, []);

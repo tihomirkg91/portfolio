@@ -73,13 +73,13 @@ portfolio/
     │   ├── GamePage.tsx
     │   ├── Hero.css
     │   ├── Hero.tsx
+    │   ├── LazyWrapper.tsx
     │   ├── LoadingSpinner.css
     │   ├── LoadingSpinner.tsx
     │   ├── MobileMenu.css
     │   ├── MobileMenu.tsx
     │   ├── Navigation.css
     │   ├── Navigation.tsx
-    │   ├── PdfGenerator.tsx
     │   ├── Projects.css
     │   ├── Projects.tsx
     │   └── falling-planet/
@@ -110,7 +110,6 @@ portfolio/
     │   ├── usePdfGenerator.ts
     │   ├── usePortfolio.ts
     │   ├── useResponsive.ts
-    │   ├── useScrollAnimation.ts
     │   └── useScrollNavigation.ts
     ├── styles/
     │   └── zIndex.css
@@ -122,7 +121,6 @@ portfolio/
         ├── generateId.ts
         ├── headerOffset.ts
         ├── imageConverter.ts
-        ├── index.ts
         ├── pdfDocumentBuilder.ts
         └── zIndex.ts
 ```

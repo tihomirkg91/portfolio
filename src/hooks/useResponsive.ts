@@ -6,9 +6,9 @@ const RESIZE_DEBOUNCE_MS = 150;
 
 export const useResponsive = (): ResponsiveContextType => {
   const context = useContext(ResponsiveContext);
-  if (!context) {
+  if (!context)
     throw new Error('useResponsive must be used within a ResponsiveProvider');
-  }
+
   return context;
 };
 
@@ -35,9 +35,7 @@ export const useIsMobile = (mobileBreakpoint: number = 768): boolean => {
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
   }, [handleResize]);
 

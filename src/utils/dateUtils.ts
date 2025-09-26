@@ -48,36 +48,3 @@ export const calculateTotalExperience = (
 
   return Math.floor(diffYears);
 };
-
-export const formatDateRange = (
-  startDate: string,
-  endDate?: string
-): string => {
-  const formatDate = (dateStr: string): string => {
-    const date = new Date(dateStr + '-01');
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-    });
-  };
-
-  const formattedStart = formatDate(startDate);
-  const formattedEnd =
-    endDate && endDate.trim() ? formatDate(endDate) : 'Present';
-
-  return `${formattedStart} - ${formattedEnd}`;
-};
-
-export const isValidDate = (dateStr: string): boolean => {
-  if (!dateStr || typeof dateStr !== 'string') return false;
-
-  const date = new Date(dateStr + '-01');
-  return !isNaN(date.getTime());
-};
-
-export const getCurrentDateString = (): string => {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  return `${year}-${month}`;
-};

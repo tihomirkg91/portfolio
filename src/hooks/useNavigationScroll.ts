@@ -24,9 +24,8 @@ export const useNavigationScroll = (
       return;
     }
 
-    if (navigationTimeoutRef.current) {
+    if (navigationTimeoutRef.current)
       clearTimeout(navigationTimeoutRef.current);
-    }
 
     setIsNavigating(true);
     setSelectedSection(sectionId);

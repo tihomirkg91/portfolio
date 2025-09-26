@@ -27,9 +27,7 @@ const Navigation: React.FC = memo(() => {
   const [scrollOffset, setScrollOffset] = useState(() => getScrollOffset());
 
   useEffect(() => {
-    const updateScrollOffset = () => {
-      setScrollOffset(getScrollOffset());
-    };
+    const updateScrollOffset = () => setScrollOffset(getScrollOffset());
 
     window.addEventListener('resize', updateScrollOffset);
     return () => window.removeEventListener('resize', updateScrollOffset);
@@ -48,10 +46,9 @@ const Navigation: React.FC = memo(() => {
 
   const handleEnsureActiveSectionInView = useCallback(
     () => scrollToElement('home'),
-    [scrollToElement]
+    []
   );
-
-  const handleBackToHome = useCallback(() => navigate('/'), [navigate]);
+  const handleBackToHome = useCallback(() => navigate('/'), []);
 
   const isGamePage = useMemo(
     () => location.pathname === '/falling-planet-rhythm',

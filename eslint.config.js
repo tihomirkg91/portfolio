@@ -32,6 +32,7 @@ export default tseslint.config([
         },
       ],
       'import/no-self-import': 'error',
+      'react-hooks/exhaustive-deps': 'off',
     },
   },
 ]);

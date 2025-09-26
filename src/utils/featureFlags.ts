@@ -5,7 +5,7 @@ export interface FeatureFlags {
 
 const parseBoolean = (value: string | undefined): boolean => value === 'true';
 
-export const getFeatureFlags = (): FeatureFlags => ({
+const getFeatureFlags = (): FeatureFlags => ({
   featuredProjectsEnabled: parseBoolean(
     import.meta.env['VITE_FEATURED_PROJECTS_ENABLED']
   ),
@@ -13,8 +13,3 @@ export const getFeatureFlags = (): FeatureFlags => ({
 });
 
 export const useFeatureFlags = (): FeatureFlags => getFeatureFlags();
-
-export const isFeatureEnabled = (featureName: keyof FeatureFlags): boolean => {
-  const flags = getFeatureFlags();
-  return flags[featureName];
-};
