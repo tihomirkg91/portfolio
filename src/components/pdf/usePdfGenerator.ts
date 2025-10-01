@@ -36,7 +36,8 @@ export const usePdfGenerator = ({
       const pdfFontsModule = await import('pdfmake/build/vfs_fonts');
       pdfMakeModule.vfs = pdfFontsModule.vfs;
     };
-    loadPdfMake();
+
+    loadPdfMake().catch(() => {});
   }, []);
 
   const ensureImageReady = useCallback(async (): Promise<string> => {
