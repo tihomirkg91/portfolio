@@ -12,10 +12,10 @@ export default defineConfig({
       includeAssets: ['favicon.svg', '*.png', '*.jpg', '*.webp'],
       manifest: {
         name: 'Tihomir Tomovic - Portfolio',
-        short_name: 'Tihomir Portfolio',
+        short_name: 'Tihomir T.',
         description:
           'Frontend Software Engineer focused on scalable architectures, reusable components, and modernizing legacy UIs with automation and AI tooling.',
-        theme_color: '#bf00ff',
+        theme_color: '#0f0f1a',
         background_color: '#1a1a1a',
         display: 'standalone',
         scope: '/',
