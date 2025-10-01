@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { convertImageToDataURL } from '../utils/imageConverter';
+import { convertImageToDataURL } from './imageConverter';
 
 interface UseImageLoaderProps {
   imageUrl: string;

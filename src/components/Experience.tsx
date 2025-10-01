@@ -4,7 +4,6 @@ import { memo, useCallback, useMemo, useState } from 'react';
 import { FaCheckCircle, FaCode } from 'react-icons/fa';
 import { usePortfolio } from '../hooks/usePortfolio';
 import type { Experience } from '../types';
-import { calculateTotalExperience } from '../utils/dateUtils';
 import './Experience.css';
 
 interface ExperienceItemProps {
@@ -75,43 +74,49 @@ const ExperienceItem: FC<ExperienceItemProps> = memo(
             className={`experience-details ${isExpanded ? 'expanded' : 'collapsed'}`}
             aria-hidden={!isExpanded}
           >
-            <ul className="experience-achievements" role="list">
-              {descriptionArray.map(achievement => {
-                const achievementText =
-                  typeof achievement === 'string'
-                    ? achievement
-                    : String(achievement);
+            {descriptionArray.length > 0 && (
+              <div className="experience-achievements-container">
+                <ul className="experience-achievements" role="list">
+                  {descriptionArray.map(achievement => {
+                    const achievementText =
+                      typeof achievement === 'string'
+                        ? achievement
+                        : String(achievement);
 
-                return (
-                  <li key={`${exp.id}-${achievementText}`} role="listitem">
-                    <FaCheckCircle className="achievement-icon" />
-                    {achievementText}
-                  </li>
-                );
-              })}
-            </ul>
-
-            <div className="experience-technologies">
-              <h4>
-                <FaCode className="technologies-icon" />
-                Technologies Used:
-              </h4>
-              <div
-                className="tech-tags"
-                role="list"
-                aria-label="Technologies used"
-              >
-                {exp.technologies.map(tech => (
-                  <span
-                    key={`${exp.id}-${tech}`}
-                    className="tech-tag"
-                    role="listitem"
-                  >
-                    {tech}
-                  </span>
-                ))}
+                    return (
+                      <li key={`${exp.id}-${achievementText}`} role="listitem">
+                        <FaCheckCircle className="achievement-icon" />
+                        <span>{achievementText}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
               </div>
-            </div>
+            )}
+
+            {exp.technologies && exp.technologies.length > 0 && (
+              <div className="experience-technologies">
+                <h4>
+                  <FaCode className="technologies-icon" />
+                  <span>Technologies Used:</span>
+                </h4>
+                <div
+                  className="tech-tags"
+                  role="list"
+                  aria-label="Technologies used"
+                >
+                  {exp.technologies.map(tech => (
+                    <span
+                      key={`${exp.id}-${tech}`}
+                      className="tech-tag"
+                      role="listitem"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </article>
@@ -121,15 +126,11 @@ const ExperienceItem: FC<ExperienceItemProps> = memo(
 
 ExperienceItem.displayName = 'ExperienceItem';
 
-const ExperienceComponent: FC = memo(() => {
+const ExperienceComponent: FC = () => {
   const { experience } = usePortfolio();
   const [expandedItems, setExpandedItems] = useState<Set<string | number>>(
     new Set()
   );
-
-  const totalYearsExperience = useMemo(() => {
-    return calculateTotalExperience(experience);
-  }, [experience]);
 
   const toggleExpanded = useCallback((id: string | number) => {
     setExpandedItems(prev => {
@@ -192,32 +193,9 @@ const ExperienceComponent: FC = memo(() => {
             />
           ))}
         </div>
-
-        <div className="experience-summary">
-          <div className="summary-stats">
-            <div className="stat-item">
-              <div className="stat-number">{totalYearsExperience}+</div>
-              <div className="stat-label">Years Experience</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-number">1</div>
-              <div className="stat-label">Companies</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-number">18+</div>
-              <div className="stat-label">Projects Delivered</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-number">22+</div>
-              <div className="stat-label">Technologies</div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );
-});
-
-ExperienceComponent.displayName = 'ExperienceComponent';
+};
 
 export default ExperienceComponent;

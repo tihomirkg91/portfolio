@@ -2,8 +2,11 @@ import { lazy } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
 import LazyWrapper from './components/LazyWrapper';
+import { PwaModal } from './components/pwa/PwaModal';
+import './components/pwa/PwaModal.css';
 import { PortfolioProvider } from './context/PortfolioContext';
 import ResponsiveProvider from './context/ResponsiveContext';
+import { useServiceWorker } from './hooks/useServiceWorker';
 
 const Navigation = lazy(() => import('./components/Navigation'));
 const Hero = lazy(() => import('./components/Hero'));
@@ -25,6 +28,7 @@ const LazyGamePage = LazyWrapper('LazyGamePage');
 
 const AppContent = () => (
   <div className="App">
+    <PwaModal />
     <LazyNavigation>
       <Navigation />
     </LazyNavigation>
@@ -76,14 +80,18 @@ const AppRoutes = () => (
   </Routes>
 );
 
-const App = () => (
-  <Router>
-    <ResponsiveProvider>
-      <PortfolioProvider>
-        <AppRoutes />
-      </PortfolioProvider>
-    </ResponsiveProvider>
-  </Router>
-);
+const App = () => {
+  useServiceWorker();
+
+  return (
+    <Router>
+      <ResponsiveProvider>
+        <PortfolioProvider>
+          <AppRoutes />
+        </PortfolioProvider>
+      </ResponsiveProvider>
+    </Router>
+  );
+};
 
 export default App;

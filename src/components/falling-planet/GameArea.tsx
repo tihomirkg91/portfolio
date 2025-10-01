@@ -1,22 +1,30 @@
-import { memo, useCallback, useMemo } from 'react';
+import { memo, useCallback, useMemo, startTransition } from 'react';
 import { LANES, LANE_COLORS, LANE_KEYS } from './constants';
-import type { HitZone, Note } from './types';
+import type { HitZone, Planet } from './types';
 
 interface GameAreaProps {
-  notes: Note[];
+  planets: Planet[];
   hitZones: HitZone[];
   gameAreaRef: React.RefObject<HTMLDivElement | null>;
   onTouchStart: (lane: number, event?: React.TouchEvent) => void;
   onMouseDown: (lane: number, event?: React.MouseEvent) => void;
-  onHitNote: (lane: number) => void;
+  onHitPlanet: (lane: number) => void;
   isMobile: boolean;
+  isTransitioning?: boolean;
 }
 
-const Lane = memo(({ index }: { index: number }) => (
-  <div className={`lane lane-${index}`}>
-    <div className="lane-bg"></div>
-  </div>
-));
+const Lane = memo(({ index }: { index: number }) => {
+  const laneStyle = useMemo(
+    () => ({ '--lane-index': index }) as React.CSSProperties,
+    [index]
+  );
+
+  return (
+    <div className={`lane lane-${index}`} style={laneStyle}>
+      <div className="lane-bg"></div>
+    </div>
+  );
+});
 
 Lane.displayName = 'Lane';
 
@@ -26,41 +34,64 @@ const HitZoneComponent = memo(
     index,
     onTouchStart,
     onMouseDown,
-    onHitNote,
+    onHitPlanet,
     isMobile,
+    isTransitioning = false,
   }: {
     hitZone: HitZone;
     index: number;
     onTouchStart: (lane: number, event?: React.TouchEvent) => void;
     onMouseDown: (lane: number, event?: React.MouseEvent) => void;
-    onHitNote: (lane: number) => void;
+    onHitPlanet: (lane: number) => void;
     isMobile: boolean;
+    isTransitioning?: boolean;
   }) => {
     const handleTouchStart = useCallback(
       (e: React.TouchEvent) => {
-        onTouchStart(index, e);
+        if (isTransitioning) return;
+        startTransition(() => {
+          onTouchStart(index, e);
+        });
       },
-      [onTouchStart, index]
+      [onTouchStart, index, isTransitioning]
     );
 
     const handleMouseDown = useCallback(
       (e: React.MouseEvent) => {
-        onMouseDown(index, e);
+        if (isTransitioning) return;
+        startTransition(() => {
+          onMouseDown(index, e);
+        });
       },
-      [onMouseDown, index]
+      [onMouseDown, index, isTransitioning]
     );
 
     const handleClick = useCallback(() => {
-      if (!isMobile) onHitNote(index);
-    }, [isMobile, onHitNote, index]);
+      if (!isMobile && !isTransitioning) {
+        startTransition(() => {
+          onHitPlanet(index);
+        });
+      }
+    }, [isMobile, onHitPlanet, index, isTransitioning]);
 
-    const className = useMemo(
-      () => `hit-zone hit-zone-${index} ${hitZone.active ? 'active' : ''}`,
-      [index, hitZone.active]
-    );
+    const className = useMemo(() => {
+      const classes = [`hit-zone`, `hit-zone-${index}`];
+      if (hitZone.active) classes.push('active');
+      if (isTransitioning) classes.push('transitioning');
+      return classes.join(' ');
+    }, [index, hitZone.active, isTransitioning]);
 
     const style = useMemo(
-      () => ({ '--lane-color': LANE_COLORS[index] }) as React.CSSProperties,
+      () =>
+        ({
+          '--lane-color': LANE_COLORS[index],
+          '--hit-zone-opacity': isTransitioning ? 0.7 : 1,
+        }) as React.CSSProperties,
+      [index, isTransitioning]
+    );
+
+    const keyDisplay = useMemo(
+      () => LANE_KEYS[index]?.toUpperCase() || '',
       [index]
     );
 
@@ -71,10 +102,11 @@ const HitZoneComponent = memo(
         onTouchStart={handleTouchStart}
         onMouseDown={handleMouseDown}
         onClick={handleClick}
+        role="button"
+        tabIndex={0}
+        aria-label={`Hit zone ${index + 1}, Key: ${keyDisplay}`}
       >
-        <div className="hit-zone-key">
-          {LANE_KEYS[index]?.toUpperCase() || ''}
-        </div>
+        <div className="hit-zone-key">{keyDisplay}</div>
         <div className="hit-zone-glow"></div>
       </div>
     );
@@ -83,38 +115,45 @@ const HitZoneComponent = memo(
 
 HitZoneComponent.displayName = 'HitZoneComponent';
 
-const NoteComponent = memo(({ note }: { note: Note }) => {
-  const lanePosition = useMemo(() => `${10 + note.lane * 20}%`, [note.lane]);
+HitZoneComponent.displayName = 'HitZoneComponent';
+
+const PlanetComponent = memo(({ planet }: { planet: Planet }) => {
+  const lanePosition = useMemo(
+    () => `${10 + planet.lane * 20}%`,
+    [planet.lane]
+  );
 
   const style = useMemo(
     () =>
       ({
-        '--note-color': note.color,
-        '--note-y': `${note.y}%`,
-        '--note-size': `${note.size}px`,
-        '--note-left': lanePosition,
+        '--planet-color': planet.color,
+        '--planet-y': `${planet.y}%`,
+        '--planet-size': `${planet.size}px`,
+        '--planet-left': lanePosition,
+        '--planet-id': planet.id,
       }) as React.CSSProperties,
-    [note.color, note.y, note.size, lanePosition]
+    [planet.color, planet.y, planet.size, lanePosition, planet.id]
   );
 
   return (
-    <div className="note" style={style}>
-      <div className="note-glow"></div>
+    <div className="planet" style={style} data-planet-id={planet.id}>
+      <div className="planet-glow"></div>
     </div>
   );
 });
 
-NoteComponent.displayName = 'NoteComponent';
+PlanetComponent.displayName = 'PlanetComponent';
 
 export const GameArea = memo<GameAreaProps>(
   ({
-    notes,
+    planets,
     hitZones,
     gameAreaRef,
     onTouchStart,
     onMouseDown,
-    onHitNote,
+    onHitPlanet,
     isMobile,
+    isTransitioning = false,
   }) => {
     const lanes = useMemo(
       () =>
@@ -128,30 +167,45 @@ export const GameArea = memo<GameAreaProps>(
       () =>
         hitZones.map((hz, i) => (
           <HitZoneComponent
-            key={hz.lane}
+            key={`hitzone-${hz.lane}`}
             hitZone={hz}
             index={i}
             onTouchStart={onTouchStart}
             onMouseDown={onMouseDown}
-            onHitNote={onHitNote}
+            onHitPlanet={onHitPlanet}
             isMobile={isMobile}
+            isTransitioning={isTransitioning}
           />
         )),
-      [hitZones, onTouchStart, onMouseDown, onHitNote, isMobile]
+      [
+        hitZones,
+        onTouchStart,
+        onMouseDown,
+        onHitPlanet,
+        isMobile,
+        isTransitioning,
+      ]
     );
 
-    const noteComponents = useMemo(
-      () => notes.map(note => <NoteComponent key={note.id} note={note} />),
-      [notes]
+    const planetComponents = useMemo(
+      () =>
+        planets.map(planet => (
+          <PlanetComponent key={`planet-${planet.id}`} planet={planet} />
+        )),
+      [planets]
     );
+
+    const containerClassName = useMemo(() => {
+      const classes = ['game-area'];
+      if (isTransitioning) classes.push('transitioning');
+      return classes.join(' ');
+    }, [isTransitioning]);
 
     return (
-      <div className="game-area" ref={gameAreaRef}>
+      <div className={containerClassName} ref={gameAreaRef}>
         <div className="lanes-container">{lanes}</div>
-
         <div className="hit-zones-container">{hitZoneComponents}</div>
-
-        <div className="notes-container">{noteComponents}</div>
+        <div className="planets-container">{planetComponents}</div>
       </div>
     );
   }

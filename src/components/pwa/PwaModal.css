@@ -1,0 +1,263 @@
+.pwa-modal-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.pwa-modal-loading {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #666;
+  z-index: 1001;
+}
+
+.pwa-modal {
+  background: white;
+  border-radius: 12px;
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  max-width: 320px;
+  width: 100%;
+  position: relative;
+  animation: slideInRight 0.3s ease-out;
+  transition: all 0.3s ease;
+}
+
+.pwa-modal.installing {
+  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+  border: 2px solid #3b82f6;
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.pwa-modal__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6b7280;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.pwa-modal__close svg {
+  width: 16px;
+  height: 16px;
+}
+
+.pwa-modal__close:hover {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.pwa-modal__content {
+  padding: 24px;
+  text-align: center;
+}
+
+.pwa-modal__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  color: #3b82f6;
+}
+
+.pwa-modal__icon svg {
+  width: 48px;
+  height: 48px;
+}
+
+.pwa-modal__title {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.pwa-modal__description {
+  margin: 0 0 20px 0;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.pwa-modal__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pwa-modal__install-btn {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.pwa-modal__install-btn:hover:not(:disabled) {
+  background-color: #2563eb;
+}
+
+.pwa-modal__install-btn:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.pwa-modal__install-btn.loading {
+  background: linear-gradient(90deg, #3b82f6, #60a5fa, #3b82f6);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.pwa-modal__cancel-btn {
+  background: none;
+  color: #6b7280;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pwa-modal__cancel-btn:hover:not(:disabled) {
+  color: #374151;
+}
+
+.pwa-modal__cancel-btn:disabled {
+  color: #d1d5db;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .pwa-modal-overlay {
+    padding: 16px;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  .pwa-modal {
+    max-width: 100%;
+    margin-bottom: 0;
+    animation: slideInUp 0.3s ease-out;
+  }
+
+  @keyframes slideInUp {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .pwa-modal {
+    background: #1f2937;
+    color: white;
+  }
+
+  .pwa-modal__title {
+    color: #f9fafb;
+  }
+
+  .pwa-modal__close {
+    color: #9ca3af;
+  }
+
+  .pwa-modal__close:hover {
+    background-color: #374151;
+    color: #d1d5db;
+  }
+
+  .pwa-modal__icon {
+    color: #60a5fa;
+  }
+
+  .pwa-modal__description {
+    color: #9ca3af;
+  }
+
+  .pwa-modal__cancel-btn {
+    color: #9ca3af;
+  }
+
+  .pwa-modal__cancel-btn:hover {
+    color: #d1d5db;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pwa-modal {
+    animation: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .pwa-modal__install-btn,
+  .pwa-modal__cancel-btn {
+    border: 2px solid currentColor;
+  }
+}

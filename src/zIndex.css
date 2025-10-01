@@ -1,0 +1,53 @@
+:root {
+  /* Negative z-index values */
+  --z-background: -1;
+  --z-background-decoration: -1;
+
+  /* Base layer */
+  --z-base: 0;
+
+  /* Low z-index values (1-10) */
+  --z-decoration: 1;
+  --z-element-base: 1;
+  --z-content-overlay: 2;
+  --z-element-secondary: 2;
+  --z-element-tertiary: 3;
+  --z-game-controls: 10;
+
+  /* Medium z-index values (100-500) */
+  --z-dropdown: 100;
+  --z-tooltip: 200;
+  --z-popover: 300;
+
+  /* Main content sections */
+  --z-main-content: 400;
+  --z-hero-section: 410;
+  --z-about-section: 420;
+  --z-projects-section: 430;
+  --z-experience-section: 440;
+  --z-contact-section: 450;
+  --z-footer-section: 460;
+
+  /* Navigation elements */
+  --z-sticky-nav: 500;
+  --z-fixed-navigation: 1000;
+  --z-fixed-header: 1000;
+  --z-mobile-menu: 1100;
+  --z-mobile-menu-toggle: 1200;
+  --z-game-overlay: 1001;
+
+  /* Overlays and modals */
+  --z-overlay: 2000;
+  --z-modal: 2100;
+  --z-toast: 2200;
+
+  /* System level */
+  --z-loading: 3000;
+  --z-error-boundary: 3100;
+
+  /* High priority overlays */
+  --z-coming-soon-modal: 9999;
+  --z-game-fullscreen: 9999;
+  --z-game-modal: 10001;
+  --z-debug: 9999;
+}

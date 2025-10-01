@@ -1,4 +1,4 @@
-export interface Note {
+export interface Planet {
   id: number;
   lane: number;
   y: number;

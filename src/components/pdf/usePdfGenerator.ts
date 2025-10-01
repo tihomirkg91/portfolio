@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import type { PortfolioData } from '../types';
-import { convertImageToDataURL } from '../utils/imageConverter';
-import { createPdfDocumentDefinition } from '../utils/pdfDocumentBuilder';
+import type { PortfolioData } from '../../types';
+import { convertImageToDataURL } from './imageConverter';
+import { createPdfDocumentDefinition } from './pdfDocumentBuilder';
 
 interface UsePdfGeneratorProps {
   portfolioData: PortfolioData | null;
@@ -40,9 +40,7 @@ export const usePdfGenerator = ({
   }, []);
 
   const ensureImageReady = async (): Promise<string> => {
-    if (imageLoaded && base64Img) {
-      return base64Img;
-    }
+    if (imageLoaded && base64Img) return base64Img;
 
     try {
       const fallbackBase64 = await convertImageToDataURL('/pic.webp');

@@ -8,7 +8,7 @@
   overflow: hidden;
   min-height: 300px;
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-  z-index: 100;
+  z-index: var(--z-element-base);
 
   will-change: auto;
   transform: translateZ(0);
@@ -21,6 +21,15 @@
   --game-area-offset: 140px;
   --border-width: 2px;
   --border-radius: 10px;
+
+  contain: layout style paint;
+  content-visibility: auto;
+}
+
+.falling-planet.transitioning {
+  opacity: 0.95;
+  transform: translateZ(0) scale(0.998);
+  transition: all 0.16ms ease-out;
 }
 
 .falling-planet * {
@@ -84,7 +93,8 @@
 
 .score,
 .time,
-.level {
+.level,
+.missed {
   color: #00ffff !important;
   font-family: 'Courier New', monospace;
   font-size: 18px;
@@ -96,6 +106,28 @@
 .level {
   color: #ff6b35;
   text-shadow: 0 0 5px #ff6b35;
+}
+
+.missed {
+  color: #ffff00;
+  text-shadow: 0 0 5px #ffff00;
+}
+
+.missed.warning {
+  color: #ff4444 !important;
+  text-shadow: 0 0 5px #ff4444;
+  animation: pulse-warning 1s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-warning {
+  from {
+    text-shadow: 0 0 5px #ff4444;
+  }
+  to {
+    text-shadow:
+      0 0 15px #ff4444,
+      0 0 25px #ff4444;
+  }
 }
 
 .stat-label {
@@ -147,7 +179,22 @@
   user-select: none;
   -webkit-user-select: none;
 
-  touch-action: manipulation;
+  contain: layout style;
+  will-change: transform, opacity;
+}
+
+.game-btn.transitioning {
+  opacity: 0.7;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: scale(0.99);
+}
+
+.game-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none;
 }
 
 .game-btn:focus {
@@ -231,8 +278,18 @@
   align-items: stretch;
   visibility: visible !important;
 
-  contain: layout style paint;
+  contain: layout style paint size;
   transform: translateZ(0);
+  content-visibility: auto;
+  contain-intrinsic-size: 1fr 400px;
+}
+
+.game-area.transitioning {
+  opacity: 0.9;
+  transform: translateZ(0) scale(0.999);
+  transition:
+    opacity 0.16ms ease-out,
+    transform 0.16ms ease-out;
 }
 
 .lanes-container,
@@ -244,6 +301,8 @@
   bottom: 60px;
   display: flex;
   pointer-events: none;
+
+  contain: layout style;
 }
 
 .hit-zones-container {
@@ -253,20 +312,29 @@
   right: 0;
   height: 60px;
   display: flex;
-  z-index: 2;
+  z-index: var(--z-element-secondary);
   pointer-events: auto;
 }
 
 .lanes-container {
-  z-index: 1;
+  z-index: var(--z-element-base);
 }
 
 .notes-container {
-  z-index: 3;
+  z-index: var(--z-element-tertiary);
 }
 
-.notes-container {
-  z-index: 3;
+.planets-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 60px;
+  display: flex;
+  pointer-events: none;
+  z-index: var(--z-element-tertiary);
+
+  contain: layout style;
 }
 
 .lane {
@@ -310,6 +378,19 @@
   margin: 0 1px;
   position: relative;
   overflow: hidden;
+
+  contain: layout style;
+  will-change: transform, opacity;
+  outline: none;
+  opacity: var(--hit-zone-opacity, 0.7);
+}
+
+.hit-zone.transitioning {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+  transform: scale(0.98);
+  transition: all 0.16ms ease-out;
 }
 
 .hit-zone-glow {
@@ -325,7 +406,8 @@
   );
   opacity: 0;
   transition: opacity 0.2s ease;
-  pointer-events: none;
+
+  contain: layout style;
 }
 
 .hit-zone:hover .hit-zone-glow {
@@ -388,20 +470,20 @@
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
 }
 
-.note {
+.planet {
   position: absolute;
   border-radius: 50%;
   border: 2px solid rgba(255, 255, 255, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 10px var(--note-color);
-  animation: notePulse 0.6s ease-in-out infinite alternate;
-  background-color: var(--note-color);
-  width: var(--note-size);
-  height: var(--note-size);
-  top: var(--note-y);
-  left: var(--note-left, 50%);
+  box-shadow: 0 0 10px var(--planet-color);
+  animation: planetPulse 0.6s ease-in-out infinite alternate;
+  background-color: var(--planet-color);
+  width: var(--planet-size);
+  height: var(--planet-size);
+  top: var(--planet-y);
+  left: var(--planet-left, 50%);
   transform: translateX(-50%) translateZ(0);
 
   will-change: top, transform;
@@ -409,45 +491,45 @@
   -webkit-backface-visibility: hidden;
 }
 
-.note-lane-0 {
+.planet-lane-0 {
   left: 10%;
 }
-.note-lane-1 {
+.planet-lane-1 {
   left: 30%;
 }
-.note-lane-2 {
+.planet-lane-2 {
   left: 50%;
 }
-.note-lane-3 {
+.planet-lane-3 {
   left: 70%;
 }
-.note-lane-4 {
+.planet-lane-4 {
   left: 90%;
 }
 
-.note-glow {
+.planet-glow {
   width: 80%;
   height: 80%;
   border-radius: 50%;
   opacity: 0.6;
-  animation: noteGlow 0.8s ease-in-out infinite alternate;
-  background-color: var(--note-color);
+  animation: planetGlow 0.8s ease-in-out infinite alternate;
+  background-color: var(--planet-color);
 }
 
-@keyframes notePulse {
+@keyframes planetPulse {
   0% {
     transform: translateX(-50%) scale(1);
-    box-shadow: 0 0 10px var(--note-color);
+    box-shadow: 0 0 10px var(--planet-color);
   }
   100% {
     transform: translateX(-50%) scale(1.15);
     box-shadow:
-      0 0 20px var(--note-color),
-      0 0 30px var(--note-color);
+      0 0 20px var(--planet-color),
+      0 0 30px var(--planet-color);
   }
 }
 
-@keyframes noteGlow {
+@keyframes planetGlow {
   0% {
     opacity: 0.6;
     transform: scale(1);
@@ -510,7 +592,7 @@
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     position: relative;
-    z-index: 10;
+    z-index: var(--z-game-controls);
   }
 
   .hit-zone:active {
@@ -526,11 +608,11 @@
     font-size: 28px;
     font-weight: bold;
     text-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
-    z-index: 1;
+    z-index: var(--z-element-base);
     position: relative;
   }
 
-  .note {
+  .planet {
     min-width: 50px;
     min-height: 50px;
   }
@@ -693,7 +775,8 @@
 
   .score,
   .time,
-  .level {
+  .level,
+  .missed {
     font-size: 16px !important;
     text-align: center !important;
   }
@@ -800,7 +883,8 @@
 
   .game-controls .score,
   .game-controls .time,
-  .game-controls .level {
+  .game-controls .level,
+  .game-controls .missed {
     font-size: 14px !important;
   }
 
@@ -889,7 +973,7 @@
   bottom: 0 !important;
   width: 100vw !important;
   height: 100vh !important;
-  z-index: 9999 !important;
+  z-index: var(--z-game-fullscreen) !important;
   margin: 0 !important;
   border-radius: 0 !important;
   padding: 20px !important;
@@ -1065,7 +1149,7 @@ body.mobile-fullscreen {
   margin: 0 !important;
   border-radius: 0 !important;
   padding: 10px !important;
-  z-index: 9999 !important;
+  z-index: var(--z-game-fullscreen) !important;
 }
 
 .mobile-fullscreen .game-area {
@@ -1078,7 +1162,7 @@ body.mobile-fullscreen {
 }
 
 .mobile-fullscreen .lanes-container,
-.mobile-fullscreen .notes-container {
+.mobile-fullscreen .planets-container {
   bottom: 90px !important;
   top: 0 !important;
   left: 0 !important;
@@ -1095,7 +1179,7 @@ body.mobile-fullscreen {
   flex-direction: row !important;
   width: 100% !important;
   position: absolute !important;
-  z-index: 10 !important;
+  z-index: var(--z-game-controls) !important;
   pointer-events: auto !important;
 }
 
@@ -1143,7 +1227,7 @@ body.mobile-fullscreen {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  z-index: 1 !important;
+  z-index: var(--z-element-base) !important;
   position: relative !important;
   width: 100% !important;
   height: 100% !important;
@@ -1184,7 +1268,8 @@ body.mobile-fullscreen {
   }
 
   .mobile-fullscreen .lanes-container,
-  .mobile-fullscreen .notes-container {
+  .mobile-fullscreen .notes-container,
+  .mobile-fullscreen .planets-container {
     bottom: 100px !important;
   }
 
@@ -1207,7 +1292,8 @@ body.mobile-fullscreen {
 
 .mobile-fullscreen .score,
 .mobile-fullscreen .time,
-.mobile-fullscreen .level {
+.mobile-fullscreen .level,
+.mobile-fullscreen .missed {
   font-size: 16px !important;
 }
 
@@ -1261,7 +1347,8 @@ body.mobile-fullscreen {
 
   .score,
   .time,
-  .level {
+  .level,
+  .missed {
     font-size: 12px !important;
   }
 
@@ -1294,7 +1381,8 @@ body.mobile-fullscreen {
 
   .score,
   .time,
-  .level {
+  .level,
+  .missed {
     font-size: 12px !important;
   }
 
@@ -1353,7 +1441,8 @@ body.mobile-fullscreen {
   }
 
   .mobile-fullscreen .lanes-container,
-  .mobile-fullscreen .notes-container {
+  .mobile-fullscreen .notes-container,
+  .mobile-fullscreen .planets-container {
     bottom: 95px !important;
   }
 
@@ -1415,5 +1504,69 @@ body.mobile-fullscreen {
     justify-content: center !important;
     align-items: center !important;
     width: 100% !important;
+  }
+}
+
+@layer react19-optimizations {
+  .falling-planet *,
+  .game-area *,
+  .hit-zone *,
+  .planet * {
+    contain: layout style;
+  }
+
+  .falling-planet,
+  .game-area,
+  .planets-container {
+    content-visibility: auto;
+    contain-intrinsic-size: 1fr auto;
+  }
+
+  .transitioning * {
+    will-change: auto;
+    transition-duration: 16ms;
+    transition-timing-function: ease-out;
+  }
+
+  .planet,
+  .hit-zone,
+  .game-btn {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  @supports (content-visibility: auto) {
+    .falling-planet {
+      content-visibility: auto;
+    }
+  }
+
+  @supports (contain: layout style paint size) {
+    .game-area,
+    .planets-container,
+    .lanes-container,
+    .hit-zones-container {
+      contain: layout style paint size;
+    }
+  }
+
+  .game-instructions.transitioning {
+    opacity: 0.8;
+    transform: translateY(2px);
+  }
+
+  .game-instructions.active {
+    animation: pulseText 2s ease-in-out infinite;
+  }
+
+  @keyframes pulseText {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.8;
+    }
   }
 }

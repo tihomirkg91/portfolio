@@ -1,18 +1,29 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useDeferredValue,
+  startTransition,
+  useMemo,
+} from 'react';
 import { useResponsive } from '../../hooks/useResponsive';
 import { LANES, LANE_COLORS, LANE_KEYS } from './constants';
-import type { HitZone, Note } from './types';
+import { Z_INDEX } from '../../utils/zIndex';
+import type { HitZone, Planet } from './types';
 
 export const useGameLogic = () => {
   const { isMobile } = useResponsive();
-  const [notes, setNotes] = useState<Note[]>([]);
+  const [planets, setPlanets] = useState<Planet[]>([]);
   const [score, setScore] = useState(0);
   const [gameActive, setGameActive] = useState(false);
-  const [noteId, setNoteId] = useState(0);
+  const [planetId, setPlanetId] = useState(0);
+  const [missedPlanets, setMissedPlanets] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isExitingFullscreen, setIsExitingFullscreen] = useState(false);
   const [playingTime, setPlayingTime] = useState(0);
   const [currentLevel, setCurrentLevel] = useState(1);
+  const [gameOverVisible, setGameOverVisible] = useState(false);
   const [hitZones, setHitZones] = useState<HitZone[]>(
     Array.from({ length: LANES }, (_, i) => ({
       lane: i,
@@ -21,19 +32,31 @@ export const useGameLogic = () => {
     }))
   );
 
+  const deferredPlanets = useDeferredValue(planets);
+  const deferredHitZones = useDeferredValue(hitZones);
+
+  const gameStats = useMemo(
+    () => ({
+      planetsOnScreen: planets.length,
+      averagePlanetSpeed:
+        planets.reduce((acc, p) => acc + p.speed, 0) / (planets.length || 1),
+      activeLanes: hitZones.filter(hz => hz.active).length,
+    }),
+    [planets, hitZones]
+  );
+
   const scoreRef = useRef(0);
   const gameActiveRef = useRef(false);
-  const notesRef = useRef<Note[]>([]);
+  const planetsRef = useRef<Planet[]>([]);
   const gameRef = useRef<HTMLDivElement>(null);
   const gameAreaRef = useRef<HTMLDivElement>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const animationFrameRef = useRef<number | null>(null);
-  const lastNoteSpawnRef = useRef(0);
+  const lastPlanetSpawnRef = useRef(0);
   const startTimeRef = useRef<number>(0);
   const timerIntervalRef = useRef<number | null>(null);
   const currentSpeedRef = useRef(1.5);
-  const hitZoneYRef = useRef(90);
-  const hitZoneCalculatedRef = useRef(false);
+  const missedPlanetsRef = useRef(0);
 
   useEffect(() => {
     scoreRef.current = score;
@@ -44,8 +67,12 @@ export const useGameLogic = () => {
   }, [gameActive]);
 
   useEffect(() => {
-    notesRef.current = notes;
-  }, [notes]);
+    missedPlanetsRef.current = missedPlanets;
+  }, [missedPlanets]);
+
+  useEffect(() => {
+    planetsRef.current = planets;
+  }, [planets]);
 
   const playSound = useCallback((frequency: number, duration: number) => {
     if (!audioContextRef.current) {
@@ -74,52 +101,34 @@ export const useGameLogic = () => {
     oscillator.stop(context.currentTime + duration / 1000);
   }, []);
 
-  const hitNote = useCallback(
+  const hitPlanet = useCallback(
     (lane: number) => {
       if (!gameActiveRef.current) return;
 
-      const hitZoneY = hitZoneYRef.current;
-      const baseTolerance = isMobile ? 40 : 25;
-      const speedTolerance = currentSpeedRef.current * (isMobile ? 40 : 25);
-      const tolerance = Math.max(baseTolerance, speedTolerance);
-
-      const notesToHit = notesRef.current.filter(note => {
-        const distance = Math.abs(note.y - hitZoneY);
-        return note.lane === lane && distance <= tolerance;
+      const planetsToHit = planetsRef.current.filter(planet => {
+        return planet.lane === lane && planet.y >= 0 && planet.y <= 100;
       });
 
-      if (notesToHit.length > 0) {
-        const closestNote = notesToHit.reduce((closest, current) => {
-          const closestDist = Math.abs(closest.y - hitZoneY);
-          const currentDist = Math.abs(current.y - hitZoneY);
-          return currentDist < closestDist ? current : closest;
-        });
+      if (planetsToHit.length > 0) {
+        const planetToHit = planetsToHit[0];
 
-        const distance = Math.abs(closestNote.y - hitZoneY);
-        const perfectThreshold = isMobile ? 15 : 10;
-        const goodThreshold = tolerance;
-
-        let points = 10;
-        if (distance <= perfectThreshold) {
-          points = 50;
-          playSound(800, 200);
-        } else if (distance <= goodThreshold) {
-          points = 25;
+        if (planetToHit) {
+          const points = 25;
           playSound(600, 150);
-        } else {
-          points = 10;
-          playSound(400, 100);
+
+          startTransition(() => {
+            setScore(prev => prev + points);
+            setPlanets(prev =>
+              prev.filter(planet => planet.id !== planetToHit.id)
+            );
+          });
+
+          setHitZones(prev =>
+            prev.map(hz =>
+              hz.lane === lane ? { ...hz, active: true, timer: 200 } : hz
+            )
+          );
         }
-
-        setScore(prev => prev + points);
-
-        setNotes(prev => prev.filter(note => note.id !== closestNote.id));
-
-        setHitZones(prev =>
-          prev.map(hz =>
-            hz.lane === lane ? { ...hz, active: true, timer: 200 } : hz
-          )
-        );
       } else {
         playSound(200, 100);
         setHitZones(prev =>
@@ -129,125 +138,64 @@ export const useGameLogic = () => {
         );
       }
     },
-    [isMobile, playSound]
+    [playSound]
   );
 
-  const calculateHitZoneY = useCallback(() => {
-    if (hitZoneCalculatedRef.current && (!isMobile || !gameActive)) {
-      return hitZoneYRef.current;
-    }
+  const handleGameOverClose = useCallback(() => {
+    setGameOverVisible(false);
+  }, []);
 
-    const performCalculation = () => {
-      if (gameAreaRef.current) {
-        try {
-          const gameAreaRect = gameAreaRef.current.getBoundingClientRect();
-          const hitZoneElements =
-            gameAreaRef.current.querySelectorAll('.hit-zone');
-
-          if (hitZoneElements.length > 0) {
-            const firstHitZone = hitZoneElements[0];
-            if (firstHitZone) {
-              const hitZoneRect = firstHitZone.getBoundingClientRect();
-              const relativeY =
-                ((hitZoneRect.top - gameAreaRect.top) / gameAreaRect.height) *
-                100;
-
-              const minY = isMobile ? 70 : 10;
-              const maxY = isMobile ? 95 : 95;
-
-              if (relativeY > minY && relativeY < maxY) {
-                const currentHitZoneY = hitZoneYRef.current;
-                const difference = Math.abs(relativeY - currentHitZoneY);
-                const maxDifference = isMobile ? 5 : 2;
-
-                if (
-                  currentHitZoneY === 90 ||
-                  difference < maxDifference ||
-                  isMobile
-                ) {
-                  hitZoneYRef.current = relativeY;
-                  hitZoneCalculatedRef.current = true;
-                  return relativeY;
-                }
-              }
-            }
-          }
-        } catch (error) {
-          console.warn('Hit zone calculation failed:', error);
-        }
-      }
-
-      const fallback = isMobile ? 85 : 90;
-      hitZoneYRef.current = fallback;
-      return fallback;
-    };
-
-    if (window.requestIdleCallback) {
-      window.requestIdleCallback(performCalculation);
-    } else {
-      setTimeout(performCalculation, 0);
-    }
-
-    return hitZoneYRef.current;
-  }, [isMobile, gameActive]);
+  const handlePlayAgain = useCallback(
+    (action: 'end' | 'restart' = 'restart') => {
+      setGameOverVisible(false);
+      if (action !== 'end') startGame();
+    },
+    []
+  );
 
   const startGame = () => {
-    setGameActive(true);
-    setScore(0);
-    setPlayingTime(0);
-    setCurrentLevel(1);
+    gameActiveRef.current = true;
+    missedPlanetsRef.current = 0;
     currentSpeedRef.current = 1.5;
-    setNotes([]);
-    setHitZones(
-      Array.from({ length: LANES }, (_, i) => ({
-        lane: i,
-        active: false,
-        timer: 0,
-      }))
-    );
-    hitZoneCalculatedRef.current = false;
+    startTimeRef.current = Date.now();
+
+    startTransition(() => {
+      setGameActive(true);
+      setScore(0);
+      setPlayingTime(0);
+      setCurrentLevel(1);
+      setMissedPlanets(0);
+      setGameOverVisible(false);
+      setPlanets([]);
+      setHitZones(
+        Array.from({ length: LANES }, (_, i) => ({
+          lane: i,
+          active: false,
+          timer: 0,
+        }))
+      );
+    });
 
     if (isMobile && isFullscreen && gameAreaRef.current) {
       const newHeight = window.innerHeight - 200;
       gameAreaRef.current.style.height = `${newHeight}px`;
     }
-
-    const calculateOnce = () => {
-      if (!hitZoneCalculatedRef.current) {
-        const result = calculateHitZoneY();
-        if (result !== 90) {
-          hitZoneCalculatedRef.current = true;
-        } else if (!hitZoneCalculatedRef.current) {
-          setTimeout(() => {
-            if (!hitZoneCalculatedRef.current) {
-              hitZoneCalculatedRef.current = true;
-            }
-          }, 200);
-        }
-      }
-    };
-
-    setTimeout(calculateOnce, 300);
-
-    if (isMobile) {
-      setTimeout(() => {
-        hitZoneCalculatedRef.current = false;
-        calculateHitZoneY();
-      }, 500);
-    }
-    startTimeRef.current = Date.now();
   };
 
   const endGame = useCallback(() => {
-    setGameActive(false);
-    setNotes([]);
-    setHitZones(
-      Array.from({ length: LANES }, (_, i) => ({
-        lane: i,
-        active: false,
-        timer: 0,
-      }))
-    );
+    gameActiveRef.current = false;
+
+    startTransition(() => {
+      setGameActive(false);
+      setPlanets([]);
+      setHitZones(
+        Array.from({ length: LANES }, (_, i) => ({
+          lane: i,
+          active: false,
+          timer: 0,
+        }))
+      );
+    });
   }, []);
 
   const handleTouchStart = useCallback(
@@ -265,19 +213,19 @@ export const useGameLogic = () => {
         }, 150);
       }
 
-      if (isMobile) requestAnimationFrame(() => hitNote(lane));
-      else hitNote(lane);
+      if (isMobile) requestAnimationFrame(() => hitPlanet(lane));
+      else hitPlanet(lane);
     },
-    [hitNote, isMobile]
+    [hitPlanet, isMobile]
   );
 
   const handleMouseDown = useCallback(
     (lane: number, event?: React.MouseEvent) => {
       if (event) event.preventDefault();
 
-      hitNote(lane);
+      hitPlanet(lane);
     },
-    [hitNote]
+    [hitPlanet]
   );
 
   const enterFullscreen = useCallback(async () => {
@@ -328,14 +276,7 @@ export const useGameLogic = () => {
               style.left = '0';
               style.width = '100vw';
               style.height = '100vh';
-              style.zIndex = '9999';
-            }
-
-            hitZoneCalculatedRef.current = false;
-            if (window.requestIdleCallback) {
-              window.requestIdleCallback(() => calculateHitZoneY());
-            } else {
-              setTimeout(() => calculateHitZoneY(), 200);
+              style.zIndex = Z_INDEX.GAME_MODAL.toString();
             }
           }, 100);
         });
@@ -349,7 +290,7 @@ export const useGameLogic = () => {
     } catch (error) {
       console.error('Error entering fullscreen:', error);
     }
-  }, [isMobile, calculateHitZoneY]);
+  }, [isMobile]);
 
   const exitFullscreen = useCallback(async () => {
     try {
@@ -377,9 +318,6 @@ export const useGameLogic = () => {
           if (gameAreaRef.current) {
             gameAreaRef.current.style.height = '';
           }
-          // Recalculate hit zone after exiting fullscreen
-          hitZoneCalculatedRef.current = false;
-          setTimeout(() => calculateHitZoneY(), 200);
         }, 50);
 
         const viewport = document.querySelector('meta[name=viewport]');
@@ -402,7 +340,7 @@ export const useGameLogic = () => {
     } catch (error) {
       console.error('Error exiting fullscreen:', error);
     }
-  }, [isMobile, calculateHitZoneY]);
+  }, [isMobile]);
 
   const toggleFullscreen = useCallback(() => {
     if (!document.fullscreenElement && !isFullscreen) enterFullscreen();
@@ -450,7 +388,7 @@ export const useGameLogic = () => {
 
       if (laneIndex !== -1) {
         event.preventDefault();
-        hitNote(laneIndex);
+        hitPlanet(laneIndex);
       }
     };
 
@@ -465,7 +403,7 @@ export const useGameLogic = () => {
     toggleFullscreen,
     exitFullscreen,
     gameActive,
-    hitNote,
+    hitPlanet,
     isFullscreen,
     isMobile,
   ]);
@@ -505,13 +443,13 @@ export const useGameLogic = () => {
 
       if (laneIndex !== -1) {
         event.preventDefault();
-        hitNote(laneIndex);
+        hitPlanet(laneIndex);
       }
     };
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [gameActive, hitNote]);
+  }, [gameActive, hitPlanet]);
 
   useEffect(() => {
     const gameElement = gameRef.current;
@@ -564,21 +502,22 @@ export const useGameLogic = () => {
 
     let lastTime = 0;
     let lastHitZoneUpdate = 0;
-    let lastMobileRecalc = 0;
     const targetFPS = 60;
     const frameInterval = 1000 / targetFPS;
+
+    const missedPlanetIds = new Set<number>();
 
     const consolidatedGameLoop = (currentTime: number) => {
       const deltaTime = currentTime - lastTime;
 
       if (deltaTime >= frameInterval) {
         if (
-          currentTime - lastNoteSpawnRef.current > 800 &&
+          currentTime - lastPlanetSpawnRef.current > 800 &&
           Math.random() < 0.4
         ) {
           const lane = Math.floor(Math.random() * LANES);
-          const newNote: Note = {
-            id: noteId,
+          const newPlanet: Planet = {
+            id: planetId,
             lane,
             y: -10,
             speed: currentSpeedRef.current,
@@ -586,32 +525,42 @@ export const useGameLogic = () => {
             color: LANE_COLORS[lane] || '#ffffff',
           };
 
-          setNotes(prev => [...prev, newNote]);
-          setNoteId(prev => prev + 1);
-          lastNoteSpawnRef.current = currentTime;
+          setPlanets(prev => [...prev, newPlanet]);
+          setPlanetId(prev => prev + 1);
+          lastPlanetSpawnRef.current = currentTime;
         }
 
-        setNotes(prev => {
-          const updatedNotes = prev
-            .map(note => ({
-              ...note,
-              y: note.y + note.speed,
+        setPlanets(prev => {
+          const planetsToRemove: number[] = [];
+          const updatedPlanets = prev
+            .map(planet => ({
+              ...planet,
+              y: planet.y + planet.speed,
             }))
-            .filter(note => {
-              const hitZoneY = hitZoneYRef.current;
-              const baseTolerance = isMobile ? 40 : 25;
-              const speedTolerance = note.speed * (isMobile ? 40 : 25);
-              const tolerance = Math.max(baseTolerance, speedTolerance);
-
-              if (note.y > hitZoneY + tolerance) {
-                playSound(150, 100);
+            .filter(planet => {
+              if (planet.y > 105) {
+                if (!missedPlanetIds.has(planet.id)) {
+                  missedPlanetIds.add(planet.id);
+                  planetsToRemove.push(planet.id);
+                  playSound(150, 100);
+                }
                 return false;
               }
-
               return true;
             });
 
-          return updatedNotes;
+          if (planetsToRemove.length > 0) {
+            const newMissedCount =
+              missedPlanetsRef.current + planetsToRemove.length;
+            setMissedPlanets(newMissedCount);
+
+            if (newMissedCount >= 3) {
+              setGameActive(false);
+              setGameOverVisible(true);
+            }
+          }
+
+          return updatedPlanets;
         });
 
         if (currentTime - lastHitZoneUpdate >= 16) {
@@ -623,11 +572,6 @@ export const useGameLogic = () => {
             }))
           );
           lastHitZoneUpdate = currentTime;
-        }
-
-        if (isMobile && currentTime - lastMobileRecalc >= 5000) {
-          hitZoneCalculatedRef.current = false;
-          lastMobileRecalc = currentTime;
         }
 
         lastTime = currentTime;
@@ -646,23 +590,28 @@ export const useGameLogic = () => {
         animationFrameRef.current = null;
       }
     };
-  }, [gameActive, noteId, playSound, isMobile]);
+  }, [gameActive, planetId, playSound, isMobile]);
 
   return {
-    notes,
+    planets: deferredPlanets,
     score,
     gameActive,
     isFullscreen,
     isExitingFullscreen,
     playingTime,
     currentLevel,
-    hitZones,
+    hitZones: deferredHitZones,
+    missedPlanets,
+    gameOverVisible,
     gameRef,
     gameAreaRef,
+    gameStats,
     startGame,
     endGame,
     toggleFullscreen,
     handleTouchStart,
     handleMouseDown,
+    handleGameOverClose,
+    handlePlayAgain,
   };
 };

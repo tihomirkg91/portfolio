@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { memo, useMemo } from 'react';
+import { useMemo } from 'react';
 import { usePortfolio } from '../hooks/usePortfolio';
 import { FaEnvelope, FaPhone, FaLinkedin, FaGithub } from 'react-icons/fa';
 import type { IconType } from 'react-icons';
@@ -15,7 +15,7 @@ interface ContactItem {
   readonly rel?: 'noopener noreferrer';
 }
 
-const Contact: FC = memo(() => {
+const Contact: FC = () => {
   const { contactInfo } = usePortfolio();
 
   const contactItems = useMemo((): ContactItem[] => {
@@ -109,8 +109,6 @@ const Contact: FC = memo(() => {
       </div>
     </section>
   );
-});
-
-Contact.displayName = 'Contact';
+};
 
 export default Contact;

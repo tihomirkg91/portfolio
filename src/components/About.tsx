@@ -1,9 +1,9 @@
-import React, { memo, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { usePortfolio } from '../hooks/usePortfolio';
 import './About.css';
-import { CVDownloadButton } from './CVDownloadButton';
+import { CVDownloadButton } from './pdf/CVDownloadButton';
 
-const About: React.FC = memo(() => {
+const About: React.FC = () => {
   const { personalInfo } = usePortfolio();
 
   const techStackItems = useMemo(
@@ -46,6 +46,6 @@ const About: React.FC = memo(() => {
       </div>
     </section>
   );
-});
+};
 
 export default About;

@@ -1,4 +1,4 @@
-import type { PortfolioData } from '../types';
+import type { PortfolioData } from '../../types';
 import { useImageLoader } from './useImageLoader';
 import { usePdfGenerator } from './usePdfGenerator';
 

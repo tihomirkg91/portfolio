@@ -3,12 +3,8 @@ import type {
   ContentCanvas,
   TDocumentDefinitions,
 } from 'pdfmake/interfaces';
-import type { PortfolioData } from '../types';
-import {
-  calculateDuration,
-  calculateTotalExperience,
-} from '../utils/dateUtils';
-import { isValidBase64Image } from '../utils/imageConverter';
+import type { PortfolioData } from '../../types';
+import { isValidBase64Image } from './imageConverter';
 
 export const pdfStyles = {
   name: {
@@ -213,9 +209,7 @@ export const createPrimaryExperienceSection = (
     exp => exp.company === 'Greco Tech Hub'
   );
 
-  if (!primaryExperience) {
-    return [];
-  }
+  if (!primaryExperience) return [];
 
   return [
     {
@@ -245,14 +239,6 @@ export const createPrimaryExperienceSection = (
                 {
                   text: `${primaryExperience.startDate} - ${primaryExperience.endDate && primaryExperience.endDate.trim() ? primaryExperience.endDate : 'Present'}`,
                   style: 'duration',
-                  alignment: 'right' as const,
-                },
-                {
-                  text: calculateDuration(
-                    primaryExperience.startDate,
-                    primaryExperience.endDate
-                  ),
-                  style: 'location',
                   alignment: 'right' as const,
                 },
                 {
@@ -294,10 +280,6 @@ export const createSecondaryExperienceSection = (
   if (secondaryExperiences.length === 0) return [];
 
   return [
-    {
-      text: 'ADDITIONAL EXPERIENCE',
-      style: 'sectionHeader',
-    },
     ...secondaryExperiences.map((exp, index) => ({
       stack: [
         {
@@ -321,11 +303,6 @@ export const createSecondaryExperienceSection = (
                 {
                   text: `${exp.startDate} - ${exp.endDate && exp.endDate.trim() ? exp.endDate : 'Present'}`,
                   style: 'duration',
-                  alignment: 'right' as const,
-                },
-                {
-                  text: calculateDuration(exp.startDate, exp.endDate),
-                  style: 'location',
                   alignment: 'right' as const,
                 },
                 {
@@ -400,11 +377,6 @@ export const createExperienceSection = (
                   alignment: 'right' as const,
                 },
                 {
-                  text: calculateDuration(exp.startDate, exp.endDate),
-                  style: 'location',
-                  alignment: 'right' as const,
-                },
-                {
                   text: exp.location || '',
                   style: 'location',
                   alignment: 'right' as const,
@@ -438,8 +410,7 @@ export const createExperienceSection = (
 export const createFooterSection = (
   portfolioData: PortfolioData
 ): Content[] => {
-  const { contactInfo, experience } = portfolioData;
-  const totalYearsExperience = calculateTotalExperience(experience);
+  const { contactInfo } = portfolioData;
 
   return [
     createDividerLine(515, 1, '#1e40af', [0, 16, 0, 12]),
@@ -447,41 +418,24 @@ export const createFooterSection = (
       columns: [
         {
           width: '*',
-          stack: [
-            {
-              text: 'PERSONAL DETAILS',
-              style: 'footerHeader',
-            },
-            {
-              text: `Years of Experience: ${totalYearsExperience}+`,
-              style: 'footerDetails',
-            },
-            ...(contactInfo.timezone
-              ? [
-                  {
-                    text: `Timezone: ${contactInfo.timezone}`,
-                    style: 'footerDetails',
-                  },
-                ]
-              : []),
-          ],
-        },
-        {
-          width: '*',
+          alignment: 'center' as const,
           stack: [
             {
               text: 'CONTACT INFORMATION',
               style: 'footerHeader',
+              alignment: 'center' as const,
             },
             {
               text: contactInfo.email,
               style: 'footerDetails',
+              alignment: 'center' as const,
             },
             ...(contactInfo.phone
               ? [
                   {
                     text: contactInfo.phone,
                     style: 'footerDetails',
+                    alignment: 'center' as const,
                   },
                 ]
               : []),
@@ -490,6 +444,7 @@ export const createFooterSection = (
                   {
                     text: contactInfo.location,
                     style: 'footerDetails',
+                    alignment: 'center' as const,
                   },
                 ]
               : []),
@@ -497,10 +452,12 @@ export const createFooterSection = (
         },
         {
           width: '*',
+          alignment: 'center' as const,
           stack: [
             {
               text: 'PROFESSIONAL LINKS',
               style: 'footerHeader',
+              alignment: 'center' as const,
             },
             ...(contactInfo.linkedin
               ? [
@@ -510,6 +467,7 @@ export const createFooterSection = (
                     link: contactInfo.linkedin,
                     color: '#1e40af',
                     decoration: 'underline' as const,
+                    alignment: 'center' as const,
                   },
                 ]
               : []),
@@ -521,6 +479,7 @@ export const createFooterSection = (
                     link: contactInfo.github,
                     color: '#1e40af',
                     decoration: 'underline' as const,
+                    alignment: 'center' as const,
                   },
                 ]
               : []),
@@ -532,6 +491,7 @@ export const createFooterSection = (
                     link: contactInfo.portfolio,
                     color: '#1e40af',
                     decoration: 'underline' as const,
+                    alignment: 'center' as const,
                   },
                 ]
               : []),

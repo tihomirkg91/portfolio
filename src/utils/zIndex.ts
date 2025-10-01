@@ -5,7 +5,11 @@ export const Z_INDEX = {
   BASE: 0,
 
   DECORATION: 1,
+  ELEMENT_BASE: 1,
   CONTENT_OVERLAY: 2,
+  ELEMENT_SECONDARY: 2,
+  ELEMENT_TERTIARY: 3,
+  GAME_CONTROLS: 10,
 
   DROPDOWN: 100,
   TOOLTIP: 200,
@@ -24,6 +28,7 @@ export const Z_INDEX = {
   FIXED_HEADER: 1000,
   MOBILE_MENU: 1100,
   MOBILE_MENU_TOGGLE: 1200,
+  GAME_OVERLAY: 1001,
 
   OVERLAY: 2000,
   MODAL: 2100,
@@ -31,6 +36,10 @@ export const Z_INDEX = {
 
   LOADING: 3000,
   ERROR_BOUNDARY: 3100,
+
+  COMING_SOON_MODAL: 9999,
+  GAME_FULLSCREEN: 9999,
+  GAME_MODAL: 10001,
   DEBUG: 9999,
 } as const;
 
@@ -41,7 +50,11 @@ const Z_INDEX_VAR_MAP = {
   BACKGROUND_DECORATION: '--z-background-decoration',
   BASE: '--z-base',
   DECORATION: '--z-decoration',
+  ELEMENT_BASE: '--z-element-base',
   CONTENT_OVERLAY: '--z-content-overlay',
+  ELEMENT_SECONDARY: '--z-element-secondary',
+  ELEMENT_TERTIARY: '--z-element-tertiary',
+  GAME_CONTROLS: '--z-game-controls',
   DROPDOWN: '--z-dropdown',
   TOOLTIP: '--z-tooltip',
   POPOVER: '--z-popover',
@@ -57,11 +70,15 @@ const Z_INDEX_VAR_MAP = {
   FIXED_HEADER: '--z-fixed-header',
   MOBILE_MENU: '--z-mobile-menu',
   MOBILE_MENU_TOGGLE: '--z-mobile-menu-toggle',
+  GAME_OVERLAY: '--z-game-overlay',
   OVERLAY: '--z-overlay',
   MODAL: '--z-modal',
   TOAST: '--z-toast',
   LOADING: '--z-loading',
   ERROR_BOUNDARY: '--z-error-boundary',
+  COMING_SOON_MODAL: '--z-coming-soon-modal',
+  GAME_FULLSCREEN: '--z-game-fullscreen',
+  GAME_MODAL: '--z-game-modal',
   DEBUG: '--z-debug',
 } as const satisfies Record<keyof typeof Z_INDEX, string>;
 

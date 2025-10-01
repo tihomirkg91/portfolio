@@ -92,13 +92,6 @@ const MobileMenu: React.FC = () => {
       >
         <div className="mobile-menu__container">
           <div className="mobile-menu__header">
-            <button
-              className="mobile-menu__close"
-              onClick={handleClose}
-              aria-label="Close mobile menu"
-            >
-              ×
-            </button>
             <div className="menu-header__logo">
               <div className="menu-logo__hexagon">
                 <div className="menu-hexagon__inner">
@@ -107,7 +100,9 @@ const MobileMenu: React.FC = () => {
               </div>
               <div className="menu-header__text">
                 <span className="menu-header__name">T.T.Dev</span>
-                <span className="menu-header__title">Frontend Developer</span>
+                <span className="menu-header__title">
+                  Frontend Software Engineer
+                </span>
               </div>
             </div>
             <div className="menu-header__status">

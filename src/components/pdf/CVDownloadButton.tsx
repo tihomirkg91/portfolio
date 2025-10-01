@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
-import { usePortfolio } from '../hooks/usePortfolio';
-import useCvGenerator from '../hooks/useCvGenerator';
+import { usePortfolio } from '../../hooks/usePortfolio';
+import useCvGenerator from './useCvGenerator';
 import './CVDownloadButton.css';
 
 export const CVDownloadButton: React.FC = () => {

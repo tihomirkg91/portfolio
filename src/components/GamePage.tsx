@@ -1,8 +1,22 @@
 import type { FC } from 'react';
 import { FallingPlanet } from './falling-planet/FallingPlanet';
+import GameOverModal from './falling-planet/GameOverModal';
+import { useGameLogic } from './falling-planet/useGameLogic';
 import './GamePage.css';
 
 const GamePage: FC = () => {
+  const gameLogic = useGameLogic();
+
+  const {
+    gameOverVisible,
+    score,
+    playingTime,
+    currentLevel,
+    missedPlanets,
+    handleGameOverClose,
+    handlePlayAgain,
+  } = gameLogic;
+
   return (
     <div className="game-page">
       <div className="game-page__header">
@@ -13,7 +27,7 @@ const GamePage: FC = () => {
       </div>
 
       <div className="game-page__container">
-        <FallingPlanet />
+        <FallingPlanet gameLogic={gameLogic} />
       </div>
 
       <div className="game-page__instructions">
@@ -38,6 +52,16 @@ const GamePage: FC = () => {
           </div>
         </div>
       </div>
+
+      <GameOverModal
+        isVisible={gameOverVisible}
+        score={score}
+        playingTime={playingTime}
+        currentLevel={currentLevel}
+        missedPlanets={missedPlanets}
+        onPlayAgain={handlePlayAgain}
+        onClose={handleGameOverClose}
+      />
     </div>
   );
 };

@@ -62,7 +62,7 @@ const ProjectLinkButton: FC<ProjectLinkButtonProps> = memo(
 
 ProjectLinkButton.displayName = 'ProjectLinkButton';
 
-const Projects: FC = memo(() => {
+const Projects: FC = () => {
   const { projects } = usePortfolio();
   const { gameEnabled } = useFeatureFlags();
   const project = projects[0];
@@ -176,8 +176,6 @@ const Projects: FC = memo(() => {
       />
     </section>
   );
-});
-
-Projects.displayName = 'Projects';
+};
 
 export default Projects;

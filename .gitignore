@@ -7,6 +7,7 @@ node_modules
 dist
 dist-ssr
 build
+dev-dist
 *.local
 
 # Environment variables (but allow .env for feature flags)

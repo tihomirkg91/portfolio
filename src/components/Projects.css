@@ -37,14 +37,14 @@
       transparent 70%
     );
   pointer-events: none;
-  z-index: 1;
+  z-index: var(--z-element-base);
 }
 
 .projects-container {
   max-width: 1400px;
   margin: 0 auto;
   position: relative;
-  z-index: 2;
+  z-index: var(--z-element-secondary);
 }
 
 /* Header Section */
@@ -173,7 +173,7 @@
 
 .project-card-inner {
   position: relative;
-  z-index: 2;
+  z-index: var(--z-element-secondary);
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -252,7 +252,7 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   box-shadow: var(--shadow-purple);
-  z-index: 3;
+  z-index: var(--z-element-tertiary);
 }
 
 /* Overlay */

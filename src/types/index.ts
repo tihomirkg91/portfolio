@@ -73,7 +73,6 @@ export interface ContactInfo {
   readonly email: string;
   readonly phone?: string;
   readonly location?: string;
-  readonly timezone?: string;
   readonly socialLinks: readonly SocialLink[];
   readonly linkedin?: string;
   readonly github?: string;

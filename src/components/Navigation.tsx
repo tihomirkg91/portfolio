@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { LuArrowLeft } from 'react-icons/lu';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useActiveSection } from '../hooks/useActiveSection';
@@ -18,7 +18,7 @@ const SECTIONS = [
   'contact',
 ] as const;
 
-const Navigation: React.FC = memo(() => {
+const Navigation: React.FC = () => {
   const { isMobile } = useResponsive();
   const { selectedNavItem } = useNavItems();
   const location = useLocation();
@@ -90,7 +90,7 @@ const Navigation: React.FC = memo(() => {
                 <span className="name__separator">.</span>
                 <span className="name__secondary">Dev</span>
               </span>
-              <span className="logo__tagline">Frontend Developer</span>
+              <span className="logo__tagline">Frontend Software Engineer</span>
             </div>
           </div>
           <div className="logo__energy">
@@ -117,8 +117,6 @@ const Navigation: React.FC = memo(() => {
       </div>
     </header>
   );
-});
-
-Navigation.displayName = 'Navigation';
+};
 
 export default Navigation;

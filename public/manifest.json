@@ -1,0 +1,32 @@
+{
+  "name": "Tihomir Tomovic - Portfolio",
+  "short_name": "Tihomir Portfolio",
+  "description": "Frontend Software Engineer focused on scalable architectures, reusable components, and modernizing legacy UIs with automation and AI tooling.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a1a1a",
+  "theme_color": "#4a9eff",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["portfolio", "business", "productivity"],
+  "lang": "en-US",
+  "dir": "ltr"
+}

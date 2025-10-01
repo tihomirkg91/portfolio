@@ -64,7 +64,7 @@
     80px 80px;
   animation: floatingParticles 15s ease-in-out infinite;
   pointer-events: none;
-  z-index: 1;
+  z-index: var(--z-element-base);
 }
 
 @keyframes slideContactPattern {
@@ -167,7 +167,7 @@
   animation: rotatingGradient 8s linear infinite;
   opacity: 0;
   transition: opacity 0.3s ease;
-  z-index: 0;
+  z-index: var(--z-base);
 }
 
 .contact-info:hover::before {
@@ -186,7 +186,7 @@
 .contact-intro {
   margin-bottom: 2.5rem;
   position: relative;
-  z-index: 2;
+  z-index: var(--z-element-secondary);
 }
 
 .contact-intro h3 {
@@ -233,7 +233,7 @@
   font-family: 'Roboto Mono', monospace;
   opacity: 1 !important;
   position: relative;
-  z-index: 2;
+  z-index: var(--z-element-secondary);
 }
 
 .section-subtitle {
@@ -329,7 +329,7 @@
     transparent
   );
   transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 1;
+  z-index: var(--z-element-base);
 }
 
 .contact-item:hover .contact-item-bg {
@@ -353,7 +353,7 @@
   width: 40px;
   text-align: center;
   position: relative;
-  z-index: 2;
+  z-index: var(--z-element-secondary);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   color: var(--neon-blue);
 }
@@ -375,7 +375,7 @@
 
 .contact-text {
   position: relative;
-  z-index: 2;
+  z-index: var(--z-element-secondary);
   transition: all 0.3s ease;
 }
 

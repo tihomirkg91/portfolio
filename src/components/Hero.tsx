@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import { type FC } from 'react';
 import { memo, startTransition, useMemo } from 'react';
 import { useImageLoading } from '../hooks/useImageLoading';
 import { usePortfolio } from '../hooks/usePortfolio';
@@ -82,7 +82,7 @@ const HeroAvatar: FC<HeroAvatarProps> = memo(({ src, alt, fallbackText }) => {
 
 HeroAvatar.displayName = 'HeroAvatar';
 
-const Hero: FC = memo(() => {
+const Hero: FC = () => {
   const { scrollToElement } = useScrollNavigation();
   const { personalInfo } = usePortfolio();
 
@@ -159,8 +159,6 @@ const Hero: FC = memo(() => {
       </div>
     </section>
   );
-});
-
-Hero.displayName = 'Hero';
+};
 
 export default Hero;
