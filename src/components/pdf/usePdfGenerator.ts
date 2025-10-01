@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import type { PortfolioData } from '../../types';
 import { convertImageToDataURL } from './imageConverter';
 import { createPdfDocumentDefinition } from './pdfDocumentBuilder';
@@ -39,7 +39,7 @@ export const usePdfGenerator = ({
     loadPdfMake();
   }, []);
 
-  const ensureImageReady = async (): Promise<string> => {
+  const ensureImageReady = useCallback(async (): Promise<string> => {
     if (imageLoaded && base64Img) return base64Img;
 
     try {
@@ -49,9 +49,9 @@ export const usePdfGenerator = ({
       console.warn('Failed to load fallback image:', error);
       return '';
     }
-  };
+  }, [imageLoaded, base64Img]);
 
-  const generatePdfInternal = async (): Promise<void> => {
+  const generatePdfInternal = useCallback(async (): Promise<void> => {
     if (!portfolioData || Object.keys(portfolioData).length === 0) {
       const errorMsg = 'No portfolio data available for PDF generation';
       console.warn(errorMsg);
@@ -75,11 +75,8 @@ export const usePdfGenerator = ({
       );
       const filename = `${portfolioData.personalInfo.firstName}_${portfolioData.personalInfo.lastName}_CV.pdf`;
 
-      if (preview) {
-        pdfMake.createPdf(documentDefinition).open();
-      } else {
-        pdfMake.createPdf(documentDefinition).download(filename);
-      }
+      if (preview) pdfMake.createPdf(documentDefinition).open();
+      else pdfMake.createPdf(documentDefinition).download(filename);
 
       setRetryCount(0);
       reset();
@@ -100,23 +97,26 @@ export const usePdfGenerator = ({
     } finally {
       setIsGenerating(false);
     }
-  };
+  }, [portfolioData, ensureImageReady, preview, retryCount, maxRetries]);
 
-  const generatePdf = async (): Promise<void> => {
+  const generatePdf = useCallback(async (): Promise<void> => {
     setRetryCount(0);
     await generatePdfInternal();
-  };
+  }, []);
 
-  const retryGeneration = async (): Promise<void> => {
+  const retryGeneration = useCallback(async (): Promise<void> => {
     setError(null);
     setRetryCount(0);
     await generatePdfInternal();
-  };
+  }, []);
 
-  return {
-    generatePdf,
-    isGenerating,
-    error,
-    retryGeneration,
-  };
+  return useMemo(
+    () => ({
+      generatePdf,
+      isGenerating,
+      error,
+      retryGeneration,
+    }),
+    [generatePdf, isGenerating, error, retryGeneration]
+  );
 };
