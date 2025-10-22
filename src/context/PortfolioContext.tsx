@@ -26,6 +26,8 @@ const personalInfo: PersonalInfo = {
     'Strapi',
     'NX Monorepos',
     'Prisma',
+    'PostgreSQL',
+    'Supabase',
     'Node.js',
     'Express',
     'Azure AI Form Recognizer',
@@ -42,7 +44,7 @@ const personalInfo: PersonalInfo = {
     'Tailwind CSS',
   ],
   aboutMe:
-    'I build scalable, component‑driven frontend architectures with React, TypeScript, and Next.js—modernizing legacy interfaces, improving delivery speed, and raising code quality. I led large refactors (including converting 30k+ lines of class components to hooks), created internal npm packages and reusable UI libraries, and automated critical flows with Playwright and custom tooling. Performance is a core focus: I reduce bundle sizes with route‑level code splitting and dynamic imports, aggressively eliminate render waterfalls via memoization and state isolation, leverage React Profiler to target slow renders, implement image optimization + responsive loading, and tune Lighthouse / Core Web Vitals (CLS, LCP, TTI) through lazy hydration and preloading strategies. I emphasize accessibility, DX, and sustainable patterns (composition, design tokens, controlled vs uncontrolled tradeoffs). I also integrate practical AI + automation (Azure AI Form Recognizer, Power Automate) to remove manual workflows and present emerging React capabilities to engineering teams.',
+    'Frontend Software Engineer focused on building scalable React/TypeScript applications, modernizing legacy UIs, and optimizing performance to improve Core Web Vitals. Skilled in Next.js (SSR, SSG, ISR), accessibility (WCAG 2.2), automated testing, and CI/CD pipelines. Experienced in implementing enterprise authentication (MSAL, OIDC) and enhancing observability using Azure tools like Application Insights and KQL. Strong advocate for design systems, maintainable code, and user-centered development.',
 };
 
 const projects: Project[] = [
@@ -128,6 +130,8 @@ const experience: Experience[] = [
       'Architected NX Monorepos for efficient code sharing and streamlined development across projects.',
       'Implemented Zustand for lightweight, scalable state management with minimal boilerplate and excellent TypeScript support.',
       'Implemented Prisma ORM for robust data modeling and optimized database interactions.',
+      'Designed relational schemas and optimized PostgreSQL performance with indexes (B-Tree/GIN), CTEs, and query profiling; managed migrations via Prisma.',
+      'Leveraged Supabase for Auth and Row Level Security (RLS), real-time subscriptions, storage, and SQL functions; enforced least-privilege policies.',
       'Styled responsive UIs with Tailwind CSS, ensuring mobile-first design and accessibility.',
       'Implemented comprehensive testing strategies using Jest for unit testing and Vitest for modern, fast testing with native ES modules support.',
       'Integrated Stripe for secure payment processing and e-commerce functionality.',
@@ -139,6 +143,8 @@ const experience: Experience[] = [
       'Zustand',
       'NX Monorepos',
       'Prisma',
+      'PostgreSQL',
+      'Supabase',
       'Jest',
       'Vitest',
       'Tailwind CSS',
