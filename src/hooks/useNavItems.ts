@@ -53,9 +53,12 @@ export const useNavItems = (): UseNavItemsReturn => {
     { id: 'contact', label: 'CONNECT', number: '05', icon: FaSatelliteDish },
   ];
 
-  const handleNavigateToSection = useCallback((sectionId: string) => {
-    scrollToSection(sectionId);
-  }, []);
+  const handleNavigateToSection = useCallback(
+    (sectionId: string) => {
+      scrollToSection(sectionId);
+    },
+    [scrollToSection]
+  );
 
   return {
     navItems,

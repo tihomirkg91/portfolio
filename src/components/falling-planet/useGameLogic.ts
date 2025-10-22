@@ -145,14 +145,6 @@ export const useGameLogic = () => {
     setGameOverVisible(false);
   }, []);
 
-  const handlePlayAgain = useCallback(
-    (action: 'end' | 'restart' = 'restart') => {
-      setGameOverVisible(false);
-      if (action !== 'end') startGame();
-    },
-    []
-  );
-
   const startGame = () => {
     gameActiveRef.current = true;
     missedPlanetsRef.current = 0;
@@ -181,6 +173,14 @@ export const useGameLogic = () => {
       gameAreaRef.current.style.height = `${newHeight}px`;
     }
   };
+
+  const handlePlayAgain = useCallback(
+    (action: 'end' | 'restart' = 'restart') => {
+      setGameOverVisible(false);
+      if (action !== 'end') startGame();
+    },
+    [startGame]
+  );
 
   const endGame = useCallback(() => {
     gameActiveRef.current = false;

@@ -96,7 +96,7 @@ const Hero: FC = () => {
   );
   const avatarFallback = useMemo(
     () => `${personalInfo.firstName[0]}${personalInfo.lastName[0]}`,
-    [personalInfo?.firstName, personalInfo?.lastName]
+    [personalInfo.firstName, personalInfo.lastName]
   );
 
   const heroData = useMemo(

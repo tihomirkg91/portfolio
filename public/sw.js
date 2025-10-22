@@ -1,12 +1,12 @@
 // Custom service worker to prevent automatic reloads
-self.addEventListener('install', event => {
+self.addEventListener('install', () => {
   console.log('Service worker installing...');
   self.skipWaiting();
 });
 
-self.addEventListener('activate', event => {
+self.addEventListener('activate', _event => {
   console.log('Service worker activating...');
-  event.waitUntil(self.clients.claim());
+  _event.waitUntil(self.clients.claim());
 });
 
 // Handle messages from the main thread

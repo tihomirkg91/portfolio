@@ -37,6 +37,15 @@ export const useScrollNavigation = (
   const isScrolling = useRef<boolean>(false);
   const userNavigatedRef = useRef<boolean>(false);
   const pendingScrollTarget = useRef<string | null>(null);
+  const scrollToElementRef = useRef<
+    (elementId: string, options?: ScrollToOptions) => void
+  >(() => {});
+
+  useEffect(() => {
+    if (activeSection && activeSection !== selectedNavItem) {
+      userNavigatedRef.current = false;
+    }
+  }, [activeSection, selectedNavItem]);
 
   useEffect(() => {
     if (
@@ -44,12 +53,17 @@ export const useScrollNavigation = (
       activeSection !== selectedNavItem &&
       !userNavigatedRef.current &&
       !isScrolling.current
-    )
-      setSelectedNavItem(activeSection);
+    ) {
+      const timeoutId = setTimeout(() => {
+        setSelectedNavItem(activeSection);
+      }, 0);
+      return () => clearTimeout(timeoutId);
+    }
+    return undefined;
   }, [activeSection, selectedNavItem]);
 
   const scrollToElement = useCallback(
-    (elementId: string, options: ScrollToOptions = {}) => {
+    (elementId: string, options: ScrollToOptions = {}): void => {
       const element = document.getElementById(elementId);
 
       if (!element) return;
@@ -89,10 +103,10 @@ export const useScrollNavigation = (
         setTimeout(() => {
           isScrolling.current = false;
 
-          if (pendingScrollTarget.current) {
+          if (pendingScrollTarget.current && scrollToElementRef.current) {
             const targetId = pendingScrollTarget.current;
             pendingScrollTarget.current = null;
-            scrollToElement(targetId, options);
+            scrollToElementRef.current(targetId, options);
           }
         }, SCROLL_TIMEOUT_MS);
       } catch (error) {
@@ -103,6 +117,11 @@ export const useScrollNavigation = (
     },
     []
   );
+
+  // Store the scrollToElement function in a ref so it can be called recursively
+  useEffect(() => {
+    scrollToElementRef.current = scrollToElement;
+  }, [scrollToElement]);
 
   const ensureActiveSectionInView = useCallback(() => {
     if (!activeSection) return;
@@ -162,7 +181,7 @@ export const useScrollNavigation = (
         userNavigatedRef.current = false;
       }, 100);
     },
-    [selectedNavItem, activeSection]
+    [selectedNavItem, activeSection, scrollToElement]
   );
 
   return {

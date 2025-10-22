@@ -24,7 +24,7 @@ const ExperienceItem: FC<ExperienceItemProps> = memo(
       return moment().format('YYYY-MM-DD');
     }, []);
 
-    const handleToggle = useCallback(() => onToggle(), []);
+    const handleToggle = useCallback(() => onToggle(), [onToggle]);
 
     const descriptionArray = useMemo(() => {
       const descriptions = Array.isArray(exp?.description)
@@ -33,7 +33,7 @@ const ExperienceItem: FC<ExperienceItemProps> = memo(
       return descriptions.filter(
         (desc): desc is string => typeof desc === 'string'
       );
-    }, [exp?.description]);
+    }, [exp.description]);
 
     return (
       <article className="experience-item" aria-expanded={isExpanded}>

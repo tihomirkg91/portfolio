@@ -9,13 +9,16 @@ const Footer = () => {
   const { scrollToTop, scrollToElement } = useScrollNavigation();
   const currentYear = new Date().getFullYear();
 
-  const handleNavigateToSection = useCallback((sectionId: string) => {
-    scrollToElement(sectionId, {
-      behavior: 'smooth',
-      block: 'start',
-      inline: 'nearest',
-    });
-  }, []);
+  const handleNavigateToSection = useCallback(
+    (sectionId: string) => {
+      scrollToElement(sectionId, {
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest',
+      });
+    },
+    [scrollToElement]
+  );
 
   return (
     <footer className="footer">

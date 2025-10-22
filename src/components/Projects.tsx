@@ -20,10 +20,13 @@ const ProjectLinkButton: FC<ProjectLinkButtonProps> = memo(
   ({ link, projectTitle, onGameClick, gameEnabled }) => {
     const navigate = useNavigate();
 
-    const navigateToLink = useCallback((url: string, isInternal: boolean) => {
-      if (isInternal) navigate(url);
-      else window.open(url, '_blank', 'noopener,noreferrer');
-    }, []);
+    const navigateToLink = useCallback(
+      (url: string, isInternal: boolean) => {
+        if (isInternal) navigate(url);
+        else window.open(url, '_blank', 'noopener,noreferrer');
+      },
+      [navigate]
+    );
 
     const handleClick = useCallback(
       (e: React.MouseEvent) => {
@@ -41,7 +44,7 @@ const ProjectLinkButton: FC<ProjectLinkButtonProps> = memo(
 
         navigateToLink(link.url, isInternalLink);
       },
-      [link.url, link.label, gameEnabled]
+      [link.url, link.label, gameEnabled, navigateToLink, onGameClick]
     );
 
     return (
@@ -74,11 +77,11 @@ const Projects: FC = () => {
   const handleImageLoad = useCallback(() => {
     setIsImageLoaded(true);
     handleLoad();
-  }, []);
+  }, [handleLoad]);
 
   const handleImageError = useCallback(
     (event: React.SyntheticEvent<HTMLImageElement>) => handleError(event),
-    []
+    [handleError]
   );
   const handleGameClick = useCallback(() => setIsGameModalOpen(true), []);
   const handleCloseModal = useCallback(() => setIsGameModalOpen(false), []);

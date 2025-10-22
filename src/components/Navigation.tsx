@@ -46,9 +46,9 @@ const Navigation: React.FC = () => {
 
   const handleEnsureActiveSectionInView = useCallback(
     () => scrollToElement('home'),
-    []
+    [scrollToElement]
   );
-  const handleBackToHome = useCallback(() => navigate('/'), []);
+  const handleBackToHome = useCallback(() => navigate('/'), [navigate]);
 
   const isGamePage = useMemo(
     () => location.pathname === '/falling-planet-rhythm',

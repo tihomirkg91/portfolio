@@ -58,8 +58,6 @@ export const useActiveDetection = (
   }, [sections, scrollOffset, scrollThreshold, isPaused]);
 
   useEffect(() => {
-    handleScroll();
-
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);

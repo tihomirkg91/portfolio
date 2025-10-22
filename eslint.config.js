@@ -10,13 +10,13 @@ export default tseslint.config([
   globalIgnores(['dist', 'dev-dist']),
   {
     files: ['**/*.{ts,tsx}'],
-    extends: [
-      js.configs.recommended,
-      tseslint.configs.recommended,
-      reactHooks.configs['recommended-latest'],
-      reactRefresh.configs.vite,
-    ],
+  },
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
+  {
     plugins: {
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
       import: importPlugin,
     },
     languageOptions: {
@@ -24,6 +24,8 @@ export default tseslint.config([
       globals: globals.browser,
     },
     rules: {
+      ...reactHooks.configs.recommended.rules,
+      ...reactRefresh.configs.vite.rules,
       'import/no-cycle': [
         'error',
         {

@@ -97,7 +97,7 @@ export const FallingPlanet = memo(({ gameLogic }: FallingPlanetProps) => {
         handleTouchStart(lane, event);
       });
     },
-    []
+    [addOptimisticScore, handleTouchStart]
   );
 
   const optimizedMouseDown = useCallback(
@@ -107,7 +107,7 @@ export const FallingPlanet = memo(({ gameLogic }: FallingPlanetProps) => {
         handleMouseDown(lane, event);
       });
     },
-    []
+    [addOptimisticScore, handleMouseDown]
   );
 
   const containerClassName = useMemo(() => {

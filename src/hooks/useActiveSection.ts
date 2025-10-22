@@ -70,8 +70,6 @@ export const useActiveSection = (
   }, [sectionsArray, scrollOffset, scrollThreshold, isScrollingRef]);
 
   useEffect(() => {
-    handleScroll();
-
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);

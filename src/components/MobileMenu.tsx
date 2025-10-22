@@ -24,16 +24,19 @@ const MobileMenu: React.FC = () => {
     e.preventDefault();
   }, []);
 
-  const handleNavigateToSection = useCallback((sectionId: string) => {
-    if (sectionId === 'game') {
-      handleClose();
-      navigate('/falling-planet-rhythm');
-    } else {
-      // Trigger navigation and close menu
-      navHandleNavigateToSection(sectionId);
-      handleClose();
-    }
-  }, []);
+  const handleNavigateToSection = useCallback(
+    (sectionId: string) => {
+      if (sectionId === 'game') {
+        handleClose();
+        navigate('/falling-planet-rhythm');
+      } else {
+        // Trigger navigation and close menu
+        navHandleNavigateToSection(sectionId);
+        handleClose();
+      }
+    },
+    [navigate, navHandleNavigateToSection, handleClose]
+  );
 
   useEffect(() => {
     if (isOpen) {
