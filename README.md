@@ -21,11 +21,6 @@ A modern portfolio built with React 19, TypeScript, and Vite with **Progressive 
 - **TypeScript 5.9**: Strict type-safe development
 - **Vite 7**: Lightning-fast build tool with tree shaking
 
-### Backend & Database (Marketplace)
-- **PostgreSQL**: Relational database
-- **Supabase**: Backend-as-a-service platform
-- **Prisma**: Modern ORM for database interactions
-
 ### PWA & Performance
 - **Vite PWA Plugin**: Service worker and manifest generation with 31 precached entries
 - **Workbox**: Advanced caching strategies (31 assets, 2.3MB precache)
