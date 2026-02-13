@@ -4,11 +4,11 @@ A modern portfolio built with React 19, TypeScript, and Vite with **Progressive 
 
 ## ✨ Features
 
-- **🔧 PWA Enabled**: Installable app with offline support
+- **🔧 PWA Enabled**: Installable app with offline support and 31 cached assets
 - **📱 Responsive Design**: Mobile-first approach with optimal UX
-- **🌐 Offline Capable**: Works without internet connection
-- **⚡ Performance Optimized**: Lazy loading and smart caching
-- **🎮 Interactive Game**: Falling Planet rhythm game included
+- **🌐 Offline Capable**: Browse portfolio and content offline
+- **⚡ Performance Optimized**: Tree shaking, lazy loading and smart caching
+- **🛍️ Marketplace Integration**: Showcase of a live e-commerce platform
 - **📄 PDF Generation**: Downloadable CV with pdfMake
 - **🔄 Context API**: Efficient state management
 - **🛡️ Error Boundaries**: Graceful error handling
@@ -18,18 +18,24 @@ A modern portfolio built with React 19, TypeScript, and Vite with **Progressive 
 
 ### Core Technologies
 - **React 19**: Latest React with concurrent features
-- **TypeScript 5.8**: Type-safe development
-- **Vite 7**: Lightning-fast build tool
+- **TypeScript 5.9**: Strict type-safe development
+- **Vite 7**: Lightning-fast build tool with tree shaking
+
+### Backend & Database (Marketplace)
+- **PostgreSQL**: Relational database
+- **Supabase**: Backend-as-a-service platform
+- **Prisma**: Modern ORM for database interactions
 
 ### PWA & Performance
-- **Vite PWA Plugin**: Service worker and manifest generation
-- **Workbox**: Advanced caching strategies
+- **Vite PWA Plugin**: Service worker and manifest generation with 31 precached entries
+- **Workbox**: Advanced caching strategies (31 assets, 2.3MB precache)
 - **Web App Manifest**: Native app-like installation
+- **Tree Shaking**: Aggressive dead code elimination
 
 ### Code Quality & Testing
 - **ESLint 9**: Modern linting configuration
 - **Prettier**: Consistent code formatting
-- **TypeScript Strict**: Enhanced type checking
+- **TypeScript Strict**: Enhanced type checking with full strictness
 - **Vitest**: Fast unit testing framework
 
 ## 🚀 Installation & Setup
@@ -59,20 +65,22 @@ This portfolio is a **Progressive Web App** with the following capabilities:
 ### Installation
 - **Desktop**: Install via browser prompt or install button
 - **Mobile**: Add to home screen for native app experience
-- **Offline Access**: Full functionality without internet
+- **Offline Access**: Browse your portfolio without internet
 
 ### Offline Capabilities
-- ✅ Complete UI navigation and portfolio browsing
-- ✅ Falling Planet game works entirely offline
-- ✅ Cached images and assets load instantly
+- ✅ Complete UI navigation and portfolio section browsing
+- ✅ All cached assets load instantly (31 precached files)
+- ✅ Portfolio content, experience, and about sections available
 - ✅ Graceful fallbacks for online-only features
 - ❌ Contact form requires internet connection
+- ❌ Marketplace showcase requires internet for full interactivity
 - ❌ External links need active connection
 
 ### Performance Benefits
-- **Instant Loading**: Cached resources load immediately
+- **Instant Loading**: 31 precached assets (2.3MB) load immediately
 - **Background Updates**: New content downloads silently
 - **Reduced Data Usage**: Only changed content re-downloads
+- **Smart Caching**: Fonts cached for 365 days, images for 30 days
 - **Native Feel**: App-like experience with smooth navigation
 
 For detailed PWA information, see [PWA_GUIDE.md](./PWA_GUIDE.md)
@@ -130,30 +138,17 @@ portfolio/
 │   │   ├── Experience.tsx
 │   │   ├── Footer.css
 │   │   ├── Footer.tsx
-│   │   ├── GamePage.css
-│   │   ├── GamePage.tsx
 │   │   ├── Hero.css
 │   │   ├── Hero.tsx
 │   │   ├── LazyWrapper.tsx
 │   │   ├── LoadingSpinner.css
 │   │   ├── LoadingSpinner.tsx
+│   │   ├── Marketplace.css
+│   │   ├── Marketplace.tsx
 │   │   ├── MobileMenu.css
 │   │   ├── MobileMenu.tsx
 │   │   ├── Navigation.css
 │   │   ├── Navigation.tsx
-│   │   ├── Projects.css
-│   │   ├── Projects.tsx
-│   │   ├── falling-planet/
-│   │   │   ├── constants.ts
-│   │   │   ├── FallingPlanet.css
-│   │   │   ├── FallingPlanet.tsx
-│   │   │   ├── GameArea.tsx
-│   │   │   ├── GameControls.tsx
-│   │   │   ├── GameInstructions.tsx
-│   │   │   ├── GameOverModal.css
-│   │   │   ├── GameOverModal.tsx
-│   │   │   ├── types.ts
-│   │   │   └── useGameLogic.ts
 │   │   ├── pdf/
 │   │   │   ├── CVDownloadButton.css
 │   │   │   ├── CVDownloadButton.tsx
@@ -204,11 +199,40 @@ portfolio/
 
 ## Scripts
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production  
-- `npm run preview` - Preview production build
-- `npm run lint` - Lint code
-- `npm run test` - Run tests with Vitest
+- `npm run dev` - Start development server with hot reload (localhost:5173)
+- `npm run build` - Build for production with PWA generation and optimizations
+- `npm run preview` - Preview production build locally
+- `npm run lint` - Lint code with ESLint
+- `npm run test` - Run unit tests with Vitest
+- `npm run format` - Format code with Prettier
+- `npm run check-circular` - Check for circular dependencies
+
+## 🚀 Build Optimizations
+
+The production build includes several performance optimizations:
+
+### Code Splitting
+- **React bundle**: Separate chunk for React and React-DOM
+- **Icons chunk**: react-icons in dedicated bundle
+- **Moment chunk**: Separate moment.js bundle
+- **Vendor misc**: Other dependencies grouped together
+
+### Tree Shaking
+- Aggressive dead code elimination enabled
+- Module side effects: false (safe removal of unused exports)
+- Property read side effects optimized
+- Rollup configuration for maximum unused code elimination
+
+### PWA Caching
+- **31 precached assets** (2369.10 KiB total)
+- **Fonts**: 365-day cache (Google Fonts, gstatic)
+- **Images**: 30-day cache with max 100 entries
+- **Auto updates**: Service worker checks for new content
+
+### File Size
+- **Minification**: esbuild for optimal compression
+- **Gzip compression**: Significant reduction in transfer size
+- **Assets optimized**: PNG, WebP, SVG, and font files
 
 ## Git Optimizations
 
