@@ -1,5 +1,4 @@
 import { lazy } from 'react';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
 import LazyWrapper from './components/LazyWrapper';
 import { PwaModal } from './components/pwa/PwaModal';
@@ -11,20 +10,18 @@ import { useServiceWorker } from './hooks/useServiceWorker';
 const Navigation = lazy(() => import('./components/Navigation'));
 const Hero = lazy(() => import('./components/Hero'));
 const About = lazy(() => import('./components/About'));
-const Projects = lazy(() => import('./components/Projects'));
+const Marketplace = lazy(() => import('./components/Marketplace'));
 const ExperienceComponent = lazy(() => import('./components/Experience'));
 const Contact = lazy(() => import('./components/Contact'));
 const Footer = lazy(() => import('./components/Footer'));
-const GamePage = lazy(() => import('./components/GamePage'));
 
 const LazyNavigation = LazyWrapper('LazyNavigation');
 const LazyHero = LazyWrapper('LazyHero');
 const LazyAbout = LazyWrapper('LazyAbout');
-const LazyProjects = LazyWrapper('LazyProjects');
+const LazyMarketplace = LazyWrapper('LazyMarketplace');
 const LazyExperience = LazyWrapper('LazyExperience');
 const LazyContact = LazyWrapper('LazyContact');
 const LazyFooter = LazyWrapper('LazyFooter');
-const LazyGamePage = LazyWrapper('LazyGamePage');
 
 const AppContent = () => (
   <div className="App">
@@ -42,9 +39,9 @@ const AppContent = () => (
         <About />
       </LazyAbout>
 
-      <LazyProjects>
-        <Projects />
-      </LazyProjects>
+      <LazyMarketplace>
+        <Marketplace />
+      </LazyMarketplace>
 
       <LazyExperience>
         <ExperienceComponent />
@@ -61,36 +58,15 @@ const AppContent = () => (
   </div>
 );
 
-const AppRoutes = () => (
-  <Routes>
-    <Route path="/" element={<AppContent />} />
-    <Route
-      path="/falling-planet-rhythm"
-      element={
-        <div className="game-page">
-          <LazyNavigation>
-            <Navigation />
-          </LazyNavigation>
-          <LazyGamePage>
-            <GamePage />
-          </LazyGamePage>
-        </div>
-      }
-    />
-  </Routes>
-);
-
 const App = () => {
   useServiceWorker();
 
   return (
-    <Router>
-      <ResponsiveProvider>
-        <PortfolioProvider>
-          <AppRoutes />
-        </PortfolioProvider>
-      </ResponsiveProvider>
-    </Router>
+    <ResponsiveProvider>
+      <PortfolioProvider>
+        <AppContent />
+      </PortfolioProvider>
+    </ResponsiveProvider>
   );
 };
 

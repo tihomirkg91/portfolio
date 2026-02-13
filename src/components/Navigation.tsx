@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { LuArrowLeft } from 'react-icons/lu';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+
 import { useActiveSection } from '../hooks/useActiveSection';
 import { useNavItems } from '../hooks/useNavItems';
 import { useResponsive } from '../hooks/useResponsive';
@@ -13,7 +12,7 @@ import './Navigation.css';
 const SECTIONS = [
   'home',
   'about',
-  'projects',
+  'marketplace',
   'experience',
   'contact',
 ] as const;
@@ -21,8 +20,6 @@ const SECTIONS = [
 const Navigation: React.FC = () => {
   const { isMobile } = useResponsive();
   const { selectedNavItem } = useNavItems();
-  const location = useLocation();
-  const navigate = useNavigate();
 
   const [scrollOffset, setScrollOffset] = useState(() => getScrollOffset());
 
@@ -48,23 +45,12 @@ const Navigation: React.FC = () => {
     () => scrollToElement('home'),
     [scrollToElement]
   );
-  const handleBackToHome = useCallback(() => navigate('/'), [navigate]);
-
-  const isGamePage = useMemo(
-    () => location.pathname === '/falling-planet-rhythm',
-    [location.pathname]
-  );
 
   return (
     <header
       className={`navigation ${isScrolled ? 'navigation--scrolled' : ''}`}
     >
       <div className="navigation__container">
-        {isGamePage && (
-          <button onClick={handleBackToHome} className="navigation__back-arrow">
-            <LuArrowLeft size={20} />
-          </button>
-        )}
         <div className="navigation__logo">
           <div
             className="logo__container"

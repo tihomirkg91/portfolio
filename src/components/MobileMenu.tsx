@@ -1,11 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useNavItems } from '../hooks/useNavItems';
 import { useResponsive } from '../hooks/useResponsive';
 import './MobileMenu.css';
 
 const MobileMenu: React.FC = () => {
-  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const {
     navItems,
@@ -26,16 +24,11 @@ const MobileMenu: React.FC = () => {
 
   const handleNavigateToSection = useCallback(
     (sectionId: string) => {
-      if (sectionId === 'game') {
-        handleClose();
-        navigate('/falling-planet-rhythm');
-      } else {
-        // Trigger navigation and close menu
-        navHandleNavigateToSection(sectionId);
-        handleClose();
-      }
+      // Trigger navigation and close menu
+      navHandleNavigateToSection(sectionId);
+      handleClose();
     },
-    [navigate, navHandleNavigateToSection, handleClose]
+    [navHandleNavigateToSection, handleClose]
   );
 
   useEffect(() => {

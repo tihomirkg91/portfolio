@@ -14,6 +14,7 @@ export default defineConfig({
       registerType: 'prompt',
       injectRegister: false,
       includeAssets: ['favicon.svg', '*.png', '*.jpg', '*.webp'],
+      includeManifestIcons: true,
       manifest: {
         name: 'Tihomir Tomovic - Portfolio',
         short_name: 'Tihomir T.',
@@ -37,8 +38,13 @@ export default defineConfig({
         skipWaiting: true,
         clientsClaim: true,
         cleanupOutdatedCaches: true,
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}'],
+        globPatterns: [
+          '**/*.{js,css,html,ico,png,svg,webp,woff,woff2,ttf,eot}',
+          'index.html',
+        ],
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB
+        navigateFallback: '/index.html',
+        navigateFallbackDenylist: [/^\/api\//],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
@@ -91,27 +97,18 @@ export default defineConfig({
     minify: 'esbuild',
     chunkSizeWarningLimit: 2500,
     rollupOptions: {
+      treeshake: {
+        moduleSideEffects: false,
+        propertyReadSideEffects: false,
+        tryCatchDeoptimization: false,
+      },
       output: {
         manualChunks: id => {
-          if (id.includes('node_modules/react')) {
-            return 'react';
-          }
-
-          if (id.includes('node_modules/react-dom')) {
-            return 'react-dom';
-          }
-
-          if (id.includes('node_modules/react-icons')) {
-            return 'icons';
-          }
-
-          if (id.includes('node_modules/moment')) {
-            return 'moment';
-          }
-
-          if (id.includes('node_modules')) {
-            return 'vendor-misc';
-          }
+          if (id.includes('node_modules/react')) return 'react';
+          if (id.includes('node_modules/react-dom')) return 'react-dom';
+          if (id.includes('node_modules/react-icons')) return 'icons';
+          if (id.includes('node_modules/moment')) return 'moment';
+          if (id.includes('node_modules')) return 'vendor-misc';
         },
       },
     },

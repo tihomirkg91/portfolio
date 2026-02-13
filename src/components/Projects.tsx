@@ -1,62 +1,28 @@
 import type { FC } from 'react';
-import { memo, useCallback, useState } from 'react';
-import { FaGamepad, FaImage } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
-import { useImageLoading } from '../hooks/useImageLoading';
+import { memo, useCallback } from 'react';
+import { FaShoppingBag, FaStore, FaUsers } from 'react-icons/fa';
 import { usePortfolio } from '../hooks/usePortfolio';
 import type { ProjectLink } from '../types';
-import { useFeatureFlags } from '../utils/featureFlags';
-import ComingSoonModal from './ComingSoonModal';
 import './Projects.css';
 
 interface ProjectLinkButtonProps {
   link: ProjectLink;
   projectTitle: string;
-  onGameClick?: () => void;
-  gameEnabled: boolean;
 }
 
 const ProjectLinkButton: FC<ProjectLinkButtonProps> = memo(
-  ({ link, projectTitle, onGameClick, gameEnabled }) => {
-    const navigate = useNavigate();
-
-    const navigateToLink = useCallback(
-      (url: string, isInternal: boolean) => {
-        if (isInternal) navigate(url);
-        else window.open(url, '_blank', 'noopener,noreferrer');
-      },
-      [navigate]
-    );
-
-    const handleClick = useCallback(
-      (e: React.MouseEvent) => {
-        e.preventDefault();
-
-        const isGameLink = link.label === 'Play Game';
-        const isInternalLink = link.url.startsWith('/');
-
-        // Handle game links with feature flag logic
-        if (isGameLink) {
-          if (gameEnabled) navigateToLink(link.url, isInternalLink);
-          else onGameClick?.();
-          return;
-        }
-
-        navigateToLink(link.url, isInternalLink);
-      },
-      [link.url, link.label, gameEnabled, navigateToLink, onGameClick]
-    );
+  ({ link, projectTitle }) => {
+    const handleLinkClick = () => {
+      window.open(link.url, '_blank', 'noopener,noreferrer');
+    };
 
     return (
       <button
-        onClick={handleClick}
+        onClick={handleLinkClick}
         className="project-link"
         aria-label={`${link.label} for ${projectTitle}`}
         type="button"
       >
-        {link.label === 'Play Game' && (
-          <FaGamepad className="project-link-icon" />
-        )}
         <span className="project-link-text">{link.label}</span>
       </button>
     );
@@ -67,24 +33,11 @@ ProjectLinkButton.displayName = 'ProjectLinkButton';
 
 const Projects: FC = () => {
   const { projects } = usePortfolio();
-  const { gameEnabled } = useFeatureFlags();
   const project = projects[0];
-  const { src, isLoading, hasError, handleLoad, handleError, imgRef } =
-    useImageLoading(project?.imageUrl || '');
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const [isGameModalOpen, setIsGameModalOpen] = useState(false);
 
-  const handleImageLoad = useCallback(() => {
-    setIsImageLoaded(true);
-    handleLoad();
-  }, [handleLoad]);
-
-  const handleImageError = useCallback(
-    (event: React.SyntheticEvent<HTMLImageElement>) => handleError(event),
-    [handleError]
-  );
-  const handleGameClick = useCallback(() => setIsGameModalOpen(true), []);
-  const handleCloseModal = useCallback(() => setIsGameModalOpen(false), []);
+  const handleViewMarketplace = useCallback(() => {
+    window.open(project?.links[0]?.url || '', '_blank', 'noopener,noreferrer');
+  }, [project]);
 
   if (!project) return null;
 
@@ -102,25 +55,31 @@ const Projects: FC = () => {
           <article className="project-card featured-project">
             <div className="project-card-inner">
               <div className="project-image-container">
-                {!hasError && src && (
-                  <img
-                    ref={imgRef}
-                    src={src}
-                    alt={project.imageAlt || `${project.title} screenshot`}
-                    className={`project-image ${isImageLoaded ? 'loaded' : ''}`}
-                    onLoad={handleImageLoad}
-                    onError={handleImageError}
-                    loading="lazy"
-                  />
-                )}
-                {(isLoading || !isImageLoaded) && !hasError && (
-                  <div className="project-image-skeleton" />
-                )}
-                {hasError && (
-                  <div className="project-image-fallback">
-                    <FaImage />
+                <div className="marketplace-preview">
+                  <div className="marketplace-content">
+                    <div className="marketplace-features">
+                      <div className="feature-item">
+                        <FaShoppingBag className="feature-icon" />
+                        <span className="feature-label">Smart Shopping</span>
+                      </div>
+                      <div className="feature-item">
+                        <FaStore className="feature-icon" />
+                        <span className="feature-label">Multi-Vendor</span>
+                      </div>
+                      <div className="feature-item">
+                        <FaUsers className="feature-icon" />
+                        <span className="feature-label">Community</span>
+                      </div>
+                    </div>
+                    <button
+                      className="marketplace-button"
+                      onClick={handleViewMarketplace}
+                      aria-label="Open marketplace website"
+                    >
+                      Visit Marketplace
+                    </button>
                   </div>
-                )}
+                </div>
                 {project.featured && (
                   <div className="featured-badge">Featured</div>
                 )}
@@ -131,8 +90,6 @@ const Projects: FC = () => {
                         key={link.url}
                         link={link}
                         projectTitle={project.title}
-                        onGameClick={handleGameClick}
-                        gameEnabled={gameEnabled}
                       />
                     ))}
                   </div>
@@ -170,13 +127,6 @@ const Projects: FC = () => {
           </article>
         </div>
       </div>
-
-      <ComingSoonModal
-        isOpen={isGameModalOpen}
-        onClose={handleCloseModal}
-        title="Game Coming Soon!"
-        message="The Falling Planet Rhythm Game will be available soon. Stay tuned for updates!"
-      />
     </section>
   );
 };

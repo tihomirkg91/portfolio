@@ -5,7 +5,7 @@ import './ErrorBoundary.css';
 interface ErrorBoundaryProps {
   children: ReactNode;
   fallback?: ReactNode;
-  onError?: (error: Error, errorInfo: ErrorInfo) => void;
+  onError?: (error: unknown, errorInfo: ErrorInfo) => void;
 }
 
 interface ErrorFallbackProps {
@@ -60,14 +60,16 @@ const ErrorBoundary: React.FC<ErrorBoundaryProps> = ({
   fallback,
   onError,
 }) => {
-  const handleError = (error: Error, errorInfo: ErrorInfo) => {
+  const handleError = (error: unknown, errorInfo: ErrorInfo) => {
     console.error('ErrorBoundary caught an error:', error, errorInfo);
     onError?.(error, errorInfo);
   };
 
   return (
     <ReactErrorBoundary
-      FallbackComponent={fallback ? () => <>{fallback}</> : ErrorFallback}
+      FallbackComponent={
+        fallback ? () => <>{fallback}</> : (ErrorFallback as any)
+      }
       onError={handleError}
     >
       {children}

@@ -34,7 +34,7 @@ export const useNavItems = (): UseNavItemsReturn => {
     useNavigationScroll('home');
 
   const { activeSection } = useActiveDetection({
-    sections: ['home', 'about', 'projects', 'experience', 'contact'],
+    sections: ['home', 'about', 'marketplace', 'experience', 'contact'],
     scrollOffset,
     scrollThreshold: 50,
     isPaused: isNavigating,
@@ -48,7 +48,7 @@ export const useNavItems = (): UseNavItemsReturn => {
   const navItems: NavItem[] = [
     { id: 'home', label: 'INITIALIZE', number: '01', icon: FaBolt },
     { id: 'about', label: 'PROFILE', number: '02', icon: FaUser },
-    { id: 'projects', label: 'MISSIONS', number: '03', icon: FaBullseye },
+    { id: 'marketplace', label: 'MISSIONS', number: '03', icon: FaBullseye },
     { id: 'experience', label: 'ACHIEVEMENTS', number: '04', icon: FaTrophy },
     { id: 'contact', label: 'CONNECT', number: '05', icon: FaSatelliteDish },
   ];

@@ -53,10 +53,10 @@ const Footer = () => {
               </li>
               <li>
                 <button
-                  onClick={() => handleNavigateToSection('projects')}
+                  onClick={() => handleNavigateToSection('marketplace')}
                   className="footer-link-button"
                 >
-                  Projects
+                  Marketplace
                 </button>
               </li>
               <li>

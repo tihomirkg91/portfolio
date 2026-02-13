@@ -50,28 +50,23 @@ const personalInfo: PersonalInfo = {
 const projects: Project[] = [
   {
     id: generateShortId('project'),
-    title: 'Falling Planet Rhythm Game',
+    title: 'Marketplace Platform',
     description:
-      'An interactive rhythm game component built with React and TypeScript, featuring falling notes, scoring system, and fullscreen support.',
-    technologies: [
-      'React',
-      'TypeScript',
-      'HTML5 Audio API',
-      'Responsive Design',
-    ],
+      'A full-featured marketplace platform designed to connect buyers and sellers with an intuitive interface and robust functionality.',
+    technologies: ['React', 'TypeScript', 'Next.js', 'Responsive Design'],
     links: [
       {
-        url: '/falling-planet-rhythm',
-        label: 'Play Game',
-        type: 'demo',
+        url: 'https://marketplace-xi-teal.vercel.app/',
+        label: 'View Marketplace',
+        type: 'live',
       },
     ],
     imageUrl: '/game.webp',
-    imageAlt: 'Falling Planet Rhythm Game Screenshot',
+    imageAlt: 'Marketplace Platform Screenshot',
     featured: true,
     status: 'completed',
     dateCreated: '2024-09-06',
-    tags: ['Game', 'Interactive', 'React Component', 'TypeScript'],
+    tags: ['Marketplace', 'E-commerce', 'React', 'TypeScript'],
   },
 ];
 
@@ -184,7 +179,7 @@ const experience: Experience[] = [
 ];
 
 const contactInfo: ContactInfo = {
-  email: 'tomovicfd@gmail.com',
+  email: 'tomovicDev@proton.me',
   phone: '+381 64 4553038',
   location: 'Belgrade, Serbia',
   socialLinks: [

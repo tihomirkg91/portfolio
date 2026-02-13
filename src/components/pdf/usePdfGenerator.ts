@@ -34,7 +34,7 @@ export const usePdfGenerator = ({
     const loadPdfMake = async () => {
       const pdfMakeModule = await import('pdfmake/build/pdfmake');
       const pdfFontsModule = await import('pdfmake/build/vfs_fonts');
-      pdfMakeModule.vfs = pdfFontsModule.vfs;
+      (pdfMakeModule as any).vfs = (pdfFontsModule as any).vfs;
     };
 
     loadPdfMake().catch(() => {});

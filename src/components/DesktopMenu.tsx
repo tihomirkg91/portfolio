@@ -1,16 +1,10 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+
 import { useNavItems } from '../hooks/useNavItems';
 import './DesktopMenu.css';
 
 const DesktopMenu: React.FC = () => {
-  const navigate = useNavigate();
   const { navItems, handleNavigateToSection, selectedNavItem } = useNavItems();
-
-  const handleNavigation = (itemId: string) => {
-    if (itemId === 'game') navigate('/falling-planet-rhythm');
-    else handleNavigateToSection(itemId);
-  };
 
   return (
     <nav className="desktop-menu">
@@ -18,7 +12,7 @@ const DesktopMenu: React.FC = () => {
         {navItems.map(item => (
           <li key={item.id} className="desktop-menu__item">
             <button
-              onClick={() => handleNavigation(item.id)}
+              onClick={() => handleNavigateToSection(item.id)}
               className={`desktop-menu__link ${selectedNavItem === item.id ? 'desktop-menu__link--active' : ''}`}
               aria-label={`Navigate to ${item.label} section`}
             >

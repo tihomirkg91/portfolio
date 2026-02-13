@@ -87,7 +87,7 @@ const Hero: FC = () => {
   const { personalInfo } = usePortfolio();
 
   const handleViewWork = useMemo(
-    () => () => scrollToElement('projects'),
+    () => () => scrollToElement('marketplace'),
     [scrollToElement]
   );
   const handleGetInTouch = useMemo(
@@ -133,7 +133,7 @@ const Hero: FC = () => {
               <HeroActionButton
                 onClick={handleViewWork}
                 variant="primary"
-                ariaLabel="Navigate to projects section to view my work"
+                ariaLabel="Navigate to marketplace section to view my work"
               >
                 View My Work
               </HeroActionButton>
